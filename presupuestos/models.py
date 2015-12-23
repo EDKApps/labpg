@@ -224,3 +224,11 @@ class Campania (models.Model):
 
 		# Call the "real" save() method.
 		super(Campania, self).save(*args, **kwargs) 
+
+@python_2_unicode_compatible
+class Plantillas_Impresion (models.Model):
+	presupuesto_condiciones_comerciales = models.TextField(blank='true')
+	presupuesto_condiciones_tecnicas = models.TextField(blank='true')
+	def __str__(self):
+		return 'plantillas de impresión'
+
