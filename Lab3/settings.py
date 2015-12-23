@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'labdb',
         'USER': 'labdb',
-	'PASSWORD': 'edk19921124',
+        'PASSWORD': os.getenv('edkappslab_dbpass', 'clave secreta :)'),
         'HOST': 'localhost',
         'PORT': '',
     }
