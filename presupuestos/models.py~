@@ -76,6 +76,7 @@ def sigNumero(nombreNumerador):
 	except Numerador.DoesNotExist:
 		#Si no existe en la BD, lo creo
 		n = Numerador(nombre=nombreNumerador, ultimo_valor = 1)
+		#n = 1
 		n.save()
 		return n.ultimo_valor
 	else:
@@ -230,5 +231,5 @@ class Plantillas_Impresion (models.Model):
 	presupuesto_condiciones_comerciales = models.TextField(blank='true')
 	presupuesto_condiciones_tecnicas = models.TextField(blank='true')
 	def __str__(self):
-		return self.descripcion
+		return 'plantillas de impresión'
 

@@ -48,9 +48,6 @@
                     <th>Descripción</th>
                     <th>Matriz</th>
                     <th>Cantidad muestra</th>
-                    <th>Descuento</th>
-                    <th>Total sin Descuento</th>
-                    <th>Total con Descuento</th>
                   </tr>
                 </thead>
                 <tbody>	     
@@ -77,18 +74,6 @@
                         <td>
                         {{ form.cantidadMuestra.errors }}
                         {{ form.cantidadMuestra }} 
-                        </td>
-                        <td>
-                        {{ form.descuento.errors }}
-                        {{ form.descuento }} 
-                        </td>
-                        <td>
-                        {{ form.total_sin_descuento.errors }}
-                        {{ form.total_sin_descuento }} 
-                        </td>
-                        <td>
-                        {{ form.total_con_descuento.errors }}
-                        {{ form.total_con_descuento }} 
                         </td>
                         <tr>
                     <!--</div>-->

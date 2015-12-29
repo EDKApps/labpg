@@ -55,7 +55,26 @@ class Presupuesto (models.Model):
 
 	def __str__(self):
 		return self.referencia
-	
+
+	def total_sin_descuento(self):
+		total = 0
+		#Recorre los item de analis y suma el precio
+		lista_items = Item.objects.filter(presupuesto = self)
+		for item in lista_items:
+			total = total + item.total_con_descuento
+		
+		#Recorre los item de muestreo-campania y suma el precio
+		lista_items = Campania.objects.filter(presupuesto = self)
+		for item in lista_items:
+			total = total + item.valor_total_con_descuento
+		return total
+
+	def total_con_descuento(self):
+		total_sin = self.total_sin_descuento()
+		total = total_sin * (100-self.descuento) /100
+		total = round (total, 2)
+		return total
+
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
@@ -166,6 +185,7 @@ class PerfilPrecio (models.Model): # ex GrupoParametroPrecio
 	matriz = models.ForeignKey(Matriz, on_delete= models.PROTECT)
 	precio = models.DecimalField(max_digits=8, decimal_places=2)
 	fecha_precio = models.DateField('Fecha del precio')
+	seleccionado = models.BooleanField(default=False)
 	def __str__(self):
 		return self.nombre
 
@@ -185,24 +205,63 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 	descripcion = models.CharField(max_length= 100, blank='true')
 	matriz = models.ForeignKey(Matriz)
 	cantidadMuestra = models.IntegerField(default= 0)
+	descuento = models.DecimalField('descuento (%)', max_digits=5, decimal_places=2, default=0)
+	total_sin_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+	total_con_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	def __str__(self):
 		return self.descripcion
+
+	def costo_unitario(self):
+		costo_unitario = self.total_sin_descuento / self.cantidadMuestra
+		return costo_unitario
+
+	def save(self, *args, **kwargs):
+		#completa total
+		total = 0
+		#Recorre los parametros y suma el precio
+		lista_subitem_parametros = Subitem_parametro.objects.filter(item = self)	
+		for subitem_parametro in lista_subitem_parametros:
+			total = total + subitem_parametro.precio
+		
+		#Recorre los perfiles y suma el precio
+		lista_subitem_perfiles = Subitem_perfil.objects.filter(item = self)	
+		for subitem_perfil in lista_subitem_perfiles:
+			total = total + subitem_perfil.precio
+		
+		self.total_sin_descuento = total * self.cantidadMuestra	
+		self.total_con_descuento = self.total_sin_descuento * (100-self.descuento)/100
+			
+		# Call the "real" save() method.
+		super(Item, self).save(*args, **kwargs)
 
 @python_2_unicode_compatible
 class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio
 	item = models.ForeignKey(Item, null=True)
 	itemparametro = models.ForeignKey(ParametroPrecio)
-	
+	precio = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	def __str__(self):
 		return self.itemparametro.parametro.nombre_par #lo agrego para cumplir con decorator python_2
+
+	def save(self, *args, **kwargs):
+		#completa precio
+		self.precio = self.itemparametro.precio_del_parametro
+		# Call the "real" save() method.
+		super(Subitem_parametro, self).save(*args, **kwargs)
 
 @python_2_unicode_compatible
 class Subitem_perfil (models.Model): #relacion Item-PerfilPrecio
 	item = models.ForeignKey(Item, null=True)
 	itemperfil = models.ForeignKey(PerfilPrecio)
+	precio = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	def __str__(self):
 		return self.itemperfil.nombre #lo agrego para cumplir con decorator python_2
-	
+
+	def save(self, *args, **kwargs):
+		#completa precio
+		self.precio = self.itemperfil.precio
+		# Call the "real" save() method.
+		super(Subitem_perfil, self).save(*args, **kwargs)
+
 @python_2_unicode_compatible
 class Campania (models.Model):
 	presupuesto = models.ForeignKey(Presupuesto, on_delete= models.PROTECT, null=True)
@@ -211,19 +270,19 @@ class Campania (models.Model):
 	cantidad = models.IntegerField(default= 0)
 	unidad_medida = models.CharField(max_length= 100, blank='true')
 	valor_unitario = models.DecimalField(max_digits=8, decimal_places=2, default= 0)
-	valor_total = models.DecimalField(max_digits=8, decimal_places=2, null='true', blank='true', default=0)
 	descuento = models.DecimalField('descuento (%)', max_digits=5, decimal_places=2, null='true', blank='true', default=0)
+	valor_total_sin_descuento = models.DecimalField(max_digits=8, decimal_places=2, null='true', blank='true', default=0)
+	valor_total_con_descuento = models.DecimalField(max_digits=8, decimal_places=2, null='true', blank='true', default=0)
 	def __str__(self):
 		return self.descripcion
+		
 	def save(self, *args, **kwargs):
 		#completa valor_total
-		total = self.valor_unitario * self.cantidad	
-		if self.descuento != 0:
-			total=total * (100-self.descuento)/100
-		self.valor_total = total
-
+		self.valor_total_sin_descuento = self.valor_unitario * self.cantidad	
+		self.valor_total_con_descuento = self.valor_unitario * self.cantidad * (100-self.descuento)/100
+			
 		# Call the "real" save() method.
-		super(Campania, self).save(*args, **kwargs) 
+		super(Campania, self).save(*args, **kwargs)
 
 @python_2_unicode_compatible
 class Plantillas_Impresion (models.Model):
