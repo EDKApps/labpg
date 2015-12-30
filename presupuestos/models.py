@@ -289,5 +289,17 @@ class Plantillas_Impresion (models.Model):
 	presupuesto_condiciones_comerciales = models.TextField(blank='true')
 	presupuesto_condiciones_tecnicas = models.TextField(blank='true')
 	def __str__(self):
-		return 'plantillas de impresión'
+		return 'plantillas'
+
+
+@python_2_unicode_compatible
+class Presupuesto_Impresion (models.Model):
+	presupuesto = models.ForeignKey(Presupuesto)
+	introduccion = models.TextField(blank='true')
+	nota_muestreo = models.TextField(blank='true')
+	condiciones_comerciales = models.TextField(blank='true')
+	condiciones_tecnicas = models.TextField(blank='true')
+	
+	def __str__(self):
+		return presupuesto.descripcion
 
