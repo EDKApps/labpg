@@ -4,9 +4,8 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.extras.widgets import SelectDateWidget
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.db.models import Q #para OR en consultas
-#mcorrea
-#from .models import Presupuesto, Item, Campania
-from .models import Presupuesto, Item, Campania, Subitem_perfil, PerfilPrecio_Parametro
+from .models import Presupuesto, Item, Campania
+
 #En el form de alta excluyo la referencia (automática)
 presupuesto_fields_full = ('cliente','referencia_clave', 'referencia', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion','item.numero')
 
@@ -82,9 +81,6 @@ class PresupuestoBorrar(DeleteView):
 	
 
 class PresupuestoDetalleFull(DetailView):
-    #mcorrea
-    #model = Presupuesto
-    #model = Presupuesto, Item, Campania, Subitem_perfil, PerfilPrecio_Parametro
-    model = Presupuesto, Item
+    model = Presupuesto
     fields = presupuesto_fields_full
     template_name = 'presupuestos/presupuesto_detail_full.html'

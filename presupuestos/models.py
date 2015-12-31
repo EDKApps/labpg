@@ -53,6 +53,11 @@ class Presupuesto (models.Model):
 	observacion = models.CharField(max_length=100, blank='true')
 	descuento = models.DecimalField('descuento global (%)', max_digits=5, decimal_places=2, null='true', blank='true', default=0)
 
+	impresion_introduccion = models.TextField(blank='true')
+	impresion_nota_muestreo = models.TextField(blank='true')
+	impresion_condiciones_comerciales = models.TextField(blank='true')
+	impresion_condiciones_tecnicas = models.TextField(blank='true')
+
 	def __str__(self):
 		return self.referencia
 
@@ -79,6 +84,13 @@ class Presupuesto (models.Model):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
 			self.referencia = str(sigNumero('presupuesto_referencia'))
+		#si es insert (id= 0), asignar datos de plantilla impresion
+		if self.id is None:
+			plantillas = Plantillas_Impresion.objects.all()
+			#una plantilla
+			plantilla = plantillas[0]
+			self.impresion_condiciones_comerciales = plantilla.presupuesto_condiciones_comerciales
+			self.impresion_condiciones_tecnicas = plantilla.presupuesto_condiciones_tecnicas
 			
 		super(Presupuesto, self).save(*args, **kwargs) # Call the "real" save() method.
 
@@ -290,16 +302,4 @@ class Plantillas_Impresion (models.Model):
 	presupuesto_condiciones_tecnicas = models.TextField(blank='true')
 	def __str__(self):
 		return 'plantillas'
-
-
-@python_2_unicode_compatible
-class Presupuesto_Impresion (models.Model):
-	presupuesto = models.ForeignKey(Presupuesto)
-	introduccion = models.TextField(blank='true')
-	nota_muestreo = models.TextField(blank='true')
-	condiciones_comerciales = models.TextField(blank='true')
-	condiciones_tecnicas = models.TextField(blank='true')
-	
-	def __str__(self):
-		return presupuesto.descripcion
 

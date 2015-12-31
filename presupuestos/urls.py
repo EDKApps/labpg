@@ -18,6 +18,7 @@ from .viewpresupuestocampania import PresupuestoCampaniaModificar
 from .viewitemsubitem import ItemSubitemModificar
 from .viewpromptparametros import promptparametros
 from .viewpromptperfiles import promptperfiles
+from .viewpresupuesto_impresion import Presupuesto_ImpresionModificar
 
 urlpatterns = patterns('',
              
@@ -31,12 +32,14 @@ urlpatterns = patterns('',
     url(r'^clientes/(?P<pk>\d+)/borrar/$', ClienteBorrar.as_view(), name='cliente_borrar'),
 
     #Presupuestos
-	url(r'^presupuestos/$', PresupuestoListar.as_view(), name='presupuesto_listar'),
+    url(r'^presupuestos/$', PresupuestoListar.as_view(), name='presupuesto_listar'),
     url(r'^presupuestos/crear/$', PresupuestoCrear.as_view(), name='presupuesto_crear'),
     url(r'^presupuestos/(?P<pk>\d+)/$', PresupuestoDetalle.as_view(), name='presupuesto_detalle'),
     url(r'^presupuestos/(?P<pk>\d+)/modificar/$', PresupuestoModificar.as_view(), name='presupuesto_modificar'),
     url(r'^presupuestos/(?P<pk>\d+)/borrar/$', PresupuestoBorrar.as_view(), name='presupuesto_borrar'),
-	url(r'^presupuestosfull/(?P<pk>\d+)/$', PresupuestoDetalleFull.as_view(), name='presupuesto_detalle_full'),
+    url(r'^presupuestosfull/(?P<pk>\d+)/$', PresupuestoDetalleFull.as_view(), name='presupuesto_detalle_full'),
+    #Presupuesto impresion form
+    url(r'^presupuestos/(?P<pk>\d+)/modificar_impresion/$', Presupuesto_ImpresionModificar.as_view(), name='presupuesto_modificar_impresion'),
 					   
     #Ordenes de trabajo
     url(r'^ordenesdetrabajo/$', OrdenDeTrabajoListar, name='ordendetrabajo_listar'), #pasar a .as_view()
@@ -128,5 +131,6 @@ urlpatterns = patterns('',
                        
     #multiseleccion de perfiles
     url(r'^promptperfiles/(?P<iditem>\d+)/$', promptperfiles, name='promptperfiles'),
-    
+
+
 )

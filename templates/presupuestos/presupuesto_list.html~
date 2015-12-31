@@ -16,6 +16,8 @@
 		<th></th>
 		<th></th>  
 		<th></th>  
+		<th></th>  
+		<th></th> 
 		<th>Referencia clave</th>
 		<th>Cliente</th>
         	<th>Contacto</th>
@@ -23,7 +25,8 @@
 		<th>Solicitud</th>
 		<th>Vencimiento</th>
 		<th>Envio</th>
-		<th>Aprobación</th>		
+		<th>Aprobación</th>
+		<th></th> 
       </tr>
     </thead>
     <tbody>	  
@@ -34,14 +37,17 @@
 		  
 		<td><a href="{% url "presupuestos:presupuestoitem_modificar" presupuesto.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Items" alt= "Items"></a></td>		   
 		<td><a href="{% url "presupuestos:presupuestoitem_detalle" presupuesto.id %}"><img src= "{% static "images/accion_subitem.png"%}" data-toggle="tooltip" data-placement="top" title="Subitems" alt= "Subitems"></a></td>		   
-       	<td>{{presupuesto.referencia_clave}} {{presupuesto.referencia}}</td>
+		<td><a href="{% url "presupuestos:presupuestocampania_modificar" presupuesto.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Muestreo" alt= "Muestreo"></a></td>
+		<td><a href="{% url "presupuestos:presupuesto_detalle_full" presupuesto.id %}"><img src= "{% static "images/accion_ver.png"%}" data-toggle="tooltip" data-placement="top" title="Visualizar" alt= "Visualizar"></a></td> 
+		<td>{{presupuesto.referencia_clave}} {{presupuesto.referencia}}</td>
 		<td>{{presupuesto.cliente.empresa}}</td>		  
         <td>{{presupuesto.cliente.contacto}}</td>
 		<td>{{presupuesto.estado}}</td>
 		<td>{{presupuesto.fecha_solicitud}}</td>
 		<td>{{presupuesto.fecha_vencimiento}}</td>
 		<td>{{presupuesto.fecha_envio}}</td>
-		<td>{{presupuesto.fecha_aprobacion}}</td>
+		<td>{{presupuesto.fecha_aprobacion}}</td>	  
+		<td><a href="{% url "presupuestos:presupuesto_modificar_impresion" presupuesto.id %}"><img src= "{% static "images/accion_modificar.png"%}" data-toggle="tooltip" data-placement="top" title="Modificar" alt="Modificar"></a></td>
       </tr>
 
     {% endfor %}
