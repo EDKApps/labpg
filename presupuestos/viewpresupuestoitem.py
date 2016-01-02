@@ -7,15 +7,23 @@ from django.db.models import Q #para OR en consultas
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import UpdateView, DetailView
-presupuesto_fields = '__all__'
 
 from .formpresupuestoitem import PresupuestoForm, Presupuesto_ItemFormSet
 from .models import Presupuesto, Item
+
+presupuesto_fields = ('cliente','referencia_clave', 'referencia', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion', 'descuento')
+
+class PresupuestoItemFormModificar(forms.ModelForm):
+    referencia = forms.CharField(widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    class Meta:
+        #Provee una asociación entre el ModelForm y un model
+        model = Presupuesto
+        fields = presupuesto_fields
     
 class PresupuestoItemModificar(UpdateView):
     template_name = 'presupuestos/presupuestoitem_form.html'
     model = Presupuesto
-    form_class= PresupuestoForm
+    form_class = PresupuestoItemFormModificar
     success_url = reverse_lazy('presupuestos:presupuesto_listar')
     
     def get(self, request, *args, **kwargs):

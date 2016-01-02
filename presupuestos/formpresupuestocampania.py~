@@ -1,16 +1,23 @@
+from django import forms
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 
 from .models import Presupuesto, Campania
 
+presupuesto_fields = ('cliente','referencia_clave', 'referencia', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion', 'descuento')
+
 class PresupuestoForm(ModelForm):
+	referencia = forms.CharField(widget = forms.TextInput(attrs={'readonly':'readonly'}))
 	class Meta:
+            model = Presupuesto
+            fields = presupuesto_fields
+	"""class Meta:
 		model = Presupuesto
 		fields = '__all__'
-
+	"""
 class Presupuesto_Campania_Form(ModelForm):
 	class Meta:
-		model = Item
+		model = Campania
 		fields= '__all__'
 
 	def save(self, commit=True):

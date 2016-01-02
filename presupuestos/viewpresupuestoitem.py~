@@ -7,24 +7,23 @@ from django.db.models import Q #para OR en consultas
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import UpdateView, DetailView
-presupuesto_fields = '__all__'
-
-from .formpresupuestocampania import PresupuestoForm, Presupuesto_CampaniaFormSet
-from .models import Presupuesto, Campania
 
 presupuesto_fields = ('cliente','referencia_clave', 'referencia', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion', 'descuento')
 
-class PresupuestoCampaniaFormModificar(forms.ModelForm):
+from .formpresupuestoitem import PresupuestoForm, Presupuesto_ItemFormSet
+from .models import Presupuesto, Item
+
+class PresupuestoItemFormModificar(forms.ModelForm):
     referencia = forms.CharField(widget = forms.TextInput(attrs={'readonly':'readonly'}))
     class Meta:
         #Provee una asociación entre el ModelForm y un model
         model = Presupuesto
         fields = presupuesto_fields
-
-class PresupuestoCampaniaModificar(UpdateView):
-    template_name = 'presupuestos/presupuestocampania_form.html'
+    
+class PresupuestoItemModificar(UpdateView):
+    template_name = 'presupuestos/presupuestoitem_form.html'
     model = Presupuesto
-    form_class= PresupuestoCampaniaFormModificar
+    form_class = PresupuestoItemFormModificar
     success_url = reverse_lazy('presupuestos:presupuesto_listar')
     
     def get(self, request, *args, **kwargs):
@@ -35,11 +34,11 @@ class PresupuestoCampaniaModificar(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)        
         #render form 
-        campania_form = Presupuesto_CampaniaFormSet(instance = self.object)
+        item_form = Presupuesto_ItemFormSet(instance = self.object)
         
         return self.render_to_response(
             self.get_context_data(form=form,
-                                  campania_form=campania_form,
+                                  item_form=item_form,
                                   ))
     
     def post(self, request, *args, **kwargs):        
@@ -51,39 +50,39 @@ class PresupuestoCampaniaModificar(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         
-        campania_form = Presupuesto_CampaniaFormSet(instance = Presupuesto())
-        campania_form = Presupuesto_CampaniaFormSet(request.POST,request.FILES,instance= self.object )
+        item_form = Presupuesto_ItemFormSet(instance = Presupuesto())
+        item_form = Presupuesto_ItemFormSet(request.POST,request.FILES,instance= self.object )
         
-        if (form.is_valid() and campania_form.is_valid()):
+        if (form.is_valid() and item_form.is_valid()):
 
             
             self.object = form.save(commit=False)
             
             self.object.save()
-            campania_form.save()
+            item_form.save()
             #Eliminar lo indicado del subnivel
             #PerfilPrecio_Parametro.objects.filter(perfilprecio=self.object, eliminado = True).delete()
             return HttpResponseRedirect(self.get_success_url())
             
         else:
-            return self.form_invalid(form, campania_form)
+            return self.form_invalid(form, item_form)
     
     #def get_success_url(self):
     #    return reverse('presupuestos:presupuesto_listar', kwargs={
     #        'pk': self.object.pk,
     #    }) 
             
-    def form_invalid(self, form, campania_form):
+    def form_invalid(self, form, item_form):
         """
         Llamada si un formulario es inválido. Re-renders context data con el formulario
         cargado y los errores
         """
         return self.render_to_response(
                 self.get_context_data(form=form,
-                                      campania_form = campania_form))
-#
-#class PresupuestoCampaniaDetalle(DetailView):
-#    template_name = 'presupuestos/presupuestoCampania_detail.html'    
-#    model = Presupuesto
-#    fields = '__all__'
+                                      item_form = item_form))
+
+class PresupuestoItemDetalle(DetailView):
+    template_name = 'presupuestos/presupuestoitem_detail.html'    
+    model = Presupuesto
+    fields = '__all__'
     

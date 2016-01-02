@@ -51,20 +51,20 @@ class PresupuestoCampaniaModificar(UpdateView):
             self.object = form.save(commit=False)
             
             self.object.save()
-            item_form.save()
+            campania_form.save()
             #Eliminar lo indicado del subnivel
             #PerfilPrecio_Parametro.objects.filter(perfilprecio=self.object, eliminado = True).delete()
             return HttpResponseRedirect(self.get_success_url())
             
         else:
-            return self.form_invalid(form, item_form)
+            return self.form_invalid(form, campania_form)
     
     #def get_success_url(self):
     #    return reverse('presupuestos:presupuesto_listar', kwargs={
     #        'pk': self.object.pk,
     #    }) 
             
-    def form_invalid(self, form, item_form):
+    def form_invalid(self, form, campania_form):
         """
         Llamada si un formulario es inválido. Re-renders context data con el formulario
         cargado y los errores
@@ -73,8 +73,8 @@ class PresupuestoCampaniaModificar(UpdateView):
                 self.get_context_data(form=form,
                                       campania_form = campania_form))
 #
-#class PresupuestoItemDetalle(DetailView):
-#    template_name = 'presupuestos/presupuestoitem_detail.html'    
+#class PresupuestoCampaniaDetalle(DetailView):
+#    template_name = 'presupuestos/presupuestoCampania_detail.html'    
 #    model = Presupuesto
 #    fields = '__all__'
     
