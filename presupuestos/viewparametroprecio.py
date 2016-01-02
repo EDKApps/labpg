@@ -7,7 +7,7 @@ from django.db.models import Q #para OR en consultas
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
-parametroprecio_fields = ('matriz','parametro','tecnica','precio_del_parametro','fecha_de_precio')
+parametroprecio_fields = ('matriz','parametro','tecnica','precio_parametro','fecha_precio','fuente_precio')
 
 from .models import ParametroPrecio
 

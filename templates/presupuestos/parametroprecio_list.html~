@@ -18,7 +18,6 @@
 		<th>Tecnica</th>
 		<th>Precio</th>
 		<th>Fecha de precio</th>
-		<th>Fuente de precio</th>
 		<th>Unidades</th>
 		<th>LCT</th>
       </tr>
@@ -31,9 +30,8 @@
 		<td>{{ parametroprecio.matriz }}</td>
 		<td>{{ parametroprecio.parametro }}</td>
 		<td>{{ parametroprecio.tecnica }}</td>
-		<td>{{ parametroprecio.precio_parametro }}</td>
-		<td>{{ parametroprecio.fecha_precio }}</td>
-		<td>{{ parametroprecio.fuente_precio }}</td>
+		<td>{{ parametroprecio.precio_del_parametro }}</td>
+		<td>{{ parametroprecio.fecha_de_precio }}</td>
 		<td>{{ parametroprecio.unidades }}</td>
 		<td>{{ parametroprecio.lct }}</td>
 	</tr>

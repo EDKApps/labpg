@@ -169,8 +169,9 @@ class ParametroPrecio  (models.Model):
 	matriz = models.ForeignKey(Matriz, on_delete= models.PROTECT)
 	parametro = models.ForeignKey(Parametro, on_delete= models.PROTECT)
 	tecnica = models.ForeignKey(Tecnica, on_delete= models.PROTECT)
-	precio_del_parametro = models.DecimalField(max_digits=8, decimal_places=2)
-	fecha_de_precio = models.DateField('Fecha del precio', default=date.today)
+	precio_parametro = models.DecimalField(max_digits=8, decimal_places=2)
+	fecha_precio = models.DateField('Fecha del precio', default=date.today)
+	fuente_precio = models.CharField('Fuente del precio', max_length=100, blank='true')
 	seleccionado = models.BooleanField(default=False)
 	#def familia(self): todo: (Inferido) a partir del parametro retornar su familia
 		
@@ -197,6 +198,7 @@ class PerfilPrecio (models.Model): # ex GrupoParametroPrecio
 	matriz = models.ForeignKey(Matriz, on_delete= models.PROTECT)
 	precio = models.DecimalField(max_digits=8, decimal_places=2)
 	fecha_precio = models.DateField('Fecha del precio')
+	fuente_precio = models.CharField('Fuente del precio', max_length=100, blank='true')
 	seleccionado = models.BooleanField(default=False)
 	def __str__(self):
 		return self.nombre

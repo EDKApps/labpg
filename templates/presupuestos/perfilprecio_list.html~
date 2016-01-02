@@ -17,7 +17,6 @@
         <th>Matriz</th>
 		<th>Precio</th>
 		<th>Fecha de precio</th>	  
-		<th>Fuente de precio</th>
       </tr>
     </thead>
     <tbody>	 	
@@ -29,7 +28,6 @@
 		<td>{{ perfilprecio.matriz }}</td>
 		<td>{{ perfilprecio.precio }}</td>
 		<td>{{ perfilprecio.fecha_precio }}</td>
-		<td>{{ perfilprecio.fuente_precio }}</td>
 	</tr>
     {% endfor %}
     </tbody>

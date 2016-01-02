@@ -165,4 +165,4 @@ class PerfilPrecioModificar(UpdateView):
 class PerfilPrecioBorrar(DeleteView):
     model = PerfilPrecio
     success_url = reverse_lazy('presupuestos:perfilprecio_listar')
-    #fields = perfilprecio_fields
+    fields = perfilprecio_fields

@@ -7,7 +7,7 @@ from django.db.models import Q #para OR en consultas
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
-parametroprecio_fields = ('matriz','parametro','tecnica','precio_del_parametro','fecha_de_precio')
+parametroprecio_fields = ('matriz','parametro','tecnica','precio_del_parametro','fecha_de_precio','fuente')
 
 from .models import ParametroPrecio
 
@@ -21,7 +21,7 @@ class ParametroPrecioListar(ListView):
         if query is None:
             return ParametroPrecio.objects.all()
         else:
-            return ParametroPrecio.objects.filter( Q(parametro_nombre_par__icontains=query))
+            return ParametroPrecio.objects.filter( Q(parametro__nombre_par__icontains=query))
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
         context = super(ParametroPrecioListar, self).get_context_data(**kwargs)
