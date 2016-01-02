@@ -258,7 +258,7 @@ class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio
 
 	def save(self, *args, **kwargs):
 		#completa precio
-		self.precio = self.itemparametro.precio_del_parametro
+		self.precio = self.itemparametro.precio_parametro
 		# Call the "real" save() method.
 		super(Subitem_parametro, self).save(*args, **kwargs)
 

@@ -24,7 +24,6 @@
 		<th>unidad</th>
 		<th>precio</th>
 		<th>fecha del precio</th>
-		<th>fuente del precio</th>
 	  </tr>
 	</thead>
 	<tbody>	  	
@@ -40,9 +39,8 @@
 		  <td> {{ form.instance.tecnica }}</td>
 		  <td> {{ form.instance.lcm }}</td>
           <td> {{ form.instance.uni }}</td>
-		  <td> {{ form.instance.precio_parametro }}</td>
-		  <td> {{ form.instance.fecha_precio }}</td>
-		  <td> {{ form.instance.fuente_precio }}</td>
+		  <td> {{ form.instance.precio_del_parametro }}</td>
+		  <td> {{ form.instance.fecha_de_precio }}</td>
 		  </tr>		
     {% endfor %}	
 	</tbody>
