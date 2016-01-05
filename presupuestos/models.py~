@@ -61,6 +61,9 @@ class Presupuesto (models.Model):
 	def __str__(self):
 		return self.referencia
 
+	def referencia_completa(self):
+		return self.referencia_clave + self.referencia
+
 	def total_sin_descuento(self):
 		total = 0
 		#Recorre los item de analis y suma el precio
@@ -326,4 +329,22 @@ class Orden_trabajo (models.Model):
 			self.referencia = str(sigNumero('orden_trabajo_referencia'))
 			
 		super(Orden_trabajo, self).save(*args, **kwargs) # Call the "real" save() method.
+
+@python_2_unicode_compatible
+class Ot_Estado (models.Model):
+	estado_actual = models.CharField(max_length=100)
+	def __str__(self):
+		return self.estado_actual
+
+@python_2_unicode_compatible
+class Ot_Item (models.Model): 
+	orden_trabajo = models.ForeignKey(Orden_trabajo, on_delete= models.PROTECT, null=True)
+	item = models.ForeignKey(Item, null=True)
+	numero = models.IntegerField(default= 0)
+	cantidad = models.IntegerField(default= 0)
+	estado = models.ForeignKey(Ot_Estado,on_delete= models.PROTECT)
+	
+	def __str__(self):
+		return self.orden_trabajo.referencia_completa()+', '+self.numero
+
 

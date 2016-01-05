@@ -8,23 +8,23 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import UpdateView, DetailView
 
-presupuesto_fields = ('cliente','referencia_clave', 'referencia', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion', 'descuento')
+from .formotitem import Orden_trabajoForm, Orden_trabajo_Ot_ItemFormSet
+from .models import Orden_trabajo, Ot_Item
 
-from .formpresupuestoitem import PresupuestoForm, Presupuesto_ItemFormSet
-from .models import Presupuesto, Item
+orden_trabajo_fields = ('referencia_clave', 'referencia', 'descripcion', 'prioridad')
 
-class PresupuestoItemFormModificar(forms.ModelForm):
+class Orden_trabajoOt_ItemFormModificar(forms.ModelForm):
     referencia = forms.CharField(widget = forms.TextInput(attrs={'readonly':'readonly'}))
     class Meta:
         #Provee una asociación entre el ModelForm y un model
-        model = Presupuesto
-        fields = presupuesto_fields
+        model = Orden_trabajo
+        fields = orden_trabajo_fields
     
-class PresupuestoItemModificar(UpdateView):
-    template_name = 'presupuestos/presupuestoitem_form.html'
-    model = Presupuesto
-    form_class = PresupuestoItemFormModificar
-    success_url = reverse_lazy('presupuestos:presupuesto_listar')
+class Orden_trabajoOt_ItemModificar(UpdateView):
+    template_name = 'presupuestos/otitem_form.html'
+    model = Orden_trabajo
+    form_class = Orden_trabajoOt_ItemFormModificar
+    success_url = reverse_lazy('presupuestos:Orden_trabajo_listar')
     
     def get(self, request, *args, **kwargs):
         """
@@ -34,7 +34,7 @@ class PresupuestoItemModificar(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)        
         #render form 
-        item_form = Presupuesto_ItemFormSet(instance = self.object)
+        item_form = Orden_trabajo_Ot_ItemFormSet(instance = self.object)
         
         return self.render_to_response(
             self.get_context_data(form=form,
@@ -50,8 +50,8 @@ class PresupuestoItemModificar(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         
-        item_form = Presupuesto_ItemFormSet(instance = Presupuesto())
-        item_form = Presupuesto_ItemFormSet(request.POST,request.FILES,instance= self.object )
+        item_form = Orden_trabajo_Ot_ItemFormSet(instance = Orden_trabajo())
+        item_form = Orden_trabajo_Ot_ItemFormSet(request.POST,request.FILES,instance= self.object )
         
         if (form.is_valid() and item_form.is_valid()):
 
@@ -61,17 +61,11 @@ class PresupuestoItemModificar(UpdateView):
             self.object.save()
             item_form.save()
             #Eliminar lo indicado del subnivel
-            #PerfilPrecio_Parametro.objects.filter(perfilprecio=self.object, eliminado = True).delete()
             return HttpResponseRedirect(self.get_success_url())
             
         else:
             return self.form_invalid(form, item_form)
-    
-    #def get_success_url(self):
-    #    return reverse('presupuestos:presupuesto_listar', kwargs={
-    #        'pk': self.object.pk,
-    #    }) 
-            
+                
     def form_invalid(self, form, item_form):
         """
         Llamada si un formulario es inválido. Re-renders context data con el formulario
@@ -80,9 +74,9 @@ class PresupuestoItemModificar(UpdateView):
         return self.render_to_response(
                 self.get_context_data(form=form,
                                       item_form = item_form))
-
+"""
 class PresupuestoItemDetalle(DetailView):
     template_name = 'presupuestos/presupuestoitem_detail.html'    
     model = Presupuesto
     fields = '__all__'
-    
+""" 

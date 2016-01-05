@@ -10,7 +10,7 @@ from .models import Orden_trabajo
 #En el form de alta excluyo la referencia (automática)
 ot_fields_full = ('presupuesto','referencia_clave', 'referencia', 'descripcion', 'prioridad', 'fecha_creacion')
 ot_fields_crear = ('presupuesto','referencia_clave', 'descripcion', 'prioridad', 'fecha_creacion')
-ot_fields_modif = ('referencia_clave', 'descripcion', 'prioridad', 'fecha_creacion')
+ot_fields_modif = ('referencia_clave', 'referencia', 'descripcion', 'prioridad', 'fecha_creacion')
 
 class Orden_trabajoListar(ListView):
     model = Orden_trabajo
