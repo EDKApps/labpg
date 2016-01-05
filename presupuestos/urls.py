@@ -41,7 +41,7 @@ urlpatterns = patterns('',
     url(r'^presupuestos/(?P<pk>\d+)/borrar/$', PresupuestoBorrar.as_view(), name='presupuesto_borrar'),
     url(r'^presupuestosfull/(?P<pk>\d+)/$', PresupuestoDetalleFull.as_view(), name='presupuesto_detalle_full'),
     #Presupuesto impresion form
-    url(r'^presupuestos/(?P<pk>\d+)/modificar_impresion/$', Presupuesto_ImpresionModificar.as_view(), name='presupuesto_modificar_impresion')
+    url(r'^presupuestos/(?P<pk>\d+)/modificar_impresion/$', Presupuesto_ImpresionModificar.as_view(), name='presupuesto_modificar_impresion'),
     #Presupuesto impresion odt (Open Document)                   
     #url(r'^presupuestos/(?P<pk>\d+)/impresion_odt/$', presupuesto_impresion_odt(), name='presupuesto_impresion_odt')
                  
