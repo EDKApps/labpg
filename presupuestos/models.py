@@ -61,6 +61,9 @@ class Presupuesto (models.Model):
 	def __str__(self):
 		return self.referencia
 
+	def referencia_completa(self):
+		return self.referencia_clave + self.referencia
+
 	def total_sin_descuento(self):
 		total = 0
 		#Recorre los item de analis y suma el precio
@@ -304,4 +307,26 @@ class Plantillas_Impresion (models.Model):
 	presupuesto_condiciones_tecnicas = models.TextField(blank='true')
 	def __str__(self):
 		return 'plantillas'
+
+@python_2_unicode_compatible
+class Orden_trabajo (models.Model):
+	presupuesto = models.ForeignKey(Presupuesto, on_delete= models.PROTECT, null=True)
+	referencia_clave = models.CharField(max_length=100, blank='true',default='OT-')
+	referencia = models.CharField(max_length=20,blank='true') #autoincremental
+	descripcion = models.CharField(max_length=100, blank='true')
+	prioridad = models.CharField(max_length=100, blank='true')
+	fecha_creacion = models.DateField('fecha de creación', default=date.today)
+
+	def __str__(self):
+		return self.referencia
+
+	def referencia_completa(self):
+		return self.referencia_clave + self.referencia
+
+	def save(self, *args, **kwargs):
+		#si es insert (id= 0), asignar referencia autoincremental	
+		if self.id is None:
+			self.referencia = str(sigNumero('orden_trabajo_referencia'))
+			
+		super(Orden_trabajo, self).save(*args, **kwargs) # Call the "real" save() method.
 

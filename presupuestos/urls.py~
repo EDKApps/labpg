@@ -19,6 +19,8 @@ from .viewitemsubitem import ItemSubitemModificar
 from .viewpromptparametros import promptparametros
 from .viewpromptperfiles import promptperfiles
 from .viewpresupuesto_impresion import Presupuesto_ImpresionModificar
+from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_trabajoDetalle, Orden_trabajoListar, Orden_trabajoModificar, Orden_trabajoDetalleFull
+#from .viewotitem import OtItemModificar
 
 urlpatterns = patterns('',
              
@@ -42,7 +44,15 @@ urlpatterns = patterns('',
     url(r'^presupuestos/(?P<pk>\d+)/modificar_impresion/$', Presupuesto_ImpresionModificar.as_view(), name='presupuesto_modificar_impresion'),
 					   
     #Ordenes de trabajo
-    url(r'^ordenesdetrabajo/$', OrdenDeTrabajoListar, name='ordendetrabajo_listar'), #pasar a .as_view()
+    url(r'^ordenestrabajo/$', Orden_trabajoListar.as_view(), name='orden_trabajo_listar'), 
+    url(r'^ordenestrabajo/crear/$', Orden_trabajoCrear.as_view(), name='orden_trabajo_crear'),
+    url(r'^ordenestrabajo/(?P<pk>\d+)/$', Orden_trabajoDetalle.as_view(), name='orden_trabajo_detalle'),
+    url(r'^ordenestrabajo/(?P<pk>\d+)/modificar/$', Orden_trabajoModificar.as_view(), name='orden_trabajo_modificar'),
+    url(r'^ordenestrabajo/(?P<pk>\d+)/borrar/$', Orden_trabajoBorrar.as_view(), name='orden_trabajo_borrar'),
+    url(r'^ordenestrabajofull/(?P<pk>\d+)/$', Orden_trabajoDetalleFull.as_view(), name='orden_trabajo_detalle_full'),
+
+    #relacion ot-item
+    url(r'^otitem/(?P<pk>\d+)/modificar/$', OtItemModificar.as_view(), name='otitem_modificar'),
                        
     #Muestras
     url(r'^muestras/$', MuestraListar, name='muestra_listar'), #pasar a .as_view() 

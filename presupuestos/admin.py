@@ -15,6 +15,7 @@ from .models import PerfilPrecio_Parametro
 from .models import Campania
 from .models import Item
 from .models import Plantillas_Impresion
+from .models import Orden_trabajo
 
 admin.site.register(Cliente)
 admin.site.register(Presupuesto)
@@ -33,5 +34,6 @@ admin.site.register(PerfilPrecio_Parametro)
 admin.site.register(Campania)
 admin.site.register(Item)
 admin.site.register(Plantillas_Impresion)
+admin.site.register(Orden_trabajo)
 
 

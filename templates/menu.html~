@@ -32,17 +32,20 @@
 	<li class="active"><a href="{% url "presupuestos:lab_inicio"  %}">Inicio</a></li>
 	<li><a href="{% url "presupuestos:cliente_listar"  %}">Clientes</a></li>
 	<li><a href="{% url "presupuestos:presupuesto_listar"  %}">Presupuestos</a></li>
-	<li><a href="{% url "presupuestos:ordendetrabajo_listar"  %}">Órdenes de trabajo</a></li>
+	<li><a href="{% url "presupuestos:item_listar"  %}">Items</a></li>
+	<li><a href="{% url "presupuestos:ordentrabajo_listar"  %}">Órdenes de trabajo</a></li>
 	<li><a href="{% url "presupuestos:muestra_listar"  %}">Muestras</a></li>
 	<li class="dropdown">
 	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Configuración <span class="caret"></span></a>
 	  <ul class="dropdown-menu">
 		<li><a href="{% url "presupuestos:matriz_listar"  %}">Matriz</a></li>
-		<li><a href="{% url "presupuestos:familia_listar"  %}">Familia</a></li>
+		<li><a href="{% url "presupuestos:familia_listar"  %}">Grupo</a></li>
 		<li><a href="{% url "presupuestos:parametro_listar"  %}">Parametro</a></li>
-		<li><a href="{% url "presupuestos:tecnica_listar"  %}">Tecnica</a></li>
-		<li><a href="{% url "presupuestos:unidades_listar"  %}">Unidades</a></li>
-		<!-- <li><a href="{% url "presupuestos:matriztecnicaLct_listar"  %}">Limite de Cuantificación</a></li> -->
+		<li><a href="{% url "presupuestos:tecnica_listar"  %}">Metodología analítica</a></li>
+		<li><a href="{% url "presupuestos:unidades_listar"  %}">Unidades</a></li>	
+		<li><a href="{% url "presupuestos:matriztecnicalct_listar"  %}">Límite de cuantificacion - LC</a></li>
+        <li><a href="{% url "presupuestos:parametroprecio_listar"  %}">Lista de precio parámetro</a></li>
+		<li><a href="{% url "presupuestos:perfilprecio_listar"  %}">Lista de precio perfiles</a></li>
 	  </ul>
 	</li>      
   </ul>
