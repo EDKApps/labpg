@@ -225,6 +225,8 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 	descuento = models.DecimalField('descuento (%)', max_digits=5, decimal_places=2, default=0)
 	total_sin_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	total_con_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+	seleccionado = models.BooleanField(default=False)
+
 	def __str__(self):
 		return self.descripcion
 
@@ -332,7 +334,7 @@ class Orden_trabajo (models.Model):
 
 @python_2_unicode_compatible
 class Ot_Estado (models.Model):
-	estado_actual = models.CharField(max_length=100)
+	estado_actual = models.CharField(max_length=100,default='pendiente')
 	def __str__(self):
 		return self.estado_actual
 

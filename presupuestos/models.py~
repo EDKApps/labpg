@@ -225,6 +225,8 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 	descuento = models.DecimalField('descuento (%)', max_digits=5, decimal_places=2, default=0)
 	total_sin_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	total_con_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+	seleccionado = models.BooleanField(default=False)
+
 	def __str__(self):
 		return self.descripcion
 
@@ -345,6 +347,6 @@ class Ot_Item (models.Model):
 	estado = models.ForeignKey(Ot_Estado,on_delete= models.PROTECT)
 	
 	def __str__(self):
-		return self.orden_trabajo.referencia_completa()+', '+self.numero
+		return self.orden_trabajo.referencia_completa()+', '+str(self.numero)
 
 

@@ -50,6 +50,7 @@
                     <th>Cantidad muestra</th>
                     <th>Cantidad OT</th>
                     <th>Estado</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>	     
@@ -90,7 +91,9 @@
                     <!--</div>-->
                 {% endfor %}
                 </tbody>
-                </table>    
+                </table>
+            	<h4><a href="{% url "presupuestos:promptitems" orden_trabajo.id %}">Agregar Items del presupuesto</a></h4>
+    
             </fieldset>
             <input type="submit" value="Confirmar" class="submit" />
         </form>
