@@ -19,6 +19,21 @@ class Orden_trabajoOt_ItemFormModificar(forms.ModelForm):
         #Provee una asociación entre el ModelForm y un model
         model = Orden_trabajo
         fields = orden_trabajo_fields
+
+    """
+    No funciona la validación, no puedo tomar el valor del campo cantidad
+    def clean(self):
+        #Validamos que la cantidad< cantidad de los item del presupuesto
+	cleaned_data = super(Orden_trabajoOt_ItemFormModificar, self).clean()
+        #cc_myself = cleaned_data.get("cc_myself")
+        descripcion = cleaned_data.get("cantidad")        
+	#print 'aaaa:'+str(cantidad)
+	print 'aaaa:'+str(descripcion)
+        if (descripcion == '5'):
+            raise forms.ValidationError("Error: cantidad debe ser menor que presupuesto.item.cantidad")
+            print 'es mayor'
+        return descripcion
+    """
     
 class Ot_ItemModificar(UpdateView):
     template_name = 'presupuestos/otitem_form.html'
@@ -74,6 +89,8 @@ class Ot_ItemModificar(UpdateView):
         return self.render_to_response(
                 self.get_context_data(form=form,
                                       item_form = item_form))
+
+
 """
 class PresupuestoItemDetalle(DetailView):
     template_name = 'presupuestos/presupuestoitem_detail.html'    

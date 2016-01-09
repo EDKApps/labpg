@@ -8,6 +8,9 @@
 from django.db import models
 from datetime import date
 from django.utils.encoding import python_2_unicode_compatible
+#librerias para validar campo
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
 #from .APINumerador import sigNumero
 
@@ -334,7 +337,7 @@ class Orden_trabajo (models.Model):
 
 @python_2_unicode_compatible
 class Ot_Estado (models.Model):
-	estado_actual = models.CharField(max_length=100)
+	estado_actual = models.CharField(max_length=100,default='pendiente')
 	def __str__(self):
 		return self.estado_actual
 
@@ -349,4 +352,9 @@ class Ot_Item (models.Model):
 	def __str__(self):
 		return self.orden_trabajo.referencia_completa()+', '+str(self.numero)
 
+	def clean(self):
+		#Verifica que la cantidad< cantidad de los item del presupuesto	
+		if (self.cantidad>self.item.cantidadMuestra):
+			#todo, falta, no esta mostrando el mensaje error
+			raise ValidationError(_('Error: cantidad debe ser menor que presupuesto.item.cantidad'))
 
