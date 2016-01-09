@@ -6,7 +6,7 @@ from django.db.models import Q #para OR en consultas
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
-from django.views.generic import UpdateView, DetailView
+from django.views.generic import UpdateView, DetailView, ListView
 
 from .formotitem import Orden_trabajoForm, Orden_trabajo_Ot_ItemFormSet
 from .models import Orden_trabajo, Ot_Item
@@ -90,10 +90,27 @@ class Ot_ItemModificar(UpdateView):
                 self.get_context_data(form=form,
                                       item_form = item_form))
 
+class Ot_ItemListar(ListView):
+    model = Ot_Item
+    paginate_by = 20
+    
+    #búsqueda
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query is None:
+            return Ot_Item.objects.all()
+        else:
+            return Ot_Item.objects.filter( Q(numero__icontains=query)| 
+                                           Q(orden_trabajo__referencia__icontains=query) | 
+                                           Q(item__matriz__nombre_matriz__icontains=query) | 
+                                           Q(estado__estado_actual__icontains=query))
+                                  
+    #almacenar contexto de la búsqueda
+    def get_context_data(self, **kwargs):
+        context = super(Ot_ItemListar, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q')
+        if q: #si existe el valor, lo agrego/actualizo en el contexto
+            q = q.replace(" ","+")
+            context['query'] = q
+        return context    
 
-"""
-class PresupuestoItemDetalle(DetailView):
-    template_name = 'presupuestos/presupuestoitem_detail.html'    
-    model = Presupuesto
-    fields = '__all__'
-""" 

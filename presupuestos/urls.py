@@ -20,7 +20,7 @@ from .viewpromptparametros import promptparametros
 from .viewpromptperfiles import promptperfiles
 from .viewpresupuesto_impresion import Presupuesto_ImpresionModificar
 from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_trabajoDetalle, Orden_trabajoListar, Orden_trabajoModificar, Orden_trabajoDetalleFull
-from .viewotitem import Ot_ItemModificar
+from .viewotitem import Ot_ItemModificar, Ot_ItemListar
 from .viewpromptitems import promptitems
 
 urlpatterns = patterns('',
@@ -60,6 +60,9 @@ urlpatterns = patterns('',
     #multiselección de ot-item y presupuesto Item
     url(r'^promptitems/(?P<idot>\d+)/$', promptitems, name='promptitems'),
                   
+    #OT Item, listado
+    url(r'^otitem/$', Ot_ItemListar.as_view(), name='otitem_listar'),
+
     #Muestras
     url(r'^muestras/$', MuestraListar, name='muestra_listar'), #pasar a .as_view() 
 					 
