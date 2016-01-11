@@ -18,6 +18,8 @@ from .models import Plantillas_Impresion
 from .models import Orden_trabajo
 from .models import Ot_Estado
 from .models import Ot_Item
+from .models import Muestra_Estado
+from .models import Muestra
 
 admin.site.register(Cliente)
 admin.site.register(Presupuesto)
@@ -39,5 +41,7 @@ admin.site.register(Plantillas_Impresion)
 admin.site.register(Orden_trabajo)
 admin.site.register(Ot_Estado)
 admin.site.register(Ot_Item)
+admin.site.register(Muestra_Estado)
+admin.site.register(Muestra)
 
 
