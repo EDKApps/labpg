@@ -358,8 +358,7 @@ class Ot_Item (models.Model):
 	def clean(self):
 		#Verifica que la cantidad< cantidad de los item del presupuesto	
 		if (self.cantidad>self.item.cantidadMuestra):
-			#todo, falta, no esta mostrando el mensaje error, o bien hacerlo en viewotitem.py
-			raise ValidationError(_('Error: cantidad debe ser menor que presupuesto.item.cantidad'))
+			raise ValidationError({'cantidad':_('Error: cantidad debe ser menor que presupuesto.item.cantidad')})
 
 @python_2_unicode_compatible
 class Muestra_Estado (models.Model):
