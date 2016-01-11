@@ -91,19 +91,26 @@ class Ot_ItemModificar(UpdateView):
                                       item_form = item_form))
 
 class Ot_ItemListar(ListView):
+    """
     model = Ot_Item
-    paginate_by = 20
+    paginate_by = 10
+    """
+    #ordering = '-orden_trabajo.referencia'
+    #ordering = 'numero'
+    #queryset = Ot_Item.objects.order_by('numero')
+    paginate_by = 10
     
     #búsqueda
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Ot_Item.objects.all()
+            return Ot_Item.objects.order_by('-orden_trabajo','numero')
+            #return Ot_Item.objects.all()
         else:
             return Ot_Item.objects.filter( Q(numero__icontains=query)| 
                                            Q(orden_trabajo__referencia__icontains=query) | 
                                            Q(item__matriz__nombre_matriz__icontains=query) | 
-                                           Q(estado__icontains=query))
+                                           Q(estado__estado_actual__icontains=query)).order_by('-orden_trabajo','numero')
                                   
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
