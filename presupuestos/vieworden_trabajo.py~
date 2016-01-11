@@ -5,7 +5,6 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.db.models import Q #para OR en consultas
 from .models import Orden_trabajo
-# Item, Campania
 
 #En el form de alta excluyo la referencia (automática)
 ot_fields_full = ('presupuesto','referencia_clave', 'referencia', 'descripcion', 'prioridad', 'fecha_creacion')
