@@ -23,7 +23,7 @@ def labinicio(request):
 class ClienteListar(ListView):
     model = Cliente
     #context_object_name = 'lista_de_clientes' #opcion a object_list
-    paginate_by = 5
+    paginate_by = 10
 
 class ClienteCrear(CreateView):
     model = Cliente

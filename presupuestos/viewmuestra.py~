@@ -5,9 +5,10 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-def OrdenDeTrabajoListar(request): #pasar a clase genérica
+def MuestraListar(request): #pasar a clase genérica
     context_dict = {}
-    return render(request, 'presupuestos/ordendetrabajo_list.html', context_dict)
+    return render(request, 'presupuestos/muestra_list.html', context_dict)
+
 """
 cliente_fields = ('empresa','contacto_nombre','contacto_apellido',
 			 'domicilio','telefono_fijo','telefono_movil',
@@ -22,7 +23,7 @@ def labinicio(request):
 class ClienteListar(ListView):
     model = Cliente
     #context_object_name = 'lista_de_clientes' #opcion a object_list
-    paginate_by = 10
+    paginate_by = 5
 
 class ClienteCrear(CreateView):
     model = Cliente

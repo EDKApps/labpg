@@ -17,7 +17,7 @@ fecha_solicitud_anios = ('2015', '2016', '2017')
 #Presupuesto
 class PresupuestoListar(ListView):
     model = Presupuesto
-    paginate_by = 5
+    paginate_by = 10
 	#context_object_name = 'lista_de_presupuestos' #opcion a object_list
     #búsqueda
     def get_queryset(self):
