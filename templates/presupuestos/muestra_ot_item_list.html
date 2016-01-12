@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block content %}
 <div class="container">
-	<h2>OT Item2</h2>
+	<h2>Ingreso de Muestras por OT Item</h2>
 		<form method="get" action="/presupuestos/otitem/">
 		<p><label for="id_q">Filtro (OT número, Item, Matriz, Estado):</label>
 		<input type="text" name="q" id="id_q" value="{{ query }}" />
@@ -11,6 +11,7 @@
   <table class="table table-hover">
     <thead>
       <tr>
+		<th></th>
 		<th>OT</th>
         	<th>Item</th>
         	<th>Presupuesto</th>
@@ -22,7 +23,8 @@
     </thead>
     <tbody>	 	
     {% for otitem in ot_item_list %}
-	<tr>
+	<tr>		
+		<td><a href="{% url "presupuestos:muestra_ot_item_modificar" otitem.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Muestras" alt= "Muestras"></a></td>
 		<td>{{ otitem.orden_trabajo.referencia_completa }}</td>
 		<td>{{ otitem.numero }}</td>
 		<td>{{ otitem.item.presupuesto.referencia_completa}}-{{otitem.item.numero }}</td>
@@ -50,5 +52,5 @@
       </div>
   {% endif %}	
 </div>	
-<a href="{% url "presupuestos:otitem_listar"  %}">OT Ítems</a>
+<a href="{% url "presupuestos:muestra_ot_item_listar"  %}">Muestras - OT Item</a>
 {% endblock content %}

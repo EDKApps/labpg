@@ -368,6 +368,7 @@ class Muestra_Estado (models.Model):
 
 @python_2_unicode_compatible
 class Muestra (models.Model):
+	ot_item = models.ForeignKey(Ot_Item, null=True)
 	referencia_clave = models.CharField(max_length=100, blank='true',default='M-')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental, ajustado en save()
 	ingreso_muestra = models.CharField('responsable ingreso de muestra', max_length=100, blank='true')
@@ -399,8 +400,8 @@ class Muestra (models.Model):
 			self.referencia = str(sigNumero('orden_trabajo_referencia'))
 		# Call the "real" save() method.
 		super(Muestra, self).save(*args, **kwargs)
+	
 	def clean(self):
 		#validar que fecha muestreo < fecha ingreso
 		if (self.fecha_muestreo > self.fecha_ingreso):
 			raise ValidationError({'fecha_muestreo':_('Error: fecha muestreo debe ser menor que fecha ingreso.')})
-

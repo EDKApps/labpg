@@ -91,13 +91,6 @@ class Ot_ItemModificar(UpdateView):
                                       item_form = item_form))
 
 class Ot_ItemListar(ListView):
-    """
-    model = Ot_Item
-    paginate_by = 10
-    """
-    #ordering = '-orden_trabajo.referencia'
-    #ordering = 'numero'
-    #queryset = Ot_Item.objects.order_by('numero')
     paginate_by = 10
     
     #búsqueda
