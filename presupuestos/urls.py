@@ -1,6 +1,7 @@
  # -- coding: utf-8 --
 from django.conf.urls import patterns, include, url
 from .viewcliente import labinicio, ClienteCrear, ClienteBorrar, ClienteDetalle, ClienteListar, ClienteModificar
+from .viewclienteprompt import ClientePrompt
 from .viewpresupuesto import PresupuestoCrear, PresupuestoBorrar, PresupuestoDetalle, PresupuestoListar, PresupuestoModificar, PresupuestoDetalleFull
 from .viewordendetrabajo import OrdenDeTrabajoListar
 from .viewmatriz import MatrizCrear, MatrizBorrar, MatrizDetalle, MatrizListar, MatrizModificar
@@ -33,7 +34,8 @@ urlpatterns = patterns('',
     url(r'^clientes/(?P<pk>\d+)/$', ClienteDetalle.as_view(), name='cliente_detalle'),
     url(r'^clientes/(?P<pk>\d+)/modificar/$', ClienteModificar.as_view(), name='cliente_modificar'),
     url(r'^clientes/(?P<pk>\d+)/borrar/$', ClienteBorrar.as_view(), name='cliente_borrar'),
-
+    #prompt de clientes
+    url(r'^clienteprompt/$', ClientePrompt.as_view(), name='cliente_prompt'),
     #Presupuestos
     url(r'^presupuestos/$', PresupuestoListar.as_view(), name='presupuesto_listar'),
     url(r'^presupuestos/crear/$', PresupuestoCrear.as_view(), name='presupuesto_crear'),
