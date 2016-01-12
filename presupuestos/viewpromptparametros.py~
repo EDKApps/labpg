@@ -49,7 +49,7 @@ def promptparametros(request, iditem):
                                                     Q( matriz = item.matriz, tecnica__nombre_tec__icontains=querysearch)
                                                    )
 			
-        paginator = Paginator(queryset, 10) #10 formularios por página
+        paginator = Paginator(queryset, 1) #10 formularios por página
         page = request.GET.get('page')
         try:
             objects =paginator.page(page)

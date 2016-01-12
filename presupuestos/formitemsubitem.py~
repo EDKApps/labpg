@@ -3,13 +3,10 @@ from django.forms.models import inlineformset_factory
 
 from .models import Item, Subitem_parametro, Subitem_perfil
 
-#para que no figure field 'seleccionado'
-item_fields = ('presupuesto', 'numero', 'descripcion', 'matriz', 'cantidadMuestra', 'descuento', 'total_sin_descuento', 'total_con_descuento')
-
 class ItemForm(ModelForm):
 	class Meta:
 		model = Item
-		fields = item_fields
+		fields = '__all__'
 
 class Subitem_parametro_Form(ModelForm):
 	class Meta:

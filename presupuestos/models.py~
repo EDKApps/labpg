@@ -8,6 +8,9 @@
 from django.db import models
 from datetime import date
 from django.utils.encoding import python_2_unicode_compatible
+#librerias para validar campo
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
 #from .APINumerador import sigNumero
 
@@ -60,6 +63,9 @@ class Presupuesto (models.Model):
 
 	def __str__(self):
 		return self.referencia
+
+	def referencia_completa(self):
+		return self.referencia_clave + self.referencia
 
 	def total_sin_descuento(self):
 		total = 0
@@ -222,6 +228,8 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 	descuento = models.DecimalField('descuento (%)', max_digits=5, decimal_places=2, default=0)
 	total_sin_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	total_con_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+	seleccionado = models.BooleanField(default=False)
+
 	def __str__(self):
 		return self.descripcion
 
@@ -326,4 +334,27 @@ class Orden_trabajo (models.Model):
 			self.referencia = str(sigNumero('orden_trabajo_referencia'))
 			
 		super(Orden_trabajo, self).save(*args, **kwargs) # Call the "real" save() method.
+
+@python_2_unicode_compatible
+class Ot_Estado (models.Model):
+	estado_actual = models.CharField(max_length=100,default='pendiente')
+	def __str__(self):
+		return self.estado_actual
+
+@python_2_unicode_compatible
+class Ot_Item (models.Model): 
+	orden_trabajo = models.ForeignKey(Orden_trabajo, on_delete= models.PROTECT, null=True)
+	item = models.ForeignKey(Item, null=True)
+	numero = models.IntegerField(default= 0)
+	cantidad = models.IntegerField(default= 0)
+	estado = models.ForeignKey(Ot_Estado,on_delete= models.PROTECT)
+	
+	def __str__(self):
+		return self.orden_trabajo.referencia_completa()+', '+str(self.numero)
+
+	def clean(self):
+		#Verifica que la cantidad< cantidad de los item del presupuesto	
+		if (self.cantidad>self.item.cantidadMuestra):
+			#todo, falta, no esta mostrando el mensaje error
+			raise ValidationError(_('Error: cantidad debe ser menor que presupuesto.item.cantidad'))
 

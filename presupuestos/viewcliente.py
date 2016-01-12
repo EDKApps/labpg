@@ -4,6 +4,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import Q #para OR en consultas
 
+from appy.pod.renderer import Renderer
+
+
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 cliente_fields = ('empresa','contacto', 'funcion', 'domicilio','localidad', 'telefono_fijo', 'telefono_movil','email','cuit','nota')
@@ -17,7 +20,7 @@ def labinicio(request):
 class ClienteListar(ListView):
     model = Cliente
     #context_object_name = 'lista_de_clientes' #opcion a object_list
-    paginate_by = 5
+    paginate_by = 10
     
     #búsqueda
     def get_queryset(self):

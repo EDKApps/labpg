@@ -32,7 +32,7 @@
 		<td><a href="{% url "presupuestos:presupuestoitem_modificar" orden_trabajo.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Items Análisis" alt= "Items Análisis"></a></td>
 
 		<td><a href="{% url "presupuestos:orden_trabajo_detalle_full" orden_trabajo.id %}"><img src= "{% static "images/accion_ver.png"%}" data-toggle="tooltip" data-placement="top" title="Visualizar" alt= "Visualizar"></a></td> 
-		<td>{{orden_trabajo.presupuesto}}</td>
+		<td>{{orden_trabajo.presupuesto.referencia_completa}}</td>
 		<td>{{orden_trabajo.referencia_completa}}</td>
 		<td>{{orden_trabajo.descripcion}}</td>		  
         	<td>{{orden_trabajo.prioridad}}</td>

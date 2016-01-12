@@ -20,7 +20,8 @@ from .viewpromptparametros import promptparametros
 from .viewpromptperfiles import promptperfiles
 from .viewpresupuesto_impresion import Presupuesto_ImpresionModificar
 from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_trabajoDetalle, Orden_trabajoListar, Orden_trabajoModificar, Orden_trabajoDetalleFull
-#from .viewotitem import OtItemModificar
+from .viewotitem import Ot_ItemModificar, Ot_ItemListar
+from .viewpromptitems import promptitems
 
 urlpatterns = patterns('',
              
@@ -42,7 +43,9 @@ urlpatterns = patterns('',
     url(r'^presupuestosfull/(?P<pk>\d+)/$', PresupuestoDetalleFull.as_view(), name='presupuesto_detalle_full'),
     #Presupuesto impresion form
     url(r'^presupuestos/(?P<pk>\d+)/modificar_impresion/$', Presupuesto_ImpresionModificar.as_view(), name='presupuesto_modificar_impresion'),
-					   
+    #Presupuesto impresion odt (Open Document)                   
+    #url(r'^presupuestos/(?P<pk>\d+)/impresion_odt/$', presupuesto_impresion_odt(), name='presupuesto_impresion_odt')
+                 
     #Ordenes de trabajo
     url(r'^ordenestrabajo/$', Orden_trabajoListar.as_view(), name='orden_trabajo_listar'), 
     url(r'^ordenestrabajo/crear/$', Orden_trabajoCrear.as_view(), name='orden_trabajo_crear'),
@@ -52,8 +55,14 @@ urlpatterns = patterns('',
     url(r'^ordenestrabajofull/(?P<pk>\d+)/$', Orden_trabajoDetalleFull.as_view(), name='orden_trabajo_detalle_full'),
 
     #relacion ot-item
-    url(r'^otitem/(?P<pk>\d+)/modificar/$', OtItemModificar.as_view(), name='otitem_modificar'),
-                       
+    url(r'^otitem/(?P<pk>\d+)/modificar/$', Ot_ItemModificar.as_view(), name='ot_item_modificar'),
+     
+    #multiselección de ot-item y presupuesto Item
+    url(r'^promptitems/(?P<idot>\d+)/$', promptitems, name='promptitems'),
+                  
+    #OT Item, listado
+    url(r'^otitem/$', OtItemListar.as_view(), name='otitem_listar'),
+
     #Muestras
     url(r'^muestras/$', MuestraListar, name='muestra_listar'), #pasar a .as_view() 
 					 
