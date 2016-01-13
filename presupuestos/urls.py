@@ -1,8 +1,8 @@
  # -- coding: utf-8 --
 from django.conf.urls import patterns, include, url
 from .viewcliente import labinicio, ClienteCrear, ClienteBorrar, ClienteDetalle, ClienteListar, ClienteModificar
+from .viewclienteprompt import ClientePrompt
 from .viewpresupuesto import PresupuestoCrear, PresupuestoBorrar, PresupuestoDetalle, PresupuestoListar, PresupuestoModificar, PresupuestoDetalleFull
-from .viewmuestra import MuestraListar
 from .viewordendetrabajo import OrdenDeTrabajoListar
 from .viewmatriz import MatrizCrear, MatrizBorrar, MatrizDetalle, MatrizListar, MatrizModificar
 from .viewfamilia import FamiliaCrear, FamiliaBorrar, FamiliaDetalle, FamiliaConfirmaAlta, FamiliaListar, FamiliaModificar
@@ -20,9 +20,10 @@ from .viewpromptparametros import promptparametros
 from .viewpromptperfiles import promptperfiles
 from .viewpresupuesto_impresion import Presupuesto_ImpresionModificar
 from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_trabajoDetalle, Orden_trabajoListar, Orden_trabajoModificar, Orden_trabajoDetalleFull
-from .viewotitem import Ot_ItemModificar
+from .viewotitem import Ot_ItemModificar, Ot_ItemListar
 from .viewpromptitems import promptitems
 from .viewpresupuestoimpresion_odt_full import presupuesto_impresion_odt_full
+from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar
 
 urlpatterns = patterns('',
              
@@ -34,7 +35,8 @@ urlpatterns = patterns('',
     url(r'^clientes/(?P<pk>\d+)/$', ClienteDetalle.as_view(), name='cliente_detalle'),
     url(r'^clientes/(?P<pk>\d+)/modificar/$', ClienteModificar.as_view(), name='cliente_modificar'),
     url(r'^clientes/(?P<pk>\d+)/borrar/$', ClienteBorrar.as_view(), name='cliente_borrar'),
-
+    #prompt de clientes
+    url(r'^clienteprompt/$', ClientePrompt.as_view(), name='cliente_prompt'),
     #Presupuestos
     url(r'^presupuestos/$', PresupuestoListar.as_view(), name='presupuesto_listar'),
     url(r'^presupuestos/crear/$', PresupuestoCrear.as_view(), name='presupuesto_crear'),
@@ -63,9 +65,13 @@ urlpatterns = patterns('',
     #multiselección de ot-item y presupuesto Item
     url(r'^promptitems/(?P<idot>\d+)/$', promptitems, name='promptitems'),
                   
+    #OT Item, listado
+    url(r'^otitem/$', Ot_ItemListar.as_view(), name='otitem_listar'),
+
     #Muestras
-    url(r'^muestras/$', MuestraListar, name='muestra_listar'), #pasar a .as_view() 
-					 
+    url(r'^muestra/$', Muestra_Ot_Item_Listar.as_view(), name='muestra_ot_item_listar'), 
+     url(r'^muestra/(?P<pk>\d+)/modificar/$', Muestra_Ot_ItemModificar.as_view(), name='muestra_ot_item_modificar'), 
+   					 
 	#Matriz
     url(r'^matriz/$', MatrizListar.as_view(), name='matriz_listar'),
     url(r'^matriz/crear/$', MatrizCrear.as_view(), name='matriz_crear'),

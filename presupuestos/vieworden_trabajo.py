@@ -12,19 +12,19 @@ ot_fields_crear = ('presupuesto','referencia_clave', 'descripcion', 'prioridad',
 ot_fields_modif = ('referencia_clave', 'referencia', 'descripcion', 'prioridad', 'fecha_creacion')
 
 class Orden_trabajoListar(ListView):
-    model = Orden_trabajo
     paginate_by = 10
 
     #búsqueda
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Orden_trabajo.objects.all()
+            return Orden_trabajo.objects.all().order_by('-referencia')
         else:
             return Orden_trabajo.objects.filter( Q(referencia_clave__icontains=query) | 
                                            Q(referencia__icontains=query) |
                                            Q(descripcion__icontains=query) |
-                                           Q(prioridad__icontains=query) )
+                                           Q(prioridad__icontains=query)).order_by('-referencia')
+
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
         context = super(Orden_trabajoListar, self).get_context_data(**kwargs)

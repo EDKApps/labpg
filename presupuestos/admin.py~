@@ -16,7 +16,7 @@ from .models import Campania
 from .models import Item
 from .models import Plantillas_Impresion
 from .models import Orden_trabajo
-from .models import OtEstado
+from .models import Ot_Estado
 from .models import Ot_Item
 
 admin.site.register(Cliente)

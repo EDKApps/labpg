@@ -8,6 +8,9 @@
 from django.db import models
 from datetime import date
 from django.utils.encoding import python_2_unicode_compatible
+#librerias para validar campo
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
 #from .APINumerador import sigNumero
 
@@ -347,6 +350,58 @@ class Ot_Item (models.Model):
 	estado = models.ForeignKey(Ot_Estado,on_delete= models.PROTECT)
 	
 	def __str__(self):
+		return str(self.numero)
+
+	def referencia_completa(self):
 		return self.orden_trabajo.referencia_completa()+', '+str(self.numero)
 
+	def clean(self):
+		#Verifica que la cantidad< cantidad de los item del presupuesto	
+		if (self.cantidad>self.item.cantidadMuestra):
+			raise ValidationError({'cantidad':_('Error: cantidad debe ser menor que presupuesto.item.cantidad')})
 
+@python_2_unicode_compatible
+class Muestra_Estado (models.Model):
+	estado_actual = models.CharField(max_length=100)
+	def __str__(self):
+		return self.estado_actual
+
+@python_2_unicode_compatible
+class Muestra (models.Model):
+	ot_item = models.ForeignKey(Ot_Item, null=True)
+	referencia_clave = models.CharField(max_length=100, blank='true',default='M-')
+	referencia = models.CharField(max_length=20,blank='true') #autoincremental, ajustado en save()
+	ingreso_muestra = models.CharField('responsable ingreso de muestra', max_length=100, blank='true')
+	fecha_ingreso = models.DateField('fecha de ingreso al sistema', default=date.today)
+	cadena_custodia = models.CharField('cadena de custodia', max_length=100, blank='true')
+	rotulo = models.CharField(max_length=100, blank='true')
+	ubicacion = models.CharField('ubicación', max_length=100, blank='true')
+	sitio_muestreo = models.CharField('sitio de muestreo', max_length=100, blank='true')
+	muestreador = models.CharField(max_length=100, blank='true')
+	peso = models.CharField('Sólido - peso de muestra (gr.)', max_length=100, blank='true')
+	volumen = models.CharField('líquido - Volúmen de muestra (lt.)', max_length=100, blank='true')
+	caudal = models.CharField('aire - Caudal, (lt/min, tiempo)', max_length=100, blank='true')
+	preservacion = models.CharField('Preservación - Conservación', max_length=100, blank='true')
+	fecha_muestreo = models.DateField('fecha de muestro', default=date.today)
+	coordenada = models.CharField('coordenadas de ubicación', max_length=100, blank='true')
+	sistema_coordenada = models.CharField('sistema de coordenada', max_length=100, blank='true')
+	observacion = models.CharField('observación', max_length=100, blank='true')
+	estado = models.ForeignKey(Muestra_Estado,on_delete= models.PROTECT, default=1)
+ 	
+	def __str__(self):
+		return self.referencia
+
+	def referencia_completa(self):
+		return self.referencia_clave + self.referencia
+
+	def save(self, *args, **kwargs):
+		#si es insert (id= 0), asignar referencia autoincremental	
+		if self.id is None:
+			self.referencia = str(sigNumero('orden_trabajo_referencia'))
+		# Call the "real" save() method.
+		super(Muestra, self).save(*args, **kwargs)
+	
+	def clean(self):
+		#validar que fecha muestreo < fecha ingreso
+		if (self.fecha_muestreo > self.fecha_ingreso):
+			raise ValidationError({'fecha_muestreo':_('Error: fecha muestreo debe ser menor que fecha ingreso.')})
