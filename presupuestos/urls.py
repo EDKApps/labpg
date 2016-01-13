@@ -22,6 +22,7 @@ from .viewpresupuesto_impresion import Presupuesto_ImpresionModificar
 from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_trabajoDetalle, Orden_trabajoListar, Orden_trabajoModificar, Orden_trabajoDetalleFull
 from .viewotitem import Ot_ItemModificar
 from .viewpromptitems import promptitems
+from .viewpresupuestoimpresion_odt_full import presupuesto_impresion_odt_full
 
 urlpatterns = patterns('',
              
@@ -45,7 +46,9 @@ urlpatterns = patterns('',
     url(r'^presupuestos/(?P<pk>\d+)/modificar_impresion/$', Presupuesto_ImpresionModificar.as_view(), name='presupuesto_modificar_impresion'),
     #Presupuesto impresion odt (Open Document)                   
     #url(r'^presupuestos/(?P<pk>\d+)/impresion_odt/$', presupuesto_impresion_odt(), name='presupuesto_impresion_odt')
-                 
+    #ejemplo: http://localhost:8000/presupuestos/presupuestos/1/impresion_odt_full/
+    url(r'^presupuestos/(?P<idpresupuesto>\d+)/impresion_odt_full/$', presupuesto_impresion_odt_full, name='presupuesto_impresion_odt_full'),
+                       
     #Ordenes de trabajo
     url(r'^ordenestrabajo/$', Orden_trabajoListar.as_view(), name='orden_trabajo_listar'), 
     url(r'^ordenestrabajo/crear/$', Orden_trabajoCrear.as_view(), name='orden_trabajo_crear'),
