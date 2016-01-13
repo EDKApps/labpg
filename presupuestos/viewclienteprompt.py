@@ -15,6 +15,7 @@ from .models import Cliente
 class ClientePrompt(ListView):
     model = Cliente
     #context_object_name = 'lista_de_clientes' #opcion a object_list
+    template_name = 'presupuestos/cliente_prompt.html'
     paginate_by = 10
     
     #búsqueda
@@ -27,7 +28,7 @@ class ClientePrompt(ListView):
                                            Q(empresa__icontains=query) )
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
-        context = super(ClienteListar, self).get_context_data(**kwargs)
+        context = super(ClientePrompt, self).get_context_data(**kwargs)
         q = self.request.GET.get('q')
         if q: #si existe el valor, lo agrego/actualizo en el contexto
             q = q.replace(" ","+")
