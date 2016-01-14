@@ -1,6 +1,19 @@
-{% extends "menu.html" %}
+<!DOCTYPE html>
 {% load staticfiles %}
-{% block content %}
+<html>
+    <head>
+        <title>Laboratorio Industrial</title>
+    <head>
+        <title>Laboratorio Industrial</title>
+  		<!--<meta charset="utf-8">-->
+  		<meta name="viewport" content="width=device-width, initial-scale=1">		
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>	
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>          
+		<link href='https://fonts.googleapis.com/css?family=Dosis:500&effect=outline' rel='stylesheet' type='text/css'>		                
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    </head>		
 <div class="container">
 	<h2>Selección de Cliente</h2>
 		<form method="get" action="/presupuestos/clienteprompt/">
@@ -24,10 +37,9 @@
     <tbody>	 	
     {% for cliente in cliente_list %}
 	<tr>
-    	<td><a href="{% url "presupuestos:cliente_modificar" cliente.id %}" ><img src= "{% static "images/accion_modificar.png"%}" data-toggle="tooltip" data-placement="top" title="Modificar" alt= "Modificar"></a></td>
-    	<td><a href="{% url "presupuestos:cliente_borrar" cliente.id %}"><img src= "{% static "images/accion_borrar.png"%}" data-toggle="tooltip" data-placement="top" title="Borrar" alt= "Borrar"></a></td>
+    	<td><a href="#" onclick="sendValues({{ cliente.id }});" ><img src= "{% static "images/accion_elegir.png"%}" data-toggle="tooltip" data-placement="top" title="Seleccionar" alt= "Modificar"></a></td>
 		<td>{{ cliente.empresa }}</td>
-    		<td>{{ cliente.contacto }}  </td>
+   		<td>{{ cliente.contacto }}  </td>
 		<td>{{ cliente.funcion }}</td>
 		<td>{{ cliente.telefono_fijo }}</td>
 		<td>{{ cliente.telefono_movil }}</td>
@@ -52,5 +64,11 @@
       </div>
   {% endif %}	
 </div>	
-<a href="{% url "presupuestos:cliente_crear"  %}"><img src= "{% static "images/accion_alta.png"%}" data-toggle="tooltip" data-placement="top" title="Agregar" alt="Agregar"></a>
-{% endblock content %}
+
+<script type="text/javascript">
+ function sendValues(idcliente){
+ opener.window.document.getElementById('id_cliente').value = idcliente
+ 
+ window.close();
+ }
+</script>
