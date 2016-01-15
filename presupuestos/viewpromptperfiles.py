@@ -11,13 +11,15 @@ from django.views.decorators.csrf import csrf_protect
 from .models import PerfilPrecio, Item, Subitem_perfil
 from django.db.models import Q #para OR en consultas
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.csrf import csrf_exempt
 
 #Armo el formset
 class PerfilPrecio_Form(ModelForm): 
 	class Meta:
 		model = PerfilPrecio
 		fields= ['seleccionado']		
-								 
+
+@csrf_exempt #solo en esta vista desactivar el control de Crsf
 def promptperfiles(request, iditem):
     PerfilPrecioFormSet = modelformset_factory(PerfilPrecio, form = PerfilPrecio_Form, extra= 0)
     item = Item.objects.get(id=iditem) #item al que agregar los perfiles
