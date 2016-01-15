@@ -6,6 +6,7 @@ import tempfile
 import os
 from django.core.servers.basehttp import FileWrapper 
 from django.core.files import File
+from .models import Presupuesto
 
 def presupuesto_impresion_odt_full(request, idpresupuesto):
 	#ruta de la plantilla
@@ -19,14 +20,16 @@ def presupuesto_impresion_odt_full(request, idpresupuesto):
     print 'origen>>' + str(plantilla_odt_path)
     print 'destino>>'+ str(file_odt_resultado)	
 	
-    dummy = """
-    <p>Te<b>s</b>t1 : <b>bold</b>, i<i>tal</i>ics, exponent<sup>34</sup>, sub<sub>45</sub>.</p>
-    <p>An <a href="http://www.google.com">hyperlink</a> to Google.</p>
-    <h2>Heading<br /></h2>
-    Heading Blabla.<br />
-    <h3>SubHeading</h3>
-    Subheading blabla.<br />
-    """	
+    presupuesto = Presupuesto.objects.get(id=idpresupuesto) 	
+    dummy = '<h2>Presupuesto: {0}</h2>'.format(presupuesto.referencia) 
+    dummy += '<p>Cliente: {0}</p>'.format(presupuesto.cliente.empresa) 
+    dummy += '<p>Contacto: {0}</p>'.format(presupuesto.cliente)
+    dummy += '<p>Referencia clave: {0}</p>'.format(presupuesto.referencia_clave)
+    dummy += '<p>Referencia: {0}</p>'.format(presupuesto.referencia)
+    dummy += '<p>Tipo: {0}</p>'.format(presupuesto.tipo)
+    dummy += '<p>Fecha de solicitud: {0}</p>'.format(presupuesto.fecha_solicitud)
+
+
 
     tipotrabajo = 'creativo'
     untexto='xxx'
@@ -36,21 +39,7 @@ def presupuesto_impresion_odt_full(request, idpresupuesto):
     archivo_resultado = File(open(odt_resultado_path))
     wrapper = FileWrapper(archivo_resultado) 
     
-    """
-	response = HttpResponse(content_type='text/html')
-    response['Content-Disposition'] = 'attachment; filename="archivo.html"'	
-    return response
-    """
     response = HttpResponse(wrapper, content_type='text/html')
     response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(odt_resultado_path)
     response['Content-Length'] = os.path.getsize(odt_resultado_path)
     return response
-    
-
-#f = tempfile.NamedTemporaryFile(delete=False,prefix='lab_', suffix='.odt')
-#f.name
-#f.write('dddldld')
-#f.close()
-#import os
-#os.unlink(f.name)
-#os.path.exists(f.name)
