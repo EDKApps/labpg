@@ -4,60 +4,46 @@ from appy.pod.renderer import Renderer
 import labutiles
 import tempfile
 import os
-
-from .prueba import prueba
-
-
-#obtener desde un archivo una ruta con las plantillas odt
-#en settings.py ver tema archivos temporales
-#crear plantilla en carpeta odt
-#generar en carpeta temporal
-#ver como mostrar retornar un link o algo similar a alguna pantalla de presupuestos
+from django.core.servers.basehttp import FileWrapper 
+from django.core.files import File
 
 def presupuesto_impresion_odt_full(request, idpresupuesto):
-	#rutas
-    
+	#ruta de la plantilla
     plantilla_odt_path = os.path.join(labutiles.PLANTILLA_ODT_PATH,'presupuesto_impresion_odt_full.odt')
-    file_odt_resultado = tempfile.NamedTemporaryFile(delete=True,prefix='lab_', suffix='.odt')
+	#Necesito un nombre aleatorio en la carpeta de temporales
+    file_odt_resultado = tempfile.NamedTemporaryFile(delete=True,prefix='lab_', suffix='.odt') 
+
+    odt_resultado_path = file_odt_resultado.name #path al archivo de resultado
+    file_odt_resultado.close() #Se debería eliminar el archivo	
 
     print 'origen>>' + str(plantilla_odt_path)
-    print 'destino>>'+ str(file_odt_resultado.name)
-    odt_resultado_path = file_odt_resultado.name
-    file_odt_resultado.close() #Se debería eliminar el archivo	
+    print 'destino>>'+ str(file_odt_resultado)	
 	
-   	
-    #origen= '/opt/EDKAppsLab/labpg/temporal_odt/presupuesto_impresion_odt_full.odt'
-    #destino= '/opt/EDKAppsLab/labpg/temporal_odt/resultado.odt'	
-	
-    prueba(plantilla_odt_path,odt_resultado_path)
-    	
-    """
-    file_odt_resultado =  '/opt/EDKAppsLab/labpg/temporal_odt/prueba.odt' 
-	#tempfile.NamedTemporaryFile(delete=True,prefix='lab_', suffix='.o	
-	
-    print 'origen>>' + str(plantilla_odt_path)
-    print 'destino>>'+ str(file_odt_resultado)
-    
-	#contenido
+    dummy = """
+    <p>Te<b>s</b>t1 : <b>bold</b>, i<i>tal</i>ics, exponent<sup>34</sup>, sub<sub>45</sub>.</p>
+    <p>An <a href="http://www.google.com">hyperlink</a> to Google.</p>
+    <h2>Heading<br /></h2>
+    Heading Blabla.<br />
+    <h3>SubHeading</h3>
+    Subheading blabla.<br />
+    """	
+
     tipotrabajo = 'creativo'
     untexto='xxx'
-    dummy= '<h1>dldldldl</h1>'
-    rutaarchivo = '/home/marcelo/pydesarrollo/appy.pod/bulb.png'    
+    contexto= {"tipotrabajo":tipotrabajo,"untexto":untexto, "dummy":dummy}
+    renderer = Renderer(plantilla_odt_path, contexto, odt_resultado_path)
+    renderer.run()    	
+    archivo_resultado = File(open(odt_resultado_path))
+    wrapper = FileWrapper(archivo_resultado) 
     
-    print 'tipotrabajo>>'+tipotrabajo
-    print 'untexto>>'+untexto
-    print 'dummy>>'+dummy
-    print 'rutaarchivo>>'+rutaarchivo
-    #file_odt_resultado.close()
-       
-	#crear odt a partir de plantilla
-    renderer = Renderer(plantilla_odt_path, globals(), file_odt_resultado)
-    renderer.run()	
-    """        	
-    response = HttpResponse(content_type='text/html')
+    """
+	response = HttpResponse(content_type='text/html')
     response['Content-Disposition'] = 'attachment; filename="archivo.html"'	
-      
-    #print labutiles.PLANTILLA_ODT_PATH
+    return response
+    """
+    response = HttpResponse(wrapper, content_type='text/html')
+    response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(odt_resultado_path)
+    response['Content-Length'] = os.path.getsize(odt_resultado_path)
     return response
     
 
