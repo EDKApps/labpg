@@ -11,13 +11,15 @@ from django.views.decorators.csrf import csrf_protect
 from .models import Orden_trabajo, Ot_Item, Item, Ot_Estado
 from django.db.models import Q #para OR en consultas
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.csrf import csrf_exempt
 
 #Armo el formset
 class Item_Form(ModelForm): 
 	class Meta:
 		model = Item
 		fields= ['seleccionado']		
-								 
+
+@csrf_exempt #solo en esta vista desactivar el control de Crsf
 def promptitems(request, idot):
     ItemFormSet = modelformset_factory(Item, form = Item_Form, extra= 0)
     #item = Item.objects.get(id=iditem) #item al que agregar los parámetros

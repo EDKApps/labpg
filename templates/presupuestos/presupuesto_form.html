@@ -1,14 +1,12 @@
 {% extends "menu.html" %}
 {% block content %}
 <h1>Presupuesto</h1>
-<form method="post">{% csrf_token %}
-    <a href="#" onclick="showModal();" >Buscar cliente</a>
-    
+<form method="post">{% csrf_token %}  
   
     {{ form.non_field_errors }}
     <p>
     {{ form.cliente.errors }}
-    <label for="{{ form.cliente.id_for_label }}">Cliente:</label> {{ form.cliente }}
+    <label for="{{ form.cliente.id_for_label }}">Cliente:</label> {{ form.cliente }} <a href="#" onclick="showModal();" >Buscar cliente</a>
     </p>  
     
     <p>

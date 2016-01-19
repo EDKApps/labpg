@@ -11,14 +11,17 @@ from django.views.decorators.csrf import csrf_protect
 from .models import ParametroPrecio, Item, Subitem_parametro
 from django.db.models import Q #para OR en consultas
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.csrf import csrf_exempt
 
 #Armo el formset
 class ParametroPrecio_Form(ModelForm): 
 	class Meta:
 		model = ParametroPrecio
 		fields= ['seleccionado']		
-								 
+
+@csrf_exempt #solo en esta vista desactivar el control de Crsf
 def promptparametros(request, iditem):
+	
     ParametroPrecioFormSet = modelformset_factory(ParametroPrecio, form = ParametroPrecio_Form, extra= 0)
     item = Item.objects.get(id=iditem) #item al que agregar los parámetros
     if request.method == 'POST':
@@ -33,9 +36,7 @@ def promptparametros(request, iditem):
                         item = item,
                         itemparametro= unparametroprecio
                     )
-                    subitem_parametro.save()
-            #volver al ítem
-            #return   
+                    subitem_parametro.save() 
             return HttpResponseRedirect( reverse('presupuestos:itemsubitem_modificar', kwargs={'pk': iditem,}) )
     else:		
         #quiero filtrar por la matriz del ítem y otros criterios de búsqueda

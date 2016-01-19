@@ -8,7 +8,7 @@
     <input type="submit" value="Buscar" /></p>
     </form>	
 
-<form method="post" action="">
+<form method="post" action="">{% csrf_token %}
 	
     {{ ParametroPrecioFormSet.management_form }}
 	
