@@ -394,15 +394,14 @@ class Muestra (models.Model):
 	def referencia_completa(self):
 		return self.referencia_clave + self.referencia
 
-	"""def save(self, *args, **kwargs):
+	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
 			self.referencia = str(sigNumero('orden_trabajo_referencia'))
 		# Call the "real" save() method.
 		super(Muestra, self).save(*args, **kwargs)
-	"""
-	"""def clean(self):
+	
+	def clean(self):
 		#validar que fecha muestreo < fecha ingreso
 		if (self.fecha_muestreo > self.fecha_ingreso):
 			raise ValidationError({'fecha_muestreo':_('Error: fecha muestreo debe ser menor que fecha ingreso.')})
-	"""

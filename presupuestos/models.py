@@ -378,7 +378,7 @@ class Muestra (models.Model):
 	ubicacion = models.CharField('ubicación', max_length=100, blank='true')
 	sitio_muestreo = models.CharField('sitio de muestreo', max_length=100, blank='true')
 	muestreador = models.CharField(max_length=100, blank='true')
-	peso = models.CharField('Sólido - peso de muestra (gr.)', max_length=100, blank='true')
+	peso = models.CharField('sólido - peso de muestra (gr.)', max_length=100, blank='true')
 	volumen = models.CharField('líquido - Volúmen de muestra (lt.)', max_length=100, blank='true')
 	caudal = models.CharField('aire - Caudal, (lt/min, tiempo)', max_length=100, blank='true')
 	preservacion = models.CharField('Preservación - Conservación', max_length=100, blank='true')

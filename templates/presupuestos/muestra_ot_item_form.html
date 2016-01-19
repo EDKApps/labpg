@@ -53,21 +53,21 @@
                   <tr>      
                   <th>referencia_clave</th>
                   <th>referencia</th>
-                  <th>ingreso_muestra</th>
-                  <th>fecha_ingreso</th>
-                  <th>cadena_custodia</th>
-                  <th>rotulo</th>
-                  <th>ubicacion</th>
-                  <th>sitio_muestreo</th>
+                  <th>responsable ingreso de muestra</th>
+                  <th>fecha de ingreso</th>
+                  <th>cadena de custodia</th>
+                  <th>rótulo</th>
+                  <th>ubicación</th>
+                  <th>sitio de muestreo</th>
                   <th>muestreador</th>
-                  <th>peso</th>
-                  <th>volumen</th>
-                  <th>caudal</th>
-                  <th>preservacion</th>
-                  <th>fecha_muestreo</th>
-                  <th>coordenada</th>
-                  <th>sistema_coordenada</th>
-                  <th>observacion</th>
+                  <th>sólido - peso de muestra (gr.)</th>
+                  <th>líquido - Volúmen de muestra (lt.)</th>
+                  <th>aire - Caudal, (lt/min, tiempo)</th>
+                  <th>Preservación - Conservación</th>
+                  <th>fecha de muestreo</th>
+                  <th>coordenadas de ubicación</th>
+                  <th>sistema de coordenada</th>
+                  <th>observación</th>
                   <th>estado</th>
                   </tr>
                 </thead>
@@ -80,9 +80,8 @@
                         {{ muestra.referencia_clave.errors }}
                         {{ muestra.referencia_clave }}
                         </td>
-                        <td>    
-                        {{ muestra.referencia.error }}
-                        {{ muestra.referencia }}
+                        <td>
+                        {{ muestra.instance.referencia }}
                         </td>
                         <td>
                         {{ muestra.ingreso_muestra.errors }}
@@ -147,6 +146,10 @@
                         <td>
                         {{ muestra.estado.errors }}
                         {{ muestra.estado }} 
+                        </td>
+                        <td>    
+                        {{ muestra.referencia.error }}
+                        {{ muestra.referencia }}
                         </td>
                         <tr>
                 {% endfor %}
