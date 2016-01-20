@@ -405,3 +405,8 @@ class Muestra (models.Model):
 		#validar que fecha muestreo < fecha ingreso
 		if (self.fecha_muestreo > self.fecha_ingreso):
 			raise ValidationError({'fecha_muestreo':_('Error: fecha muestreo debe ser menor que fecha ingreso.')})
+		#validar que el numero de muestra < que otitem.cantidad
+		numero_muestras = Muestra.objects.filter (ot_item = self.ot_item).count()
+		if not(Muestra.objects.filter(id=self.id).exists()):
+			if ((numero_muestras+1) > self.ot_item.cantidad):
+				raise ValidationError({'referencia_clave':_('Error: numero de muestras debe ser menor qu ot-item.cantidad .')})
