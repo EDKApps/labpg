@@ -138,7 +138,7 @@ class Familia (models.Model): # también llamada Grupo
 @python_2_unicode_compatible	
 class Parametro (models.Model):
 	nombre_par = models.CharField('Parametro', max_length=100)
-	familia = models.ForeignKey(Familia, blank='true', null='true',on_delete= models.PROTECT )
+	familia = models.ForeignKey(Familia, blank='true', null='true', on_delete= models.PROTECT )
 	def __str__(self):
 		return self.nombre_par
 	
@@ -218,10 +218,10 @@ class PerfilPrecio_Parametro (models.Model): # ex GrupoParametroPrecio_Parametro
 
 @python_2_unicode_compatible
 class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, junto con sus subitems
-	presupuesto = models.ForeignKey(Presupuesto)
+	presupuesto = models.ForeignKey(Presupuesto, on_delete= models.PROTECT)
 	numero = models.IntegerField(default= 0)
 	descripcion = models.CharField(max_length= 100, blank='true')
-	matriz = models.ForeignKey(Matriz)
+	matriz = models.ForeignKey(Matriz, on_delete= models.PROTECT)
 	cantidadMuestra = models.IntegerField(default= 0)
 	descuento = models.DecimalField('descuento (%)', max_digits=5, decimal_places=2, default=0)
 	total_sin_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
@@ -256,8 +256,8 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 
 @python_2_unicode_compatible
 class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio
-	item = models.ForeignKey(Item, null=True)
-	itemparametro = models.ForeignKey(ParametroPrecio)
+	item = models.ForeignKey(Item, null=True, on_delete= models.PROTECT)
+	itemparametro = models.ForeignKey(ParametroPrecio, on_delete= models.PROTECT)
 	precio = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	def __str__(self):
 		return self.itemparametro.parametro.nombre_par #lo agrego para cumplir con decorator python_2
@@ -270,8 +270,8 @@ class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio
 
 @python_2_unicode_compatible
 class Subitem_perfil (models.Model): #relacion Item-PerfilPrecio
-	item = models.ForeignKey(Item, null=True)
-	itemperfil = models.ForeignKey(PerfilPrecio)
+	item = models.ForeignKey(Item, null=True, on_delete= models.PROTECT)
+	itemperfil = models.ForeignKey(PerfilPrecio, on_delete= models.PROTECT)
 	precio = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	def __str__(self):
 		return self.itemperfil.nombre #lo agrego para cumplir con decorator python_2
@@ -342,7 +342,7 @@ class Ot_Estado (models.Model):
 @python_2_unicode_compatible
 class Ot_Item (models.Model): 
 	orden_trabajo = models.ForeignKey(Orden_trabajo, on_delete= models.PROTECT, null=True)
-	item = models.ForeignKey(Item, null=True)
+	item = models.ForeignKey(Item, null=True, on_delete= models.PROTECT)
 	numero = models.IntegerField(default= 0)
 	cantidad = models.IntegerField(default= 0)
 	estado = models.ForeignKey(Ot_Estado,on_delete= models.PROTECT)
@@ -366,7 +366,7 @@ class Muestra_Estado (models.Model):
 
 @python_2_unicode_compatible
 class Muestra (models.Model):
-	ot_item = models.ForeignKey(Ot_Item, null=True)
+	ot_item = models.ForeignKey(Ot_Item, null=True, on_delete= models.PROTECT)
 	referencia_clave = models.CharField(max_length=100, blank='true',default='M-')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental, ajustado en save()
 	ingreso_muestra = models.CharField('responsable ingreso de muestra', max_length=100, blank='true')
@@ -376,7 +376,7 @@ class Muestra (models.Model):
 	ubicacion = models.CharField('ubicación', max_length=100, blank='true')
 	sitio_muestreo = models.CharField('sitio de muestreo', max_length=100, blank='true')
 	muestreador = models.CharField(max_length=100, blank='true')
-	peso = models.CharField('Sólido - peso de muestra (gr.)', max_length=100, blank='true')
+	peso = models.CharField('sólido - peso de muestra (gr.)', max_length=100, blank='true')
 	volumen = models.CharField('líquido - Volúmen de muestra (lt.)', max_length=100, blank='true')
 	caudal = models.CharField('aire - Caudal, (lt/min, tiempo)', max_length=100, blank='true')
 	preservacion = models.CharField('Preservación - Conservación', max_length=100, blank='true')
