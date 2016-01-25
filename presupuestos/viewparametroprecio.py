@@ -19,9 +19,10 @@ class ParametroPrecioListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return ParametroPrecio.objects.all()
+            return ParametroPrecio.objects.all().order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
         else:
-            return ParametroPrecio.objects.filter( Q(parametro__nombre_par__icontains=query))
+            return ParametroPrecio.objects.filter( Q(parametro__nombre_par__icontains=query)).order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
+
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
         context = super(ParametroPrecioListar, self).get_context_data(**kwargs)

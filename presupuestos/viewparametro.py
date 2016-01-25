@@ -18,9 +18,9 @@ class ParametroListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Parametro.objects.all()
+            return Parametro.objects.all().order_by('nombre_par')
         else:
-            return Parametro.objects.filter( Q(nombre_par__icontains=query))
+            return Parametro.objects.filter( Q(nombre_par__icontains=query)).order_by('nombre_par')
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
         context = super(ParametroListar, self).get_context_data(**kwargs)

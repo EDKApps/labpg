@@ -18,11 +18,10 @@ class TecnicaListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Tecnica.objects.all().order_by('nombre_tec')
+            return Tecnica.objects.all()
         else:
             return Tecnica.objects.filter( Q(nombre_tec__icontains=query) | 
-                                             Q(derivacion__icontains=query)).order_by('nombre_tec')
-
+                                             Q(derivacion__icontains=query))
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
         context = super(TecnicaListar, self).get_context_data(**kwargs)

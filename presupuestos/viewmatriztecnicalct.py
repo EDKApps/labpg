@@ -19,11 +19,11 @@ class MatrizTecnicaLctListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return MatrizTecnicaLct.objects.all()
+            return MatrizTecnicaLct.objects.all().order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
         else:
             return MatrizTecnicaLct.objects.filter( Q(matriz__nombre_matriz__icontains=query) | 
                                           Q(parametro__nombre_par__icontains=query) | 
-                                          Q(tecnica__nombre_tec__icontains=query)  )
+                                          Q(tecnica__nombre_tec__icontains=query)  ).order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
                                   
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):

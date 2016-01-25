@@ -21,9 +21,9 @@ class FamiliaListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Familia.objects.all().order_by('nombre')
+            return Familia.objects.all()
         else:
-            return Familia.objects.filter( Q(nombre__icontains=query)).order_by('nombre')
+            return Familia.objects.filter( Q(nombre__icontains=query) )
                                   
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):

@@ -19,9 +19,9 @@ class MatrizListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Matriz.objects.all().order_by('nombre_matriz')
+            return Matriz.objects.all()
         else:
-            return Matriz.objects.filter( Q(nombre_matriz__icontains=query)).order_by('nombre_matriz')
+            return Matriz.objects.filter( Q(nombre_matriz__icontains=query) )
                                   
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
