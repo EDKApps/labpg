@@ -14,7 +14,6 @@
           <th>referencia</th>
           <th>estado</th>
           <th>Orden de trabajo</th>
-          <th>Matriz</th>
           <th>responsable ingreso de muestra</th>
           <th>fecha de ingreso</th>
           <th>cadena de custodia</th>
@@ -38,7 +37,6 @@
             <td>{{ muestra.referencia_completa }}</td>
             <td>{{ muestra.estado }} </td>		
 	    <td>{{ muestra.ot_item.orden_trabajo.referencia_completa }}-{{muestra.ot_item.numero}}</td>
-            <td>{{ muestra.ot_item.item.matriz.nombre_matriz }}</td>
             <td>{{ muestra.ingreso_muestra }}</td>
             <td>{{ muestra.fecha_ingreso }}</td>
             <td>{{ muestra.cadena_custodia }} </td>

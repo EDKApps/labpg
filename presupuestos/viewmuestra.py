@@ -102,28 +102,25 @@ class Muestra_Ot_Item_Listar(ListView):
         return context    
 
 
-"""
-class Ot_ItemListar(ListView):
-    paginate_by = 10
+class Muestra_Listar(ListView):
+    paginate_by = 50
     
     #búsqueda
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Ot_Item.objects.order_by('-orden_trabajo','numero')
-            #return Ot_Item.objects.all()
+            return Muestra.objects.order_by('-fecha_ingreso')
         else:
-            return Ot_Item.objects.filter( Q(numero__icontains=query)| 
-                                           Q(orden_trabajo__referencia__icontains=query) | 
-                                           Q(item__matriz__nombre_matriz__icontains=query) | 
-                                           Q(estado__estado_actual__icontains=query)).order_by('-orden_trabajo','numero')
+            return Muestra.objects.filter( Q(referencia__icontains=query)| 
+                                           Q(ot_item__orden_trabajo__referencia__icontains=query) | 
+                                           Q(ot_item__item__matriz__nombre_matriz__icontains=query) | 
+                                           Q(estado__estado_actual__icontains=query)).order_by('-fecha_ingreso')
                                   
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
-        context = super(Ot_ItemListar, self).get_context_data(**kwargs)
+        context = super(Muestra_Listar, self).get_context_data(**kwargs)
         q = self.request.GET.get('q')
         if q: #si existe el valor, lo agrego/actualizo en el contexto
             q = q.replace(" ","+")
             context['query'] = q
-        return context    
-"""
+        return context

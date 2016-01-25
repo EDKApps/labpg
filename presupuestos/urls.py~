@@ -1,6 +1,7 @@
  # -- coding: utf-8 --
 from django.conf.urls import patterns, include, url
 from .viewcliente import labinicio, ClienteCrear, ClienteBorrar, ClienteDetalle, ClienteListar, ClienteModificar
+from .viewclienteprompt import ClientePrompt
 from .viewpresupuesto import PresupuestoCrear, PresupuestoBorrar, PresupuestoDetalle, PresupuestoListar, PresupuestoModificar, PresupuestoDetalleFull
 from .viewordendetrabajo import OrdenDeTrabajoListar
 from .viewmatriz import MatrizCrear, MatrizBorrar, MatrizDetalle, MatrizListar, MatrizModificar
@@ -21,7 +22,8 @@ from .viewpresupuesto_impresion import Presupuesto_ImpresionModificar
 from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_trabajoDetalle, Orden_trabajoListar, Orden_trabajoModificar, Orden_trabajoDetalleFull
 from .viewotitem import Ot_ItemModificar, Ot_ItemListar
 from .viewpromptitems import promptitems
-from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar
+from .viewpresupuestoimpresion_odt_full import presupuesto_impresion_odt_full
+from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar, Muestra_Listar
 
 urlpatterns = patterns('',
              
@@ -33,7 +35,8 @@ urlpatterns = patterns('',
     url(r'^clientes/(?P<pk>\d+)/$', ClienteDetalle.as_view(), name='cliente_detalle'),
     url(r'^clientes/(?P<pk>\d+)/modificar/$', ClienteModificar.as_view(), name='cliente_modificar'),
     url(r'^clientes/(?P<pk>\d+)/borrar/$', ClienteBorrar.as_view(), name='cliente_borrar'),
-
+    #prompt de clientes
+    url(r'^clienteprompt/$', ClientePrompt.as_view(), name='cliente_prompt'),
     #Presupuestos
     url(r'^presupuestos/$', PresupuestoListar.as_view(), name='presupuesto_listar'),
     url(r'^presupuestos/crear/$', PresupuestoCrear.as_view(), name='presupuesto_crear'),
@@ -45,7 +48,9 @@ urlpatterns = patterns('',
     url(r'^presupuestos/(?P<pk>\d+)/modificar_impresion/$', Presupuesto_ImpresionModificar.as_view(), name='presupuesto_modificar_impresion'),
     #Presupuesto impresion odt (Open Document)                   
     #url(r'^presupuestos/(?P<pk>\d+)/impresion_odt/$', presupuesto_impresion_odt(), name='presupuesto_impresion_odt')
-                 
+    #ejemplo: http://localhost:8000/presupuestos/presupuestos/1/impresion_odt_full/
+    url(r'^presupuestos/(?P<idpresupuesto>\d+)/impresion_odt_full/$', presupuesto_impresion_odt_full, name='presupuesto_impresion_odt_full'),
+                       
     #Ordenes de trabajo
     url(r'^ordenestrabajo/$', Orden_trabajoListar.as_view(), name='orden_trabajo_listar'), 
     url(r'^ordenestrabajo/crear/$', Orden_trabajoCrear.as_view(), name='orden_trabajo_crear'),
@@ -64,8 +69,9 @@ urlpatterns = patterns('',
     url(r'^otitem/$', Ot_ItemListar.as_view(), name='otitem_listar'),
 
     #Muestras
-    url(r'^muestra/$', Muestra_Ot_Item_Listar.as_view(), name='muestra_otitem_listar'), 
+    url(r'^muestra/$', Muestra_Ot_Item_Listar.as_view(), name='muestra_ot_item_listar'), 
      url(r'^muestra/(?P<pk>\d+)/modificar/$', Muestra_Ot_ItemModificar.as_view(), name='muestra_ot_item_modificar'), 
+    url(r'^muestra/$', Muestra_Listar.as_view(), name='muestra_listar'), 
    					 
 	#Matriz
     url(r'^matriz/$', MatrizListar.as_view(), name='matriz_listar'),

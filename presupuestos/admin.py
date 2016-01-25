@@ -20,6 +20,7 @@ from .models import Ot_Estado
 from .models import Ot_Item
 from .models import Muestra_Estado
 from .models import Muestra
+from .models import Analisis
 
 admin.site.register(Cliente)
 admin.site.register(Presupuesto)
@@ -43,5 +44,5 @@ admin.site.register(Ot_Estado)
 admin.site.register(Ot_Item)
 admin.site.register(Muestra_Estado)
 admin.site.register(Muestra)
-
+admin.site.register(Analisis)
 

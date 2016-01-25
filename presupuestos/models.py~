@@ -398,6 +398,15 @@ class Muestra (models.Model):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
 			self.referencia = str(sigNumero('orden_trabajo_referencia'))
+		#Si es nueva muestra, crea los registro de Analisis
+		if not(Muestra.objects.filter(id=self.id).exists()):
+			print 'nueva muestra'
+			#Buscar OtItem - Item - sus Subitem_parametro --sus parametros
+			lista_subitem_parametro = Subitem_parametro.objects.filter (item = self.ot_item.item)
+			for subitem_parametro in lista_subitem_parametro:
+				print subitem_parametro.itemparametro.parametro
+
+			#Buscar OtItem - Item - sus perfilPrecio - sus parametros
 		# Call the "real" save() method.
 		super(Muestra, self).save(*args, **kwargs)
 	
@@ -407,8 +416,20 @@ class Muestra (models.Model):
 			raise ValidationError({'fecha_muestreo':_('Error: fecha muestreo debe ser menor que fecha ingreso.')})
 		#validar que el numero de muestra < que otitem.cantidad
 		numero_muestras = Muestra.objects.filter (ot_item = self.ot_item).count()
-		print numero_muestras
 		if not(Muestra.objects.filter(id=self.id).exists()):
-			print("no Existe")
 			if ((numero_muestras+1) > self.ot_item.cantidad):
 				raise ValidationError({'referencia_clave':_('Error: numero de muestras debe ser menor qu ot-item.cantidad .')})
+
+@python_2_unicode_compatible
+class Analisis (models.Model):
+	muestra = models.ForeignKey(Muestra, on_delete= models.PROTECT)
+	parametro = models.ForeignKey(Parametro, on_delete= models.PROTECT)
+	tecnica = models.ForeignKey(Tecnica, on_delete= models.PROTECT)
+	unidad = models.ForeignKey(Unidades, on_delete= models.PROTECT)
+	lct = models.DecimalField(max_digits=10, decimal_places=6)
+	valor = models.CharField('resultado', max_length=100, blank='true')
+	verificacion = models.BooleanField(default=False)
+	observacion = models.CharField(max_length=100, blank='true')
+	
+	def __str__(self):
+		return self.muestra.referencia+', '+self.parametro.nombre_par

@@ -23,7 +23,7 @@ from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_tr
 from .viewotitem import Ot_ItemModificar, Ot_ItemListar
 from .viewpromptitems import promptitems
 from .viewpresupuestoimpresion_odt_full import presupuesto_impresion_odt_full
-from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar
+from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar, Muestra_Listar
 
 urlpatterns = patterns('',
              
@@ -71,6 +71,7 @@ urlpatterns = patterns('',
     #Muestras
     url(r'^muestra/$', Muestra_Ot_Item_Listar.as_view(), name='muestra_ot_item_listar'), 
      url(r'^muestra/(?P<pk>\d+)/modificar/$', Muestra_Ot_ItemModificar.as_view(), name='muestra_ot_item_modificar'), 
+    url(r'^muestralist/$', Muestra_Listar.as_view(), name='muestra_listar'), 
    					 
 	#Matriz
     url(r'^matriz/$', MatrizListar.as_view(), name='matriz_listar'),
