@@ -37,6 +37,17 @@
 	<li><a href="{% url "presupuestos:otitem_listar"  %}">OT Items</a></li>
 	<li><a href="{% url "presupuestos:muestra_ot_item_listar"  %}">Muestras</a></li>
 	<li><a href="{% url "presupuestos:muestra_listar"  %}">Muestras Listado</a></li>
+
+	<li class="dropdown">
+	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listados<span class="caret"></span></a>
+	  <ul class="dropdown-menu">
+		<li><a href="{% url "presupuestos:parametro_listar_visualizar"  %}">Parametros</a></li>
+		<li><a href="{% url "presupuestos:tecnica_listar_visualizar"  %}">Metodologías analítica</a></li>
+		<li><a href="#">Parametros Precio</a></li>
+		<li><a href="#">Perfil Precio</a></li>
+	  </ul>
+	</li>
+
 	<li class="dropdown">
 	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Configuración <span class="caret"></span></a>
 	  <ul class="dropdown-menu">

@@ -6,7 +6,7 @@ from .viewpresupuesto import PresupuestoCrear, PresupuestoBorrar, PresupuestoDet
 from .viewordendetrabajo import OrdenDeTrabajoListar
 from .viewmatriz import MatrizCrear, MatrizBorrar, MatrizDetalle, MatrizListar, MatrizModificar
 from .viewfamilia import FamiliaCrear, FamiliaBorrar, FamiliaDetalle, FamiliaConfirmaAlta, FamiliaListar, FamiliaModificar
-from .viewparametro import ParametroCrear, ParametroBorrar, ParametroDetalle, ParametroListar, ParametroModificar
+from .viewparametro import ParametroCrear, ParametroBorrar, ParametroDetalle, ParametroListar, ParametroModificar, ParametroListarVisualizar
 from .viewtecnica import TecnicaCrear, TecnicaBorrar, TecnicaDetalle, TecnicaListar, TecnicaModificar
 from .viewunidades import UnidadesCrear, UnidadesBorrar, UnidadesDetalle, UnidadesListar, UnidadesModificar
 from .viewmatriztecnicalct import MatrizTecnicaLctCrear, MatrizTecnicaLctBorrar, MatrizTecnicaLctDetalle,MatrizTecnicaLctConfirmaAlta, MatrizTecnicaLctListar, MatrizTecnicaLctModificar
@@ -71,7 +71,7 @@ urlpatterns = patterns('',
     #Muestras
     url(r'^muestra/$', Muestra_Ot_Item_Listar.as_view(), name='muestra_ot_item_listar'), 
      url(r'^muestra/(?P<pk>\d+)/modificar/$', Muestra_Ot_ItemModificar.as_view(), name='muestra_ot_item_modificar'), 
-    url(r'^muestra/$', Muestra_Listar.as_view(), name='muestra_listar'), 
+    url(r'^muestralist/$', Muestra_Listar.as_view(), name='muestra_listar'), 
    					 
 	#Matriz
     url(r'^matriz/$', MatrizListar.as_view(), name='matriz_listar'),
@@ -94,6 +94,7 @@ urlpatterns = patterns('',
     url(r'^parametro/(?P<pk>\d+)/$', ParametroDetalle.as_view(), name='parametro_detalle'),
     url(r'^parametro/(?P<pk>\d+)/modificar/$', ParametroModificar.as_view(), name='parametro_modificar'),
     url(r'^parametro/(?P<pk>\d+)/borrar/$', ParametroBorrar.as_view(), name='parametro_borrar'),					   
+    url(r'^parametro_listar_visualizar/$', ParametroListarVisualizar.as_view(), name='parametro_listar_visualizar'),
 
 	#Tecnica
     url(r'^tecnica/$', TecnicaListar.as_view(), name='tecnica_listar'),

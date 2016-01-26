@@ -6,8 +6,8 @@ from .viewpresupuesto import PresupuestoCrear, PresupuestoBorrar, PresupuestoDet
 from .viewordendetrabajo import OrdenDeTrabajoListar
 from .viewmatriz import MatrizCrear, MatrizBorrar, MatrizDetalle, MatrizListar, MatrizModificar
 from .viewfamilia import FamiliaCrear, FamiliaBorrar, FamiliaDetalle, FamiliaConfirmaAlta, FamiliaListar, FamiliaModificar
-from .viewparametro import ParametroCrear, ParametroBorrar, ParametroDetalle, ParametroListar, ParametroModificar
-from .viewtecnica import TecnicaCrear, TecnicaBorrar, TecnicaDetalle, TecnicaListar, TecnicaModificar
+from .viewparametro import ParametroCrear, ParametroBorrar, ParametroDetalle, ParametroListar, ParametroModificar, ParametroListarVisualizar
+from .viewtecnica import TecnicaCrear, TecnicaBorrar, TecnicaDetalle, TecnicaListar, TecnicaModificar, TecnicaListarVisualizar
 from .viewunidades import UnidadesCrear, UnidadesBorrar, UnidadesDetalle, UnidadesListar, UnidadesModificar
 from .viewmatriztecnicalct import MatrizTecnicaLctCrear, MatrizTecnicaLctBorrar, MatrizTecnicaLctDetalle,MatrizTecnicaLctConfirmaAlta, MatrizTecnicaLctListar, MatrizTecnicaLctModificar
 from .viewparametroprecio import ParametroPrecioCrear, ParametroPrecioBorrar, ParametroPrecioDetalle, ParametroPrecioListar, ParametroPrecioModificar
@@ -94,6 +94,7 @@ urlpatterns = patterns('',
     url(r'^parametro/(?P<pk>\d+)/$', ParametroDetalle.as_view(), name='parametro_detalle'),
     url(r'^parametro/(?P<pk>\d+)/modificar/$', ParametroModificar.as_view(), name='parametro_modificar'),
     url(r'^parametro/(?P<pk>\d+)/borrar/$', ParametroBorrar.as_view(), name='parametro_borrar'),					   
+    url(r'^parametro_listar_visualizar/$', ParametroListarVisualizar.as_view(), name='parametro_listar_visualizar'),
 
 	#Tecnica
     url(r'^tecnica/$', TecnicaListar.as_view(), name='tecnica_listar'),
@@ -101,6 +102,7 @@ urlpatterns = patterns('',
     url(r'^tecnica/(?P<pk>\d+)/$', TecnicaDetalle.as_view(), name='tecnica_detalle'),
     url(r'^tecnica/(?P<pk>\d+)/modificar/$', TecnicaModificar.as_view(), name='tecnica_modificar'),
     url(r'^tecnica/(?P<pk>\d+)/borrar/$', TecnicaBorrar.as_view(), name='tecnica_borrar'),	
+    url(r'^tecnica_listar_visualizar/$', TecnicaListarVisualizar.as_view(), name='tecnica_listar_visualizar'),
 
     #Unidades
     url(r'^unidades/$', UnidadesListar.as_view(), name='unidades_listar'),
