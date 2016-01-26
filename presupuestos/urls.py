@@ -24,6 +24,8 @@ from .viewotitem import Ot_ItemModificar, Ot_ItemListar
 from .viewpromptitems import promptitems
 from .viewpresupuestoimpresion_odt_full import presupuesto_impresion_odt_full
 from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar
+from .viewlogin import user_login, user_logout
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
              
@@ -38,7 +40,7 @@ urlpatterns = patterns('',
     #prompt de clientes
     url(r'^clienteprompt/$', ClientePrompt.as_view(), name='cliente_prompt'),
     #Presupuestos
-    url(r'^presupuestos/$', PresupuestoListar.as_view(), name='presupuesto_listar'),
+    url(r'^presupuestos/$', login_required(PresupuestoListar.as_view()), name='presupuesto_listar'),
     url(r'^presupuestos/crear/$', PresupuestoCrear.as_view(), name='presupuesto_crear'),
     url(r'^presupuestos/(?P<pk>\d+)/$', PresupuestoDetalle.as_view(), name='presupuesto_detalle'),
     url(r'^presupuestos/(?P<pk>\d+)/modificar/$', PresupuestoModificar.as_view(), name='presupuesto_modificar'),
@@ -156,6 +158,10 @@ urlpatterns = patterns('',
                        
     #multiseleccion de perfiles
     url(r'^promptperfiles/(?P<iditem>\d+)/$', promptperfiles, name='promptperfiles'),
+    
+    #Login y logout
+    url(r'^login/$', user_login, name='login'),
+    url(r'^logout/$', user_login, name='logout'),
 
 
 )

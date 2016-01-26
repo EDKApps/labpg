@@ -1,6 +1,12 @@
 # -- coding: utf-8 --
 #ver https://docs.djangoproject.com/es/1.9/topics/auth/default/
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
+from django.core.urlresolvers import reverse
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+
 def user_login(request):
 	#Si el request es HTTP POST, intentar extraer la información relevante
 	if request.method == 'POST':
@@ -25,4 +31,14 @@ def user_login(request):
 		
 	else: #Si no es POST, asumo GET y muestro el formulario de Login
 		#No paso variables de contexto, así que va el diccionario vacio
-		return render(request, 
+		return render(request, 'presupuestos/login.html',{})
+	
+
+# Use the login_required() decorator to ensure only those logged in can access the view.
+@login_required
+def user_logout(request):
+    # Since we know the user is logged in, we can now just log them out.
+    logout(request)
+
+    # Take the user back to the homepage.
+    return HttpResponseRedirect(reverse('presupuestos:login') )	

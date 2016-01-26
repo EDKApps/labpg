@@ -131,3 +131,4 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/opt/EDKAppsLab/static/' #para el repositorio
 #STATIC_ROOT = '/home/marcelo/EDKAppsLab/Lab/presupuestos/static'
 
+LOGIN_REDIRECT_URL = '/presupuestos/login/'
