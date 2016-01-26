@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 parametroprecio_fields = ('matriz','parametro','tecnica','precio_parametro','fecha_precio','fuente_precio')
 
-from .models import ParametroPrecio, Parametro
+from .models import ParametroPrecio
 
 class ParametroPrecioListar(ListView):
     model = ParametroPrecio
@@ -31,29 +31,34 @@ class ParametroPrecioListar(ListView):
             q = q.replace(" ","+")
             context['query'] = q
         return context    
-#Para poder ordenar las opciones del parametro
-class ParametroPrecioForm(forms.ModelForm):
-    """
-    def __init__(self, company, *args, **kwargs):
-        super (ClientForm,self ).__init__(*args,**kwargs) # populates the post
-        self.fields['rate'].queryset = Rate.objects.filter(company=company)
-        self.fields['client'].queryset = Client.objects.filter(company=company)
-    """
 
-    def __init__(self, parametro, *args, **kwargs):
-        super (ParametroPrecioForm, self ).__init__(*args,**kwargs) # populates the post
-        self.fields['parametro'].queryset= Parametro.objects.order_by('nombre_par')
-
-    class Meta:
-        model = ParametroPrecio
-        fields = parametroprecio_fields 
-
-class ParametroPrecioCrear(CreateView):
-    #Para poder ordenar las opciones del parametro
+#Listado con paginado de 2000, osea, seria como sin paginado
+class ParametroPrecioListarVisualizar(ListView):
     model = ParametroPrecio
-    #fields = parametroprecio_fields
-    form_class = ParametroPrecioForm
+    paginate_by = 2000
+    template_name = "presupuesto/parametroprecio_list_visualizar.html"
 
+    #búsqueda
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query is None:
+            return ParametroPrecio.objects.all().order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
+        else:
+            return ParametroPrecio.objects.filter( Q(parametro__nombre_par__icontains=query)).order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
+
+    #almacenar contexto de la búsqueda
+    def get_context_data(self, **kwargs):
+        context = super(ParametroPrecioListarVisualizar, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q')
+        if q: #si existe el valor, lo agrego/actualizo en el contexto
+            q = q.replace(" ","+")
+            context['query'] = q
+        return context    
+    
+class ParametroPrecioCrear(CreateView):
+    model = ParametroPrecio
+    fields = parametroprecio_fields
+	
     def get_success_url(self):
         return reverse('presupuestos:parametroprecio_detalle', kwargs={
             'pk': self.object.pk,

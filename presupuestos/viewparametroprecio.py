@@ -31,6 +31,29 @@ class ParametroPrecioListar(ListView):
             q = q.replace(" ","+")
             context['query'] = q
         return context    
+
+#Listado con paginado de 2000, osea, seria como sin paginado
+class ParametroPrecioListarVisualizar(ListView):
+    model = ParametroPrecio
+    paginate_by = 2000
+    template_name = "presupuestos/parametroprecio_list_visualizar.html"
+
+    #búsqueda
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query is None:
+            return ParametroPrecio.objects.all().order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
+        else:
+            return ParametroPrecio.objects.filter( Q(parametro__nombre_par__icontains=query)).order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
+
+    #almacenar contexto de la búsqueda
+    def get_context_data(self, **kwargs):
+        context = super(ParametroPrecioListarVisualizar, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q')
+        if q: #si existe el valor, lo agrego/actualizo en el contexto
+            q = q.replace(" ","+")
+            context['query'] = q
+        return context    
     
 class ParametroPrecioCrear(CreateView):
     model = ParametroPrecio
