@@ -7,6 +7,8 @@ import os
 from django.core.servers.basehttp import FileWrapper 
 from django.core.files import File
 from .models import Presupuesto
+from .models import Item
+import presupuesto_impresion_odt
 
 def presupuesto_impresion_odt_full(request, idpresupuesto):
 	#ruta de la plantilla
@@ -20,14 +22,8 @@ def presupuesto_impresion_odt_full(request, idpresupuesto):
     print 'origen>>' + str(plantilla_odt_path)
     print 'destino>>'+ str(file_odt_resultado)	
 	
-    presupuesto = Presupuesto.objects.get(id=idpresupuesto) 	
-    dummy = '<h2>Presupuesto: {0}</h2>'.format(presupuesto.referencia) 
-    dummy += '<p>Cliente: {0}</p>'.format(presupuesto.cliente.empresa) 
-    dummy += '<p>Contacto: {0}</p>'.format(presupuesto.cliente)
-    dummy += '<p>Referencia clave: {0}</p>'.format(presupuesto.referencia_clave)
-    dummy += '<p>Referencia: {0}</p>'.format(presupuesto.referencia)
-    dummy += '<p>Tipo: {0}</p>'.format(presupuesto.tipo)
-    dummy += '<p>Fecha de solicitud: {0}</p>'.format(presupuesto.fecha_solicitud)
+    dummy = presupuesto_impresion_odt.impresion(idpresupuesto)
+
 
 
 

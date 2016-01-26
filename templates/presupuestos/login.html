@@ -1,0 +1,18 @@
+<!DOCTYPE hmtl>
+<html>
+	<head><title>Login</title></head>
+	<body>
+		<h1>Login al sistema de presupuestos</h1>
+		<form id="login_form" method="post" action="/presupuestos/login/">
+			{% csrf_token%}
+			Usuario: <input type="text" name="username" value="" size= "50" />
+			<br />
+			Clave: <input type="password" name="password" value="" size="50" />
+			<br />
+			<input type="submit" value="submit" />
+		</form>
+	</body>
+<html>
+		
+	
+	

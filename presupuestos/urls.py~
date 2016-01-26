@@ -11,7 +11,7 @@ from .viewtecnica import TecnicaCrear, TecnicaBorrar, TecnicaDetalle, TecnicaLis
 from .viewunidades import UnidadesCrear, UnidadesBorrar, UnidadesDetalle, UnidadesListar, UnidadesModificar
 from .viewmatriztecnicalct import MatrizTecnicaLctCrear, MatrizTecnicaLctBorrar, MatrizTecnicaLctDetalle,MatrizTecnicaLctConfirmaAlta, MatrizTecnicaLctListar, MatrizTecnicaLctModificar
 from .viewparametroprecio import ParametroPrecioCrear, ParametroPrecioBorrar, ParametroPrecioDetalle, ParametroPrecioListar, ParametroPrecioModificar, ParametroPrecioListarVisualizar
-from .viewperfilprecio import PerfilPrecioCrear, PerfilPrecioBorrar, PerfilPrecioDetalle, PerfilPrecioConfirmaAlta, PerfilPrecioListar, PerfilPrecioModificar
+from .viewperfilprecio import PerfilPrecioCrear, PerfilPrecioBorrar, PerfilPrecioDetalle, PerfilPrecioConfirmaAlta, PerfilPrecioListar, PerfilPrecioModificar, PerfilPrecioListarVisualizar
 from .viewitem import ItemCrear, ItemBorrar, ItemDetalle, ItemListar, ItemModificar
 from .viewpresupuestoitem import PresupuestoItemModificar, PresupuestoItemDetalle
 from .viewpresupuestocampania import PresupuestoCampaniaModificar
@@ -24,6 +24,8 @@ from .viewotitem import Ot_ItemModificar, Ot_ItemListar
 from .viewpromptitems import promptitems
 from .viewpresupuestoimpresion_odt_full import presupuesto_impresion_odt_full
 from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar, Muestra_Listar
+from .viewlogin import user_login, user_logout
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
              
@@ -38,7 +40,7 @@ urlpatterns = patterns('',
     #prompt de clientes
     url(r'^clienteprompt/$', ClientePrompt.as_view(), name='cliente_prompt'),
     #Presupuestos
-    url(r'^presupuestos/$', PresupuestoListar.as_view(), name='presupuesto_listar'),
+    url(r'^presupuestos/$', login_required(PresupuestoListar.as_view()), name='presupuesto_listar'),
     url(r'^presupuestos/crear/$', PresupuestoCrear.as_view(), name='presupuesto_crear'),
     url(r'^presupuestos/(?P<pk>\d+)/$', PresupuestoDetalle.as_view(), name='presupuesto_detalle'),
     url(r'^presupuestos/(?P<pk>\d+)/modificar/$', PresupuestoModificar.as_view(), name='presupuesto_modificar'),
@@ -135,6 +137,7 @@ urlpatterns = patterns('',
 	url(r'^perfilprecio/(?P<pk>\d+)/confirmaalta$', PerfilPrecioConfirmaAlta.as_view(), name='perfilprecio_confirma_alta'),                         
     url(r'^perfilprecio/(?P<pk>\d+)/modificar/$', PerfilPrecioModificar.as_view(), name='perfilprecio_modificar'),
     url(r'^perfilprecio/(?P<pk>\d+)/borrar/$', PerfilPrecioBorrar.as_view(), name='perfilprecio_borrar'),    
+    url(r'^perfilprecio_listar_visualizar/$', PerfilPrecioListarVisualizar.as_view(), name='perfilprecio_listar_visualizar'),
                        
 	#Item
     url(r'^item/$', ItemListar.as_view(), name='item_listar'),
@@ -160,6 +163,10 @@ urlpatterns = patterns('',
                        
     #multiseleccion de perfiles
     url(r'^promptperfiles/(?P<iditem>\d+)/$', promptperfiles, name='promptperfiles'),
+    
+    #Login y logout
+    url(r'^login/$', user_login, name='login'),
+    url(r'^logout/$', user_login, name='logout'),
 
 
 )
