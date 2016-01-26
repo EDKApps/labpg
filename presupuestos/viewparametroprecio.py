@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 parametroprecio_fields = ('matriz','parametro','tecnica','precio_parametro','fecha_precio','fuente_precio')
 
-from .models import ParametroPrecio
+from .models import ParametroPrecio, Matriz, Parametro, Tecnica
 
 class ParametroPrecioListar(ListView):
     model = ParametroPrecio
@@ -64,6 +64,13 @@ class ParametroPrecioCrear(CreateView):
             'pk': self.object.pk,
         })
 
+    def get_form(self, form_class):
+        form = super(ParametroPrecioCrear, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+        form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
+        form.fields['tecnica'] = forms.ModelChoiceField(queryset = Tecnica.objects.order_by('nombre_tec'))
+        return form
+
 class ParametroPrecioDetalle(DetailView):
     model = ParametroPrecio
     fields = parametroprecio_fields
@@ -76,6 +83,12 @@ class ParametroPrecioModificar(UpdateView):
         return reverse('presupuestos:parametroprecio_detalle', kwargs={
             'pk': self.object.pk,
         })
+    def get_form(self, form_class):
+        form = super(ParametroPrecioModificar, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+        form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
+        form.fields['tecnica'] = forms.ModelChoiceField(queryset = Tecnica.objects.order_by('nombre_tec'))
+        return form
 
 class ParametroPrecioBorrar(DeleteView):
     model = ParametroPrecio
