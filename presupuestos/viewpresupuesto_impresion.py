@@ -13,6 +13,7 @@ class Presupuesto_ImpresionModificar(UpdateView):
     model = Presupuesto
     fields = presupuesto_impresion_fields
     #form_class = PresupuestoFormModificar
+    template_name = 'presupuestos/presupuesto_impresion_form.html'
 
     def get_success_url(self):
         return reverse_lazy('presupuestos:presupuesto_listar')

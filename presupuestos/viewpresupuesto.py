@@ -36,7 +36,7 @@ class PresupuestoListar(ListView):
             q = q.replace(" ","+")
             context['query'] = q
         return context    
-	
+
 class PresupuestoFormCrear(forms.ModelForm):
     class Meta:
         #Provee una asociación entre el ModelForm y un model
@@ -49,8 +49,7 @@ class PresupuestoFormModificar(forms.ModelForm):
         #Provee una asociación entre el ModelForm y un model
         model = Presupuesto
         fields = presupuesto_fields_modif	
-
-		
+	
 class PresupuestoCrear(CreateView):
     model = Presupuesto
     form_class = PresupuestoFormCrear
@@ -59,7 +58,7 @@ class PresupuestoCrear(CreateView):
         return reverse('presupuestos:presupuesto_detalle', kwargs={
             'pk': self.object.pk,
         })
-	
+
 class PresupuestoDetalle(DetailView):
     model = Presupuesto
     fields = presupuesto_fields_modif
@@ -79,7 +78,6 @@ class PresupuestoBorrar(DeleteView):
     success_url = reverse_lazy('presupuestos:presupuesto_listar')
     fields = presupuesto_fields_modif
 	
-
 class PresupuestoDetalleFull(DetailView):
     model = Presupuesto
     fields = presupuesto_fields_full
