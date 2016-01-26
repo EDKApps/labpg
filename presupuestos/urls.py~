@@ -10,7 +10,7 @@ from .viewparametro import ParametroCrear, ParametroBorrar, ParametroDetalle, Pa
 from .viewtecnica import TecnicaCrear, TecnicaBorrar, TecnicaDetalle, TecnicaListar, TecnicaModificar, TecnicaListarVisualizar
 from .viewunidades import UnidadesCrear, UnidadesBorrar, UnidadesDetalle, UnidadesListar, UnidadesModificar
 from .viewmatriztecnicalct import MatrizTecnicaLctCrear, MatrizTecnicaLctBorrar, MatrizTecnicaLctDetalle,MatrizTecnicaLctConfirmaAlta, MatrizTecnicaLctListar, MatrizTecnicaLctModificar
-from .viewparametroprecio import ParametroPrecioCrear, ParametroPrecioBorrar, ParametroPrecioDetalle, ParametroPrecioListar, ParametroPrecioModificar
+from .viewparametroprecio import ParametroPrecioCrear, ParametroPrecioBorrar, ParametroPrecioDetalle, ParametroPrecioListar, ParametroPrecioModificar, ParametroPrecioListarVisualizar
 from .viewperfilprecio import PerfilPrecioCrear, PerfilPrecioBorrar, PerfilPrecioDetalle, PerfilPrecioConfirmaAlta, PerfilPrecioListar, PerfilPrecioModificar
 from .viewitem import ItemCrear, ItemBorrar, ItemDetalle, ItemListar, ItemModificar
 from .viewpresupuestoitem import PresupuestoItemModificar, PresupuestoItemDetalle
@@ -126,6 +126,7 @@ urlpatterns = patterns('',
     url(r'^parametroprecio/(?P<pk>\d+)/$', ParametroPrecioDetalle.as_view(), name='parametroprecio_detalle'),
     url(r'^parametroprecio/(?P<pk>\d+)/modificar/$', ParametroPrecioModificar.as_view(), name='parametroprecio_modificar'),
     url(r'^parametroprecio/(?P<pk>\d+)/borrar/$', ParametroPrecioBorrar.as_view(), name='parametroprecio_borrar'),
+    url(r'^parametroprecio_listar_visualizar/$', ParametroPrecioListarVisualizar.as_view(), name='parametroprecio_listar_visualizar'),
                        
     #PerfilPrecio
     url(r'^perfilprecio/$', PerfilPrecioListar.as_view(), name='perfilprecio_listar'),

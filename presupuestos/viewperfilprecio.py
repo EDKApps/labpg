@@ -32,6 +32,31 @@ class PerfilPrecioListar(ListView):
         if q: #si existe el valor, lo agrego/actualizo en el contexto
             q = q.replace(" ","+")
             context['query'] = q
+        return context
+
+#Listado con paginado de 2000, osea, seria como sin paginado
+class PerfilPrecioListarVisualizar(ListView):
+    model = PerfilPrecio
+    paginate_by = 2000
+    template_name = 'presupuestos/perfilprecio_list_visualizar.html'
+
+    
+    #búsqueda
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query is None:
+            return PerfilPrecio.objects.all().order_by('nombre')
+        else:
+            return PerfilPrecio.objects.filter (Q(nombre__icontains=query) | 
+				                          Q(matriz__nombre_matriz__icontains=query)).order_by('nombre')    
+        
+    #almacenar contexto de la búsqueda
+    def get_context_data(self, **kwargs):
+        context = super(PerfilPrecioListarVisualizar, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q')
+        if q: #si existe el valor, lo agrego/actualizo en el contexto
+            q = q.replace(" ","+")
+            context['query'] = q
         return context    
     
 class PerfilPrecioCrear(CreateView):
