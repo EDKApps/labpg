@@ -47,7 +47,7 @@
 		<td>{{presupuesto.fecha_vencimiento}}</td>
 		<td>{{presupuesto.fecha_envio}}</td>
 		<td>{{presupuesto.fecha_aprobacion}}</td>	  
-		<td><a href="{% url "presupuestos:presupuesto_modificar_impresion" presupuesto.id %}"><img src= "{% static "images/accion_modificar.png"%}" data-toggle="tooltip" data-placement="top" title="Modificar" alt="Modificar"></a></td>
+		<td><a href="{% url "presupuestos:presupuesto_modificar_impresion" presupuesto.id %}"><img src= "{% static "images/accion_modificar.png"%}" data-toggle="tooltip" data-placement="top" title="Impresión Modificar" alt="Impresión Modificar"></a></td>
       </tr>
 
     {% endfor %}

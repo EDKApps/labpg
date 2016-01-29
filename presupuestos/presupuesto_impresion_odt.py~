@@ -125,5 +125,5 @@ def impresion(idpresupuesto):
     dummy += '<br/>'
     dummy += '<p>Notas técnicas: {0}</p>'.format(presupuesto.impresion_condiciones_tecnicas.encode('utf-8'))
 
-    print dummy
+    #print dummy
     return dummy
