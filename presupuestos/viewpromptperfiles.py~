@@ -49,7 +49,7 @@ def promptperfiles(request, iditem):
         else:
             queryset=PerfilPrecio.objects.filter(Q( matriz = item.matriz, nombre__icontains=querysearch)).order_by('nombre')
 			
-        paginator = Paginator(queryset, 50) #50 formularios por página, pedido explicito del cliente
+        paginator = Paginator(queryset, 1) #50 formularios por página, pedido explicito del cliente
         page = request.GET.get('page')
         try:
             objects =paginator.page(page)

@@ -13,7 +13,7 @@ from .models import ParametroPrecio, Matriz, Parametro, Tecnica
 
 class ParametroPrecioListar(ListView):
     model = ParametroPrecio
-    paginate_by = 10
+    paginate_by = 50 #a pedido del cliente
     
     #búsqueda
     def get_queryset(self):
@@ -66,6 +66,8 @@ class ParametroPrecioCrear(CreateView):
 
     def get_form(self, form_class):
         form = super(ParametroPrecioCrear, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+        form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
         form.fields['tecnica'] = forms.ModelChoiceField(queryset = Tecnica.objects.order_by('nombre_tec'))
         return form
 

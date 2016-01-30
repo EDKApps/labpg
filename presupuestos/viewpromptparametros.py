@@ -44,13 +44,12 @@ def promptparametros(request, iditem):
         querysearch = request.GET.get('q')
         if querysearch is None:
 			querysearch = '' #si es nulo le asigno la cadena vacia
-			queryset=ParametroPrecio.objects.filter(matriz = item.matriz)
+			queryset=ParametroPrecio.objects.filter(matriz = item.matriz).order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
         else:
             queryset=ParametroPrecio.objects.filter(Q( matriz = item.matriz, parametro__nombre_par__icontains=querysearch)| 
-                                                    Q( matriz = item.matriz, tecnica__nombre_tec__icontains=querysearch)
-                                                   )
+                                                    Q( matriz = item.matriz, tecnica__nombre_tec__icontains=querysearch)).order_by('matriz__nombre_matriz', 'parametro__nombre_par', 'tecnica__nombre_tec')
 			
-        paginator = Paginator(queryset, 10) #10 formularios por página
+        paginator = Paginator(queryset, 50) #50 formularios por página, pedido explicito del cliente
         page = request.GET.get('page')
         try:
             objects =paginator.page(page)
