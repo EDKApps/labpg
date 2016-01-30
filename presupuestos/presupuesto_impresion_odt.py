@@ -124,6 +124,7 @@ def impresion(idpresupuesto):
     cadena_html += '<p>Condiciones comerciales: {0}</p>'.format(presupuesto.impresion_condiciones_comerciales.encode('utf-8'))
     cadena_html += '<br/>'
     cadena_html += '<p>Notas técnicas: {0}</p>'.format(presupuesto.impresion_condiciones_tecnicas.encode('utf-8'))
+    cadena_html_ajuste = cadena_html.replace('\n','<br/>')
+    
+    return cadena_html_ajuste
 
-    #print cadena_html
-    return cadena_html
