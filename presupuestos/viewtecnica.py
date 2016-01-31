@@ -18,13 +18,38 @@ class TecnicaListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Tecnica.objects.all()
+            return Tecnica.objects.all().order_by('nombre_tec')
         else:
             return Tecnica.objects.filter( Q(nombre_tec__icontains=query) | 
-                                             Q(derivacion__icontains=query))
+                                             Q(derivacion__icontains=query)).order_by('nombre_tec')
+
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
         context = super(TecnicaListar, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q')
+        if q: #si existe el valor, lo agrego/actualizo en el contexto
+            q = q.replace(" ","+")
+            context['query'] = q
+        return context    
+
+#Listado con paginado de 2000, osea, seria como sin paginado
+class TecnicaListarVisualizar(ListView):
+    model = Tecnica
+    paginate_by = 2000
+    template_name = 'presupuestos/tecnica_list_visualizar.html'
+    
+    #búsqueda
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query is None:
+            return Tecnica.objects.all().order_by('nombre_tec')
+        else:
+            return Tecnica.objects.filter( Q(nombre_tec__icontains=query) | 
+                                             Q(derivacion__icontains=query)).order_by('nombre_tec')
+
+    #almacenar contexto de la búsqueda
+    def get_context_data(self, **kwargs):
+        context = super(TecnicaListarVisualizar, self).get_context_data(**kwargs)
         q = self.request.GET.get('q')
         if q: #si existe el valor, lo agrego/actualizo en el contexto
             q = q.replace(" ","+")

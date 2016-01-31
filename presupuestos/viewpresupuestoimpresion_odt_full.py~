@@ -19,8 +19,8 @@ def presupuesto_impresion_odt_full(request, idpresupuesto):
     odt_resultado_path = file_odt_resultado.name #path al archivo de resultado
     file_odt_resultado.close() #Se debería eliminar el archivo	
 
-    #print 'origen>>' + str(plantilla_odt_path)
-    #print 'destino>>'+ str(file_odt_resultado)	
+    print 'origen>>' + str(plantilla_odt_path)
+    print 'destino>>'+ str(file_odt_resultado)	
 	
     dummy = presupuesto_impresion_odt.impresion(idpresupuesto)
     """

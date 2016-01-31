@@ -10,7 +10,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView, U
 #perfilprecio_fields = ('nombre','matriz','perfil','tecnica','fecha_precio','fuente_precio')
 
 from .formperfilprecio import PerfilPrecioForm, PerfilPrecio_ParametroFormSet
-from .models import PerfilPrecio, PerfilPrecio_Parametro
+from .models import PerfilPrecio, PerfilPrecio_Parametro, Matriz, Parametro, Tecnica
 
 class PerfilPrecioListar(ListView):
     model = PerfilPrecio
@@ -20,16 +20,39 @@ class PerfilPrecioListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return PerfilPrecio.objects.all()
+            return PerfilPrecio.objects.all().order_by('nombre')
         else:
             return PerfilPrecio.objects.filter (Q(nombre__icontains=query) | 
-				                          Q(matriz__nombre_matriz__icontains=query) | 
-                                          Q(perfil__nombre__icontains=query) | 
-                                          Q(tecnica__nombre_tec__icontains=query)  )        
+				                          Q(matriz__nombre_matriz__icontains=query)).order_by('nombre')    
         
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
         context = super(PerfilPrecioListar, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q')
+        if q: #si existe el valor, lo agrego/actualizo en el contexto
+            q = q.replace(" ","+")
+            context['query'] = q
+        return context
+
+#Listado con paginado de 2000, osea, seria como sin paginado
+class PerfilPrecioListarVisualizar(ListView):
+    model = PerfilPrecio
+    paginate_by = 2000
+    template_name = 'presupuestos/perfilprecio_list_visualizar.html'
+
+    
+    #búsqueda
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query is None:
+            return PerfilPrecio.objects.all().order_by('nombre')
+        else:
+            return PerfilPrecio.objects.filter (Q(nombre__icontains=query) | 
+				                          Q(matriz__nombre_matriz__icontains=query)).order_by('nombre')    
+        
+    #almacenar contexto de la búsqueda
+    def get_context_data(self, **kwargs):
+        context = super(PerfilPrecioListarVisualizar, self).get_context_data(**kwargs)
         q = self.request.GET.get('q')
         if q: #si existe el valor, lo agrego/actualizo en el contexto
             q = q.replace(" ","+")
@@ -39,10 +62,24 @@ class PerfilPrecioListar(ListView):
 class PerfilPrecioCrear(CreateView):
     model = PerfilPrecio
     form_class= PerfilPrecioForm
+
     def get_success_url(self):
         return reverse('presupuestos:perfilprecio_confirma_alta', kwargs={
             'pk': self.object.pk,
         })
+
+    #ordenar los combos, opciones.
+    def get_form(self, form_class):
+        form = super(PerfilPrecioCrear, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+
+        #ordenar los combos del inline, todo
+        """
+        parametro_form = PerfilPrecio_ParametroFormSet()
+        parametro_form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
+        """
+        return form
+
     def get(self, request, *args, **kwargs):
         """
         Maneja GET requests e instancia una versión limpia del form y su formset
@@ -101,6 +138,12 @@ class PerfilPrecioConfirmaAlta(DetailView):
 class PerfilPrecioModificar(UpdateView):
     model = PerfilPrecio
     form_class= PerfilPrecioForm
+
+    #ordenar los combos, opciones.
+    def get_form(self, form_class):
+        form = super(PerfilPrecioModificar, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+        return form
     
     def get(self, request, *args, **kwargs):
         """

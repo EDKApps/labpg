@@ -6,12 +6,12 @@ from .viewpresupuesto import PresupuestoCrear, PresupuestoBorrar, PresupuestoDet
 from .viewordendetrabajo import OrdenDeTrabajoListar
 from .viewmatriz import MatrizCrear, MatrizBorrar, MatrizDetalle, MatrizListar, MatrizModificar
 from .viewfamilia import FamiliaCrear, FamiliaBorrar, FamiliaDetalle, FamiliaConfirmaAlta, FamiliaListar, FamiliaModificar
-from .viewparametro import ParametroCrear, ParametroBorrar, ParametroDetalle, ParametroListar, ParametroModificar
-from .viewtecnica import TecnicaCrear, TecnicaBorrar, TecnicaDetalle, TecnicaListar, TecnicaModificar
+from .viewparametro import ParametroCrear, ParametroBorrar, ParametroDetalle, ParametroListar, ParametroModificar, ParametroListarVisualizar
+from .viewtecnica import TecnicaCrear, TecnicaBorrar, TecnicaDetalle, TecnicaListar, TecnicaModificar, TecnicaListarVisualizar
 from .viewunidades import UnidadesCrear, UnidadesBorrar, UnidadesDetalle, UnidadesListar, UnidadesModificar
 from .viewmatriztecnicalct import MatrizTecnicaLctCrear, MatrizTecnicaLctBorrar, MatrizTecnicaLctDetalle,MatrizTecnicaLctConfirmaAlta, MatrizTecnicaLctListar, MatrizTecnicaLctModificar
-from .viewparametroprecio import ParametroPrecioCrear, ParametroPrecioBorrar, ParametroPrecioDetalle, ParametroPrecioListar, ParametroPrecioModificar
-from .viewperfilprecio import PerfilPrecioCrear, PerfilPrecioBorrar, PerfilPrecioDetalle, PerfilPrecioConfirmaAlta, PerfilPrecioListar, PerfilPrecioModificar
+from .viewparametroprecio import ParametroPrecioCrear, ParametroPrecioBorrar, ParametroPrecioDetalle, ParametroPrecioListar, ParametroPrecioModificar, ParametroPrecioListarVisualizar
+from .viewperfilprecio import PerfilPrecioCrear, PerfilPrecioBorrar, PerfilPrecioDetalle, PerfilPrecioConfirmaAlta, PerfilPrecioListar, PerfilPrecioModificar, PerfilPrecioListarVisualizar
 from .viewitem import ItemCrear, ItemBorrar, ItemDetalle, ItemListar, ItemModificar
 from .viewpresupuestoitem import PresupuestoItemModificar, PresupuestoItemDetalle
 from .viewpresupuestocampania import PresupuestoCampaniaModificar
@@ -23,7 +23,7 @@ from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_tr
 from .viewotitem import Ot_ItemModificar, Ot_ItemListar
 from .viewpromptitems import promptitems
 from .viewpresupuestoimpresion_odt_full import presupuesto_impresion_odt_full
-from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar
+from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar, Muestra_Listar
 from .viewlogin import user_login, user_logout
 from django.contrib.auth.decorators import login_required
 
@@ -40,7 +40,7 @@ urlpatterns = patterns('',
     #prompt de clientes
     url(r'^clienteprompt/$', ClientePrompt.as_view(), name='cliente_prompt'),
     #Presupuestos
-    url(r'^presupuestos/$', login_required(PresupuestoListar.as_view()), name='presupuesto_listar'),
+    url(r'^presupuestos/$', PresupuestoListar.as_view(), name='presupuesto_listar'),
     url(r'^presupuestos/crear/$', PresupuestoCrear.as_view(), name='presupuesto_crear'),
     url(r'^presupuestos/(?P<pk>\d+)/$', PresupuestoDetalle.as_view(), name='presupuesto_detalle'),
     url(r'^presupuestos/(?P<pk>\d+)/modificar/$', PresupuestoModificar.as_view(), name='presupuesto_modificar'),
@@ -73,6 +73,7 @@ urlpatterns = patterns('',
     #Muestras
     url(r'^muestra/$', Muestra_Ot_Item_Listar.as_view(), name='muestra_ot_item_listar'), 
      url(r'^muestra/(?P<pk>\d+)/modificar/$', Muestra_Ot_ItemModificar.as_view(), name='muestra_ot_item_modificar'), 
+    url(r'^muestralist/$', Muestra_Listar.as_view(), name='muestra_listar'), 
    					 
 	#Matriz
     url(r'^matriz/$', MatrizListar.as_view(), name='matriz_listar'),
@@ -95,6 +96,7 @@ urlpatterns = patterns('',
     url(r'^parametro/(?P<pk>\d+)/$', ParametroDetalle.as_view(), name='parametro_detalle'),
     url(r'^parametro/(?P<pk>\d+)/modificar/$', ParametroModificar.as_view(), name='parametro_modificar'),
     url(r'^parametro/(?P<pk>\d+)/borrar/$', ParametroBorrar.as_view(), name='parametro_borrar'),					   
+    url(r'^parametro_listar_visualizar/$', ParametroListarVisualizar.as_view(), name='parametro_listar_visualizar'),
 
 	#Tecnica
     url(r'^tecnica/$', TecnicaListar.as_view(), name='tecnica_listar'),
@@ -102,6 +104,7 @@ urlpatterns = patterns('',
     url(r'^tecnica/(?P<pk>\d+)/$', TecnicaDetalle.as_view(), name='tecnica_detalle'),
     url(r'^tecnica/(?P<pk>\d+)/modificar/$', TecnicaModificar.as_view(), name='tecnica_modificar'),
     url(r'^tecnica/(?P<pk>\d+)/borrar/$', TecnicaBorrar.as_view(), name='tecnica_borrar'),	
+    url(r'^tecnica_listar_visualizar/$', TecnicaListarVisualizar.as_view(), name='tecnica_listar_visualizar'),
 
     #Unidades
     url(r'^unidades/$', UnidadesListar.as_view(), name='unidades_listar'),
@@ -125,6 +128,7 @@ urlpatterns = patterns('',
     url(r'^parametroprecio/(?P<pk>\d+)/$', ParametroPrecioDetalle.as_view(), name='parametroprecio_detalle'),
     url(r'^parametroprecio/(?P<pk>\d+)/modificar/$', ParametroPrecioModificar.as_view(), name='parametroprecio_modificar'),
     url(r'^parametroprecio/(?P<pk>\d+)/borrar/$', ParametroPrecioBorrar.as_view(), name='parametroprecio_borrar'),
+    url(r'^parametroprecio_listar_visualizar/$', ParametroPrecioListarVisualizar.as_view(), name='parametroprecio_listar_visualizar'),
                        
     #PerfilPrecio
     url(r'^perfilprecio/$', PerfilPrecioListar.as_view(), name='perfilprecio_listar'),
@@ -133,6 +137,7 @@ urlpatterns = patterns('',
 	url(r'^perfilprecio/(?P<pk>\d+)/confirmaalta$', PerfilPrecioConfirmaAlta.as_view(), name='perfilprecio_confirma_alta'),                         
     url(r'^perfilprecio/(?P<pk>\d+)/modificar/$', PerfilPrecioModificar.as_view(), name='perfilprecio_modificar'),
     url(r'^perfilprecio/(?P<pk>\d+)/borrar/$', PerfilPrecioBorrar.as_view(), name='perfilprecio_borrar'),    
+    url(r'^perfilprecio_listar_visualizar/$', PerfilPrecioListarVisualizar.as_view(), name='perfilprecio_listar_visualizar'),
                        
 	#Item
     url(r'^item/$', ItemListar.as_view(), name='item_listar'),

@@ -140,7 +140,7 @@ class Familia (models.Model): # también llamada Grupo
 @python_2_unicode_compatible	
 class Parametro (models.Model):
 	nombre_par = models.CharField('Parametro', max_length=100)
-	familia = models.ForeignKey(Familia, blank='true', null='true',on_delete= models.PROTECT )
+	familia = models.ForeignKey(Familia, blank='true', null='true', on_delete= models.PROTECT )
 	def __str__(self):
 		return self.nombre_par
 	
@@ -220,10 +220,10 @@ class PerfilPrecio_Parametro (models.Model): # ex GrupoParametroPrecio_Parametro
 
 @python_2_unicode_compatible
 class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, junto con sus subitems
-	presupuesto = models.ForeignKey(Presupuesto)
+	presupuesto = models.ForeignKey(Presupuesto, on_delete= models.PROTECT)
 	numero = models.IntegerField(default= 0)
 	descripcion = models.CharField(max_length= 100, blank='true')
-	matriz = models.ForeignKey(Matriz)
+	matriz = models.ForeignKey(Matriz, on_delete= models.PROTECT)
 	cantidadMuestra = models.IntegerField(default= 0)
 	descuento = models.DecimalField('descuento (%)', max_digits=5, decimal_places=2, default=0)
 	total_sin_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
@@ -258,8 +258,8 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 
 @python_2_unicode_compatible
 class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio
-	item = models.ForeignKey(Item, null=True)
-	itemparametro = models.ForeignKey(ParametroPrecio)
+	item = models.ForeignKey(Item, null=True, on_delete= models.PROTECT)
+	itemparametro = models.ForeignKey(ParametroPrecio, on_delete= models.PROTECT)
 	precio = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	def __str__(self):
 		return self.itemparametro.parametro.nombre_par #lo agrego para cumplir con decorator python_2
@@ -272,8 +272,8 @@ class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio
 
 @python_2_unicode_compatible
 class Subitem_perfil (models.Model): #relacion Item-PerfilPrecio
-	item = models.ForeignKey(Item, null=True)
-	itemperfil = models.ForeignKey(PerfilPrecio)
+	item = models.ForeignKey(Item, null=True, on_delete= models.PROTECT)
+	itemperfil = models.ForeignKey(PerfilPrecio, on_delete= models.PROTECT)
 	precio = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 	def __str__(self):
 		return self.itemperfil.nombre #lo agrego para cumplir con decorator python_2
@@ -368,7 +368,7 @@ class Muestra_Estado (models.Model):
 
 @python_2_unicode_compatible
 class Muestra (models.Model):
-	ot_item = models.ForeignKey(Ot_Item, null=True)
+	ot_item = models.ForeignKey(Ot_Item, null=True, on_delete= models.PROTECT)
 	referencia_clave = models.CharField(max_length=100, blank='true',default='M-')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental, ajustado en save()
 	ingreso_muestra = models.CharField('responsable ingreso de muestra', max_length=100, blank='true')
@@ -398,6 +398,15 @@ class Muestra (models.Model):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
 			self.referencia = str(sigNumero('orden_trabajo_referencia'))
+		#Si es nueva muestra, crea los registro de Analisis
+		if not(Muestra.objects.filter(id=self.id).exists()):
+			print 'nueva muestra'
+			#Buscar OtItem - Item - sus Subitem_parametro --sus parametros
+			lista_subitem_parametro = Subitem_parametro.objects.filter (item = self.ot_item.item)
+			for subitem_parametro in lista_subitem_parametro:
+				print subitem_parametro.itemparametro.parametro
+
+			#Buscar OtItem - Item - sus perfilPrecio - sus parametros
 		# Call the "real" save() method.
 		super(Muestra, self).save(*args, **kwargs)
 	
@@ -405,3 +414,22 @@ class Muestra (models.Model):
 		#validar que fecha muestreo < fecha ingreso
 		if (self.fecha_muestreo > self.fecha_ingreso):
 			raise ValidationError({'fecha_muestreo':_('Error: fecha muestreo debe ser menor que fecha ingreso.')})
+		#validar que el numero de muestra < que otitem.cantidad
+		numero_muestras = Muestra.objects.filter (ot_item = self.ot_item).count()
+		if not(Muestra.objects.filter(id=self.id).exists()):
+			if ((numero_muestras+1) > self.ot_item.cantidad):
+				raise ValidationError({'referencia_clave':_('Error: numero de muestras debe ser menor qu ot-item.cantidad .')})
+
+@python_2_unicode_compatible
+class Analisis (models.Model):
+	muestra = models.ForeignKey(Muestra, on_delete= models.PROTECT)
+	parametro = models.ForeignKey(Parametro, on_delete= models.PROTECT)
+	tecnica = models.ForeignKey(Tecnica, on_delete= models.PROTECT)
+	unidad = models.ForeignKey(Unidades, on_delete= models.PROTECT)
+	lct = models.DecimalField(max_digits=10, decimal_places=6)
+	valor = models.CharField('resultado', max_length=100, blank='true')
+	verificacion = models.BooleanField(default=False)
+	observacion = models.CharField(max_length=100, blank='true')
+	
+	def __str__(self):
+		return self.muestra.referencia+', '+self.parametro.nombre_par

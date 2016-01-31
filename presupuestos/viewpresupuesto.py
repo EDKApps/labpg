@@ -23,11 +23,12 @@ class PresupuestoListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Presupuesto.objects.all()
+            return Presupuesto.objects.all().order_by('-referencia')
         else:
             return Presupuesto.objects.filter( Q(referencia_clave__icontains=query) | 
                                            Q(referencia__icontains=query) |
-                                           Q(cliente__empresa__icontains=query) )
+                                           Q(cliente__empresa__icontains=query) ).order_by('-referencia')
+
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
         context = super(PresupuestoListar, self).get_context_data(**kwargs)

@@ -19,9 +19,9 @@ class UnidadesListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Unidades.objects.all()
+            return Unidades.objects.all().order_by('nombre_unidad')
         else:
-            return Unidades.objects.filter( Q(nombre_unidad__icontains=query) )
+            return Unidades.objects.filter( Q(nombre_unidad__icontains=query)).order_by('nombre_unidad')
                                   
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
