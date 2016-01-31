@@ -35,10 +35,14 @@ def user_login(request):
 	
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
-@login_required
+#@login_required
 def user_logout(request):
     # Since we know the user is logged in, we can now just log them out.
+    print request.session
     logout(request)
-
+    #Session.objects.all().delete()
+    #Session.clear()
+    #Session.flush()
+    
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('presupuestos:login') )	
