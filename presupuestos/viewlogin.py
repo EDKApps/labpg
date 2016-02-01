@@ -6,7 +6,10 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.template import Context
 
+@csrf_exempt #solo en esta vista desactivar el control de Crsf
 def user_login(request):
 	#Si el request es HTTP POST, intentar extraer la información relevante
 	if request.method == 'POST':
@@ -25,20 +28,20 @@ def user_login(request):
 				login(request,user)
 				return HttpResponseRedirect( reverse('presupuestos:presupuesto_listar') )
 			else:
-				return HttpResponse('Su cuenta se encuentra desactivada')
+				context = Context({"mensaje": "Su cuenta se encuentra desactivada"})
+				return render(request, 'presupuestos/login.html', context)
 		else:
-			return HttpResponse('Ha indicado datos de acceso inválidos')
-		
+			context = Context({"mensaje": "Ha indicado datos de acceso inválidos"})			
+			return render(request, 'presupuestos/login.html', context)
 	else: #Si no es POST, asumo GET y muestro el formulario de Login
 		#No paso variables de contexto, así que va el diccionario vacio
 		return render(request, 'presupuestos/login.html',{})
 	
-
 # Use the login_required() decorator to ensure only those logged in can access the view.
-@login_required
+#@login_required
 def user_logout(request):
     # Since we know the user is logged in, we can now just log them out.
+    print request.session
     logout(request)
-
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('presupuestos:login') )	

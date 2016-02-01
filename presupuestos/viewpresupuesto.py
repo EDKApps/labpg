@@ -15,7 +15,7 @@ fecha_solicitud_anios = ('2015', '2016', '2017')
 #from .models import Presupuesto, Item, Campania
 
 #Presupuesto
-class PresupuestoListar(ListView):
+class PresupuestoListar( ListView):
     model = Presupuesto
     paginate_by = 10
 	#context_object_name = 'lista_de_presupuestos' #opcion a object_list

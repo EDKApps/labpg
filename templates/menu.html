@@ -22,10 +22,16 @@
     <body> 
 	<!-- Stack the columns on mobile by making one full-width and the other half-width -->
 	<div class="row">
-	    <!--logo -->
-	    <a href="{% url "presupuestos:lab_inicio"  %}"><img src= "{% static "images/logo_clarity.jpg"%}" alt="Logotipo de Clarity"></a>
+        <div class="col-xs-3 col-md-3">
+  	      <!--logo -->
+	      <a href="{% url "presupuestos:lab_inicio"  %}"><img src= "{% static "images/logo_clarity.jpg"%}" alt="Logotipo de Clarity"></a>
+        </div>
+        <div class="col-xs-8 col-md-8"></div>
+        <div class="col-lg-1">
+            <p class="text-left"><strong>{{ user.username }}</strong></p>
+            <p><a href="{% url "presupuestos:logout"  %}" class="btn btn-danger btn-block">Salir</a></p>
+        </div>
 	</div>
-        <p>Usuario: {{ user.username }}</p>
 	<!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
 <div class="row">
   <div class="col-xs-2 col-md-2">
