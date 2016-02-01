@@ -13,6 +13,8 @@ def impresion(idpresupuesto):
     cadena_html += '<p>Fecha: {0}</p>'.format(hora.strftime('%d/%m/%Y'))
     cadena_html += '<p>Presupuesto número: {0}</p>'.format(presupuesto.referencia_completa())
     cadena_html += '<p></p>'
+    #intento de centrado
+    #cadena_html += datos.center(30, '.')
     cadena_html += '<b>Datos del Cliente</b>'
     cadena_html += '<p>Cliente: {0}</p>'.format(presupuesto.cliente.empresa)
     cadena_html += '<p>Cuit: {0}</p>'.format(presupuesto.cliente.cuit)
@@ -124,6 +126,7 @@ def impresion(idpresupuesto):
     cadena_html += '<p>Condiciones comerciales: {0}</p>'.format(presupuesto.impresion_condiciones_comerciales.encode('utf-8'))
     cadena_html += '<br/>'
     cadena_html += '<p>Notas técnicas: {0}</p>'.format(presupuesto.impresion_condiciones_tecnicas.encode('utf-8'))
+
     cadena_html_ajuste = cadena_html.replace('\n','<br/>')
     
     return cadena_html_ajuste
