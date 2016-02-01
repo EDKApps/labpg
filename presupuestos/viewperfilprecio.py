@@ -10,7 +10,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView, U
 #perfilprecio_fields = ('nombre','matriz','perfil','tecnica','fecha_precio','fuente_precio')
 
 from .formperfilprecio import PerfilPrecioForm, PerfilPrecio_ParametroFormSet
-from .models import PerfilPrecio, PerfilPrecio_Parametro
+from .models import PerfilPrecio, PerfilPrecio_Parametro, Matriz, Parametro, Tecnica
 
 class PerfilPrecioListar(ListView):
     model = PerfilPrecio
@@ -62,10 +62,24 @@ class PerfilPrecioListarVisualizar(ListView):
 class PerfilPrecioCrear(CreateView):
     model = PerfilPrecio
     form_class= PerfilPrecioForm
+
     def get_success_url(self):
         return reverse('presupuestos:perfilprecio_confirma_alta', kwargs={
             'pk': self.object.pk,
         })
+
+    #ordenar los combos, opciones.
+    def get_form(self, form_class):
+        form = super(PerfilPrecioCrear, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+
+        #ordenar los combos del inline, todo
+        """
+        parametro_form = PerfilPrecio_ParametroFormSet()
+        parametro_form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
+        """
+        return form
+
     def get(self, request, *args, **kwargs):
         """
         Maneja GET requests e instancia una versión limpia del form y su formset
@@ -124,6 +138,12 @@ class PerfilPrecioConfirmaAlta(DetailView):
 class PerfilPrecioModificar(UpdateView):
     model = PerfilPrecio
     form_class= PerfilPrecioForm
+
+    #ordenar los combos, opciones.
+    def get_form(self, form_class):
+        form = super(PerfilPrecioModificar, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+        return form
     
     def get(self, request, *args, **kwargs):
         """
