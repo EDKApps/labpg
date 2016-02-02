@@ -21,7 +21,10 @@
 		</div>	
         <h3 class="form-signin-heading">Por favor ingrese sus credenciales</h3>
 		{% if mensaje  %}
-	      <div class="alert alert-warning"> <strong>¡Atención!</strong> {{mensaje}} </div>
+		  <div class="alert alert-danger" role="alert">
+		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			  <span class="sr-only">¡Atención!</span>{{mensaje}}
+		  </div>
         {% endif %}
         <label for="username" class="sr-only">Usuario</label>
         <input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
