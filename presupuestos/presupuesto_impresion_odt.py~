@@ -3,7 +3,6 @@
 #from django.db import models
 from datetime import datetime, date, time, timedelta
 from .models import Presupuesto, Item, Subitem_perfil, Campania, Subitem_parametro, PerfilPrecio_Parametro
-import string
 
 #Presupuesto
 
@@ -13,11 +12,16 @@ def impresion(idpresupuesto):
     hora = datetime.today()
     cadena_html += '<p>Fecha: {0}</p>'.format(hora.strftime('%d/%m/%Y'))
     cadena_html += '<p>Presupuesto número: {0}</p>'.format(presupuesto.referencia_completa())
-    cadena_html += '<br/>'
-    datos = 'DATOS'
-    datos_center = string.center('datos',10)
-    cadena_html += '<p>datos: {0}</p>'.format(datos_center)
-    cadena_html += '<br/>'
+    #cadena_html += '<p></p>'
+    #intento de centrado
+    datos = 'X'
+    datos2 = datos.center(30, '.')
+    print datos2
+    datos = 'Y'
+    datos2 = datos.center(30, &nbsp;)
+    print datos2
+    cadena_html += '<p>Center: {0}</p>'.format(datos2)
+
     cadena_html += '<b>Datos del Cliente</b>'
     cadena_html += '<p>Cliente: {0}</p>'.format(presupuesto.cliente.empresa)
     cadena_html += '<p>Cuit: {0}</p>'.format(presupuesto.cliente.cuit)

@@ -179,20 +179,21 @@ class ParametroPrecio  (models.Model):
 	seleccionado = models.BooleanField(default=False)
 	#def familia(self): todo: (Inferido) a partir del parametro retornar su familia
 		
-	def lcm(self):
+	def lct(self):
 		try:
 			mt = MatrizTecnicaLct.objects.get(matriz=self.matriz, parametro=self.parametro, tecnica=self.tecnica)
 		except MatrizTecnicaLct.DoesNotExist:
 			return 0
 		else:
 			return mt.lct
-	def uni(self):
+	def unidades(self):
 		try:
 			mt = MatrizTecnicaLct.objects.get(matriz=self.matriz, parametro=self.parametro, tecnica=self.tecnica)
 		except MatrizTecnicaLct.DoesNotExist:
 			return ''
 		else:
-			return mt.unidad
+			#devuelve el string, y no el objeto
+			return mt.unidad.nombre_unidad
 	def __str__(self):
 		return self.parametro.nombre_par+', '+self.tecnica.nombre_tec
 
@@ -212,9 +213,25 @@ class PerfilPrecio_Parametro (models.Model): # ex GrupoParametroPrecio_Parametro
 	perfilPrecio = models.ForeignKey(PerfilPrecio, on_delete= models.PROTECT)
 	parametro = models.ForeignKey(Parametro, on_delete= models.PROTECT)
 	tecnica = models.ForeignKey(Tecnica, on_delete= models.PROTECT)	
+
+	def lct(self):
+		try:
+			mt = MatrizTecnicaLct.objects.get(matriz=self.perfilPrecio.matriz, parametro=self.parametro, tecnica=self.tecnica)
+		except MatrizTecnicaLct.DoesNotExist:
+			return 0
+		else:
+			return mt.lct
+	def unidades(self):
+		try:
+			mt = MatrizTecnicaLct.objects.get(matriz=self.perfilPrecio.matriz, parametro=self.parametro, tecnica=self.tecnica)
+		except MatrizTecnicaLct.DoesNotExist:
+			return ''
+		else:
+			#devuelve el string, y no el objeto
+			return mt.unidad.nombre_unidad
 	def __str__(self):
 		return self.parametro.nombre_par
-	#todo:agregar inferida de unidades y lct, que vienen de matriztecnicalct
+
 
 @python_2_unicode_compatible
 class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, junto con sus subitems
@@ -398,18 +415,30 @@ class Muestra (models.Model):
 			self.referencia = str(sigNumero('orden_trabajo_referencia'))
 		#Si es nueva muestra, crea los registro de Analisis
 		if not(Muestra.objects.filter(id=self.id).exists()):
-			print 'nueva muestra'
+			crear_analisis =  True
+		else:
+			crear_analisis = False
+
+		# Call the "real" save() method.
+		super(Muestra, self).save(*args, **kwargs)
+		
+		if crear_analisis:
 			#Buscar OtItem - Item - sus Subitem_parametro --sus parametros
 			lista_subitem_parametro = Subitem_parametro.objects.filter (item = self.ot_item.item)
 			for subitem_parametro in lista_subitem_parametro:
-				print subitem_parametro.itemparametro.parametro
-				print subitem_parametro.itemparametro.tecnica
-				#todo-hacer probar si se puede crear instancia analisis, con un registro muestra que todavia no existe
-
+				un_analisis = Analisis.objects.create(muestra=self, parametro=subitem_parametro.itemparametro.parametro, tecnica=subitem_parametro.itemparametro.tecnica, unidades = subitem_parametro.itemparametro.unidades(), lct =  subitem_parametro.itemparametro.lct())
+				un_analisis.save()
 			#Buscar OtItem - Item - sus perfilPrecio - sus parametros
-		# Call the "real" save() method.
-		super(Muestra, self).save(*args, **kwargs)
+			lista_Subitem_perfil = Subitem_perfil.objects.filter (item = self.ot_item.item)
+			for un_subitem_perfil in lista_Subitem_perfil:
+				#todo hacer, no funciona
+				#Verificar linea, instance
+				lista_perfilPrecio_par = PerfilPrecio_Parametro.objects.filter(perfilPrecio=un_subitem_perfil.itemperfil)
+				for perfilPrecio_Par in lista_perfilPrecio_par:
+					un_analisis = Analisis.objects.create(muestra=self, parametro=perfilPrecio_Par.parametro, tecnica=perfilPrecio_Par.tecnica, unidades = perfilPrecio_Par.unidades(), lct =  perfilPrecio_Par.lct())
+					un_analisis.save()
 	
+
 	def clean(self):
 		#validar que fecha muestreo < fecha ingreso
 		if (self.fecha_muestreo > self.fecha_ingreso):
@@ -422,14 +451,16 @@ class Muestra (models.Model):
 
 @python_2_unicode_compatible
 class Analisis (models.Model):
-	muestra = models.ForeignKey(Muestra, on_delete= models.PROTECT)
+	#Si se elimina la muestra, se borran los analisis también
+	muestra = models.ForeignKey(Muestra)
 	parametro = models.ForeignKey(Parametro, on_delete= models.PROTECT)
 	tecnica = models.ForeignKey(Tecnica, on_delete= models.PROTECT)
-	unidad = models.ForeignKey(Unidades, on_delete= models.PROTECT)
-	lct = models.DecimalField(max_digits=10, decimal_places=6)
-	valor = models.CharField('resultado', max_length=100, blank='true')
+	#Se optó que sea Charfield, y no foreingkey para simplificar.
+	unidades = models.CharField(max_length=100, blank='true', default='')
+	lct = models.DecimalField(max_digits=10, decimal_places=6, null='true')
+	valor = models.CharField('resultado', max_length=100, blank='true', default='')
 	verificacion = models.BooleanField(default=False)
-	observacion = models.CharField(max_length=100, blank='true')
+	observacion = models.CharField(max_length=100, blank='true', default='')
 	
 	def __str__(self):
 		return self.muestra.referencia+', '+self.parametro.nombre_par
