@@ -124,5 +124,7 @@ def impresion(idpresupuesto):
     cadena_html += '<br/>'
     cadena_html += '<p class="EDKAppsJustificado">Notas técnicas: {0}</p>'.format(presupuesto.impresion_condiciones_tecnicas.encode('utf-8'))
 
-    #print cadena_html
-    return cadena_html
+    cadena_html_ajuste = cadena_html.replace('\n','<br/>')
+    
+    return cadena_html_ajuste
+

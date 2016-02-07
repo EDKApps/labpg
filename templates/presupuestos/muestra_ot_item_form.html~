@@ -55,12 +55,12 @@
                   <th>referencia</th>
                   <th>responsable ingreso de muestra</th>
                   <th>fecha de ingreso</th>
-                  <th>cadena decustodia</th>
+                  <th>cadena de custodia</th>
                   <th>rótulo</th>
                   <th>ubicación</th>
                   <th>sitio de muestreo</th>
                   <th>muestreador</th>
-                  <th>Sólido - peso de muestra (gr.)</th>
+                  <th>sólido - peso de muestra (gr.)</th>
                   <th>líquido - Volúmen de muestra (lt.)</th>
                   <th>aire - Caudal, (lt/min, tiempo)</th>
                   <th>Preservación - Conservación</th>
@@ -69,6 +69,7 @@
                   <th>sistema de coordenada</th>
                   <th>observación</th>
                   <th>estado</th>
+                  <th>Nota Eliminar</th>
                   </tr>
                 </thead>
                 <tbody>                

@@ -20,6 +20,7 @@
 		<th>Perfil</th>
 		<th>precio</th>
 		<th>fecha del precio</th>
+		<th>fuente del precio</th>
 	  </tr>
 	</thead>
 	<tbody>	  	
@@ -33,6 +34,7 @@
 		  <td> {{ form.instance.nombre }}</td>
 		  <td> {{ form.instance.precio }}</td>
 		  <td> {{ form.instance.fecha_precio }}</td>
+		  <td> {{ form.instance.fuente_precio }}</td>
 		  </tr>		
     {% endfor %}	
 	</tbody>
