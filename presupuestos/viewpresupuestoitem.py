@@ -38,12 +38,6 @@ class PresupuestoItemModificar(UpdateView):
         item_form = Presupuesto_ItemFormSet(instance = self.object, #self.object es el parent object
                                            queryset= (self.object).item_set.order_by("numero"))
         
-        #formset=FS(instance=parentobject,
-        #   queryset=parentobject.childobject_set.order_by("-time_begin")
-        #  )
-     
-        
-        
         return self.render_to_response(
             self.get_context_data(form=form,
                                   item_form=item_form,

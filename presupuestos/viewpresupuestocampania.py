@@ -35,7 +35,8 @@ class PresupuestoCampaniaModificar(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)        
         #render form 
-        campania_form = Presupuesto_CampaniaFormSet(instance = self.object)
+        campania_form = Presupuesto_CampaniaFormSet(instance = self.object,
+                                                   queryset=(self.object).campania_set.order_by("numero") )
         
         return self.render_to_response(
             self.get_context_data(form=form,
@@ -51,7 +52,6 @@ class PresupuestoCampaniaModificar(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         
-        campania_form = Presupuesto_CampaniaFormSet(instance = Presupuesto())
         campania_form = Presupuesto_CampaniaFormSet(request.POST,request.FILES,instance= self.object )
         
         if (form.is_valid() and campania_form.is_valid()):

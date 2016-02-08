@@ -29,7 +29,7 @@ def impresion(idpresupuesto):
     cadena_html += '<p class="EDKAppsLineaHorizontal" ></p>'
 
     cadena_html += '<b>Detalle de Item</b>'
-    for item in Item.objects.filter(presupuesto=presupuesto):
+    for item in Item.objects.filter(presupuesto=presupuesto).order_by("numero"):
         cadena_html += '<p><b>Item {0}</b></p>'.format(item.numero)
         cadena_html += '<p>Matriz: {0}</p>'.format(item.matriz)
         cadena_html += '<p>Descripcion: {0}</p>'.format(item.descripcion.encode('utf-8'))
@@ -81,7 +81,7 @@ def impresion(idpresupuesto):
         cadena_html += '<br/>'
 
 
-    listaMuestreo = Campania.objects.filter(presupuesto=presupuesto)
+    listaMuestreo = Campania.objects.filter(presupuesto=presupuesto).order_by("numero")
     if (listaMuestreo):
         cadena_html += '<h2>Muestreo: </h2>'
         cadena_html += '<table>'
