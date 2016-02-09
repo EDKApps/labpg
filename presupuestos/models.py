@@ -13,6 +13,22 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 @python_2_unicode_compatible
+class Numerador (models.Model):
+	nombre = models.CharField(max_length=30, blank='true',unique=True)
+	ultimo_valor = models.IntegerField(default=0)
+	def __str__(self):
+		return self.nombre
+
+
+
+#numerador, created = Numerador.objects.update_or_create(
+#        identifier=identifier, defaults={"name": name}
+#)
+
+from labutiles import sigNumero,completarConCeros #Como usa Numerador, lo importo después de que existe en model
+
+
+@python_2_unicode_compatible
 class Cliente (models.Model):
 	empresa = models.CharField(max_length=100)
 	contacto = models.CharField('Contacto (apellido, nombre)', max_length=200)
@@ -87,7 +103,7 @@ class Presupuesto (models.Model):
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
-			self.referencia = str(sigNumero('presupuesto_referencia'))
+			self.referencia = completarConCeros( sigNumero('presupuesto_referencia'), 7) #completo hasta 7 dígitos 
 		#si es insert (id= 0), asignar datos de plantilla impresion
 		if self.id is None:
 			plantillas = Plantillas_Impresion.objects.all()
@@ -97,31 +113,6 @@ class Presupuesto (models.Model):
 			self.impresion_condiciones_tecnicas = plantilla.presupuesto_condiciones_tecnicas
 			
 		super(Presupuesto, self).save(*args, **kwargs) # Call the "real" save() method.
-
-@python_2_unicode_compatible
-class Numerador (models.Model):
-	nombre = models.CharField(max_length=30, blank='true',unique=True)
-	ultimo_valor = models.IntegerField(default=0)
-	def __str__(self):
-		return self.nombre
-
-def sigNumero(nombreNumerador):
-	try:
-		n = Numerador.objects.get(nombre=nombreNumerador)
-	except Numerador.DoesNotExist:
-		#Si no existe en la BD, lo creo
-		n = Numerador(nombre=nombreNumerador, ultimo_valor = 1)
-		n.save()
-		return n.ultimo_valor
-	else:
-		#si existe, incremento el valor, lo guardo y lo retorno
-		n.ultimo_valor += 1
-		n.save()
-		return n.ultimo_valor
-
-#numerador, created = Numerador.objects.update_or_create(
-#        identifier=identifier, defaults={"name": name}
-#)
 
 @python_2_unicode_compatible
 class Matriz (models.Model):
@@ -346,7 +337,7 @@ class Orden_trabajo (models.Model):
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
-			self.referencia = str(sigNumero('orden_trabajo_referencia'))
+			self.referencia = completarConCeros( sigNumero('orden_trabajo_referencia'), 7)
 			
 		super(Orden_trabajo, self).save(*args, **kwargs) # Call the "real" save() method.
 
@@ -412,7 +403,8 @@ class Muestra (models.Model):
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
-			self.referencia = str(sigNumero('orden_trabajo_referencia'))
+			self.referencia = completarConCeros( sigNumero('muestra_referencia'), 7) #completo hasta 7 dígitos 
+			
 		#Si es nueva muestra, crea los registro de Analisis
 		if not(Muestra.objects.filter(id=self.id).exists()):
 			crear_analisis =  True

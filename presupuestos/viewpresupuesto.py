@@ -8,7 +8,6 @@ from .models import Presupuesto, Item, Campania
 
 #En el form de alta excluyo la referencia (automática)
 presupuesto_fields_full = ('cliente','referencia_clave', 'referencia', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion','item.numero')
-
 presupuesto_fields_crear = ('cliente','referencia_clave', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion', 'descuento')
 presupuesto_fields_modif = ('cliente','referencia_clave', 'referencia', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion', 'descuento')
 fecha_solicitud_anios = ('2015', '2016', '2017')
