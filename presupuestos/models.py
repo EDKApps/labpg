@@ -354,6 +354,8 @@ class Ot_Item (models.Model):
 	numero = models.IntegerField(default= 0)
 	cantidad = models.IntegerField(default= 0)
 	estado = models.ForeignKey(Ot_Estado,on_delete= models.PROTECT)
+	muestreo_propio = models.BooleanField(default=False)
+	nota_muestreo = models.CharField(max_length=200, blank='true')
 	
 	def __str__(self):
 		return str(self.numero)
