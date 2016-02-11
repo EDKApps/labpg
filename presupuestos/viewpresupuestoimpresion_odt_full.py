@@ -23,13 +23,12 @@ def presupuesto_impresion_odt_full(request, idpresupuesto):
     #print 'destino>>'+ str(file_odt_resultado)	
 	
     dummy = presupuesto_impresion_odt.impresion(idpresupuesto)
-    """
-    tipotrabajo = 'creativo'
-    untexto='xxx'
-    contexto= {"tipotrabajo":tipotrabajo,"untexto":untexto, "dummy":dummy}
-    """
+	
     contexto = {"dummy":dummy}
     renderer = Renderer(plantilla_odt_path, contexto, odt_resultado_path)
+
+    #estilos = renderer.getStyles() #Para consultar los estilos en la plantilla del documento
+    #print estilos
     renderer.run()    	
     archivo_resultado = File(open(odt_resultado_path))
     wrapper = FileWrapper(archivo_resultado) 

@@ -46,6 +46,8 @@
                   <tr>
                     <th>Número</th>
                     <th>Descripción</th>
+                    <th>Muestreo propio</th>  
+                    <th>Nota de muestreo</th> 
                     <th>Matriz</th>
                     <th>Cantidad muestra</th>
                     <th>Cantidad OT</th>
@@ -69,6 +71,14 @@
                         <td>    
                         {{ form.instance.item.descripcion }}
                         </td>
+                        <td>    
+                        {{ form.muestreo_propio.errors }}
+                        {{ form.muestreo_propio }} 
+                        </td>                            
+                        <td>    
+                        {{ form.nota_muestreo.errors }}
+                        {{ form.nota_muestreo }} 
+                        </td>                            
                         <td>
                         {{ form.instance.item.matriz }}
                         </td>

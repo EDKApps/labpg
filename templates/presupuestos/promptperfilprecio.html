@@ -8,6 +8,23 @@
     <input type="submit" value="Buscar" /></p>
     </form>	
 
+<!-- paginado arriba y abajo -->
+<div class="pagination">
+    <span class="step-links">
+        {% if objects.has_previous %}
+            <a href="?page={{ objects.previous_page_number }}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ objects.number }} of {{ objects.paginator.num_pages }}
+        </span>
+
+        {% if objects.has_next %}
+            <a href="?page={{ objects.next_page_number }}">siguiente</a>
+        {% endif %}
+    </span>
+</div>
+
 <form method="post" action="">
 	
     {{ PerfilPrecioFormSet.management_form }}

@@ -18,7 +18,7 @@
   </tr>
 </thead>
 <tbody>
-  {% for item in presupuesto.item_set.all %}
+  {% for item in presupuesto.item_set.all|dictsort:"numero" %}
   <tr>
     <td><a href="{% url "presupuestos:itemsubitem_modificar" item.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Parámetros y perfiles" alt= "Parámetros y perfiles"></a></td>		   
 	<td>{{item.numero}}</td>

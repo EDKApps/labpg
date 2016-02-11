@@ -21,7 +21,8 @@
 	<hr/>
   </thead>
   <tbody>
-	{% for item in presupuesto.item_set.all %}
+	{% for item in presupuesto.item_set.all|dictsort:"numero" %}
+    
     <p><strong>Item</strong> {{item.numero}} </p>
 	<p><strong>Matriz:</strong> {{item.matriz}} </p>
 	<p><strong>Descripcion:</strong> {{item.descripcion}}</p>
@@ -114,7 +115,8 @@
   </tr>
   </thead>
   <tbody>
-  {% for campania in presupuesto.campania_set.all %}
+  {% for campania in presupuesto.campania_set.all|dictsort:"numero" %}
+    
   <tr>
     <td>{{campania.numero}}</td>
 	<td>{{campania.descripcion}}</td>

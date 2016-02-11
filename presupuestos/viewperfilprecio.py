@@ -173,7 +173,6 @@ class PerfilPrecioModificar(UpdateView):
         form = self.get_form(form_class)
         #parametro_form = PerfilPrecio_ParametroFormSet(self.request.POST)
         
-        parametro_form = PerfilPrecio_ParametroFormSet(instance = PerfilPrecio())
         parametro_form = PerfilPrecio_ParametroFormSet(request.POST,request.FILES,instance= self.object )
         
         if (form.is_valid() and parametro_form.is_valid()):

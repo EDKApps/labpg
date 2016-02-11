@@ -34,7 +34,9 @@ class PresupuestoItemModificar(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)        
         #render form 
-        item_form = Presupuesto_ItemFormSet(instance = self.object)
+        #item_form = Presupuesto_ItemFormSet(instance = self.object)
+        item_form = Presupuesto_ItemFormSet(instance = self.object, #self.object es el parent object
+                                           queryset= (self.object).item_set.order_by("numero"))
         
         return self.render_to_response(
             self.get_context_data(form=form,
@@ -50,7 +52,6 @@ class PresupuestoItemModificar(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         
-        item_form = Presupuesto_ItemFormSet(instance = Presupuesto())
         item_form = Presupuesto_ItemFormSet(request.POST,request.FILES,instance= self.object )
         
         if (form.is_valid() and item_form.is_valid()):
