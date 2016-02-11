@@ -23,6 +23,7 @@ from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_tr
 from .viewotitem import Ot_ItemModificar, Ot_ItemListar
 from .viewpromptitems import promptitems
 from .viewpresupuestoimpresion_odt_full import presupuesto_impresion_odt_full
+from .viewprotocoloimpresion import protocolo_imprimir
 from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar, Muestra_Listar
 from .viewlogin import user_login, user_logout
 from django.contrib.auth.decorators import login_required
@@ -168,6 +169,10 @@ urlpatterns = patterns('',
     #Login y logout                      
     url(r'^login/$', user_login, name='login'),
     url(r'^logout/$', user_logout, name='logout'),
+					   
+    #Protocolo
+    #url(r'^presupuestos/(?P<idot>\d+)/protocolo_impresion/$', login_required(protocolo_impresion), name='protocolo_impresion'),
+    url(r'^presupuestos/(?P<idot>\d+)/protocolo_impresion/$', login_required(protocolo_imprimir), name='protocolo_impresion'),
 
 
 )
