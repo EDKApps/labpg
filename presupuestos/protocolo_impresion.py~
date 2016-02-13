@@ -51,7 +51,7 @@ def protocoloimpresion(idot):
 			plantilla += '<p>Sistema de las coordenadas: {0}</p>'.format(muestra.sistema_coordenada)
 			plantilla += '<p>Observacion: {0}</p>'.format(muestra.observacion)
 			plantilla += '<br/>'
-			plantilla += '<b>Analisis</b>'
+			plantilla += '<b>Analisis</b>'º
 			plantilla += '<table>'
 			plantilla += '<tr>'
 			plantilla += '<td>Parametro </td>'
