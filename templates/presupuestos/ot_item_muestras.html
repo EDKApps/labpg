@@ -1,0 +1,35 @@
+{% extends "menu.html" %}
+{% load staticfiles %}
+{% block content %}
+<h1>Presupuesto</h1>
+
+<p>Orden de trabajo referencia: {{ Ot_Item.orden_trabajo.referencia_clave }} {{ Ot_Item.orden_trabajo.referencia }}</p>
+<p>Número: {{ Ot_Item.numero }} </p>
+<h2>Muestras</h2>
+<table class="table table-hover">
+<thead>
+  <tr>
+    <th></th>
+	<th>Referencia</th>
+	<th>muestreador</th>
+	<th>fecha muestreo</th>
+	<th>estado</th>
+  </tr>
+</thead>
+<tbody>
+  {% for muestra in Ot_item_set.all %}
+  <tr>
+    <td><a href="{% url "presupuestos:muestra_analisis_modificar" muestra.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Parámetros y perfiles" alt= "Parámetros y perfiles"></a></td>		   
+	<td>{{muestra.referencia_clave}} {{muestra.referencia}}</td>
+    <td>{{muestra.muestreador}}</td>
+    <td>{{muestra.fecha_muestreo}}</td>
+    <td>{{muestra.estado}}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+	
+<a href="{% url "presupuestos:ot_item_analisis_listar"  %}">Análisis por OT Item </a>
+{% endblock content %}
+
+
