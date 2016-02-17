@@ -14,7 +14,7 @@ from .models import Analisis, Muestra, Ot_Item
 Muestra_fields = ('referencia_clave', 'referencia')
 
 class Analisis_Ot_Item_Listar(ListView):
-    template_name = 'presupuestos/analisis_ot_item_list.html'
+    template_name = 'presupuestos/analisis_ot_Item_list.html'
     paginate_by = 10
     
 

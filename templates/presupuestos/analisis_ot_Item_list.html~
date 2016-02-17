@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
 	<h2>Ingreso de Análisis por OT Item</h2>
-		<form method="get" action="/presupuestos/muestra/">
+		<form method="get" action="/presupuestos/analisis/">
 		<p><label for="id_q">Filtro (OT número, Item, Matriz, Estado):</label>
 		<input type="text" name="q" id="id_q" value="{{ query }}" />
 		<input type="submit" value="Buscar" /></p>
@@ -40,13 +40,13 @@
       <div class="pagination">
           <span class="page-links">
               {% if page_obj.has_previous %}
-                  <a href="/presupuestos/muestra?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
+                  <a href="/presupuestos/analisis?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
               {% endif %}
               <span class="page-current">
                   Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
               </span>
               {% if page_obj.has_next %}
-                  <a href="/presupuestos/muestra?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+                  <a href="/presupuestos/analisis?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
               {% endif %}
           </span>
       </div>

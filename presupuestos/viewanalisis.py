@@ -45,9 +45,6 @@ class Ot_Item_Muestras(DetailView): #Muestras de un ot_item
     model = Ot_Item
     fields = '__all__'
 
-
-
-
 class Muestra_AnalisisFormModificar(forms.ModelForm):
 
     #hacer que numero no sea editable
