@@ -9,14 +9,14 @@ def protocoloimpresion(idot):
 	plantilla += '<p>Cliente: {0}</p>'.format(ot.presupuesto.cliente)
 	plantilla += '<p>Domicilio: {0}</p>'.format(ot.presupuesto.cliente.domicilio)
 	plantilla += '<p>Localidad: {0}</p>'.format(ot.presupuesto.cliente.localidad)
-	plantilla += '<p>Telefono fijo/movil: {0}/{1}</p>'.format(ot.presupuesto.cliente.telefono_fijo,ot.presupuesto.cliente.telefono_movil)
+	plantilla += '<p>Telefono fijo/movil: {0}, {1}</p>'.format(ot.presupuesto.cliente.telefono_fijo,ot.presupuesto.cliente.telefono_movil)
 	plantilla += '<p>Email: {0}</p>'.format(ot.presupuesto.cliente.email)
 	plantilla += '<h2>Presupuesto: {0}</h2>'.format(ot.presupuesto)
-	plantilla += '<p>Descripcion: {0}</p>'.format(ot.descripcion)
+	plantilla += '<p>Descripcion: {0}</p>'.format(ot.descripcion.encode('utf-8'))
 	plantilla += '<p>Prioridad: {0}</p>'.format(ot.prioridad)
 	plantilla += '<p>Fecha de creacion: {0}</p>'.format(ot.fecha_creacion)
 	plantilla += '<h2>Detalles de items </h2>'
-	for otitem in Ot_Item.objects.filter(orden_trabajo=ot):
+	for otitem in Ot_Item.objects.filter(orden_trabajo=ot).order_by('numero'):
 		plantilla += '<p>----------------------------------------------------------------------------------------------------------------------</p>'
 		plantilla += '<b>Item: {0}</b>'.format(otitem.numero)
 		plantilla += '<p>Descipcion: {0}</p>'.format(otitem.item)
@@ -29,9 +29,9 @@ def protocoloimpresion(idot):
 			plantilla += '<p>Fecha de ingreso: {0}</p>'.format(muestra.fecha_ingreso)
 			plantilla += '<p>Cadena de custodia: {0}</p>'.format(muestra.cadena_custodia)
 			plantilla += '<p>Rotulo: {0}</p>'.format(muestra.rotulo)
-			plantilla += '<p>Ubicacion: {0}</p>'.format(muestra.ubicacion)
-			plantilla += '<p>Sitio: {0}</p>'.format(muestra.sitio_muestreo)
-			plantilla += '<p>Muestreador: {0}</p>'.format(muestra.muestreador)
+			plantilla += '<p>Ubicacion: {0}</p>'.format(muestra.ubicacion.encode('utf-8'))
+			plantilla += '<p>Sitio: {0}</p>'.format(muestra.sitio_muestreo.encode('utf-8'))
+			plantilla += '<p>Muestreador: {0}</p>'.format(muestra.muestreador.encode('utf-8'))
 			if not muestra.peso:
 				plantilla += ''
 			else:
@@ -44,14 +44,13 @@ def protocoloimpresion(idot):
 				plantilla += ''
 			else:
 				plantilla += '<p>Caudal: {0}</p>'.format(muestra.caudal)
-			
-			plantilla += '<p>Preservacion: {0}</p>'.format(muestra.preservacion)
+			plantilla += '<p>Preservacion: {0}</p>'.format(muestra.preservacion.encode('utf-8'))
 			plantilla += '<p>Fecha Muestreo: {0}</p>'.format(muestra.fecha_muestreo)
 			plantilla += '<p>Coordenadas: {0}</p>'.format(muestra.coordenada)
 			plantilla += '<p>Sistema de las coordenadas: {0}</p>'.format(muestra.sistema_coordenada)
-			plantilla += '<p>Observacion: {0}</p>'.format(muestra.observacion)
+			plantilla += '<p>Observacion: {0}</p>'.format(muestra.observacion.encode('utf-8'))
 			plantilla += '<br/>'
-			plantilla += '<b>Analisis</b>'
+			plantilla += '<b>Analisis resumen</b>'
 			plantilla += '<table>'
 			plantilla += '<tr>'
 			plantilla += '<td>Parametro </td>'
@@ -64,34 +63,38 @@ def protocoloimpresion(idot):
 				plantilla += '<tr>'
 				plantilla += '<td>{0}</td>'.format(analisis.parametro)
 				plantilla += '<td>{0}</td>'.format(analisis.tecnica)
-				plantilla += '<td>{0}</td>'.format(analisis.unidad)
+				plantilla += '<td>{0}</td>'.format(analisis.unidades)
 				plantilla += '<td>{0}</td>'.format(analisis.lct)
 				plantilla += '<td>{0}</td>'.format(analisis.valor)
 				plantilla += '</tr>'
 			plantilla += '</table>'
 			plantilla += '<br/>'
-			plantilla += '<b>Analisis plus</b>'
-			plantilla += '<br/>'
-			plantilla += '<table>'
-			plantilla += '<tr>'
-			plantilla += '<td>Parametro </td>'
-			plantilla += '<td> Tecnica </td>'
-			plantilla += '<td>Unidad </td>'
-			plantilla += '<td>LCT:</td>'
-			plantilla += '<td>Resultado </td>'
-			plantilla += '<td>Verificacion </td>'
-			plantilla += '<td>Obervacion </td>'
-			plantilla += '</tr>'
 			for analisis in Analisis.objects.filter(muestra=muestra):
-				plantilla += '<tr>'
-				plantilla += '<td>{0}</td>'.format(analisis.parametro)
-				plantilla += '<td>{0}</td>'.format(analisis.tecnica)
-				plantilla += '<td>{0}</td>'.format(analisis.unidad)
-				plantilla += '<td>{0}</td>'.format(analisis.lct)
-				plantilla += '<td>{0}</td>'.format(analisis.valor)
-				plantilla += '<td>{0}</td>'.format(analisis.verificacion)
-				plantilla += '<td>{0}</td>'.format(analisis.observacion)
-				plantilla += '</tr>'
-			plantilla += '</table>' 
+				if (analisis.verificacion==True):
+					plantilla += '<b>Analisis con verificacion</b>'
+					plantilla += '<br/>'
+					plantilla += '<table>'
+					plantilla += '<tr>'
+					plantilla += '<td>Parametro </td>'
+					plantilla += '<td> Tecnica </td>'
+					plantilla += '<td>Unidad </td>'
+					plantilla += '<td>LCT:</td>'
+					plantilla += '<td>Resultado </td>'
+					plantilla += '<td>Verificacion </td>'
+					plantilla += '<td>Observacion </td>'
+					plantilla += '</tr>'
+					for analisis in Analisis.objects.filter(muestra=muestra):
+						plantilla += '<tr>'
+						plantilla += '<td>{0}</td>'.format(analisis.parametro)
+						plantilla += '<td>{0}</td>'.format(analisis.tecnica)
+						plantilla += '<td>{0}</td>'.format(analisis.unidades)
+						plantilla += '<td>{0}</td>'.format(analisis.lct)
+						plantilla += '<td>{0}</td>'.format(analisis.valor)
+						plantilla += '<td>Verificado</td>'
+						plantilla += '<td>{0}</td>'.format(analisis.observacion.encode('utf-8'))
+						plantilla += '</tr>'
+					plantilla += '</table>' 
+				else:
+					plantilla += ''
 					
 	return plantilla
