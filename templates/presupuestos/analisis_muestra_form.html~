@@ -71,10 +71,6 @@
                         {{ analisis.valor.errors }}
                         {{ analisis.valor }} 
                         </td>
-                        <td>
-                        {{ analisis.instance.verificacion }}
-                        {{ analisis.instance.valor }}
-                        </td> 
                 {% endfor %}
                 </tbody>
                 </table>

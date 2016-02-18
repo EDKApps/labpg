@@ -11,13 +11,12 @@ from django.views.generic import UpdateView, DetailView, ListView
 from .formanalisis_muestra import Analisis_MuestraFormSet
 from .models import Analisis, Muestra, Ot_Item
 
-Muestra_fields = ('referencia_clave', 'referencia')
+Muestra_fields = ('referencia_clave', 'referencia', 'fecha_muestreo', 'rotulo', 'estado', 'muestreador')
 
 class Analisis_Ot_Item_Listar(ListView):
     template_name = 'presupuestos/analisis_ot_Item_list.html'
     paginate_by = 10
     
-
     #búsqueda
     def get_queryset(self):
         query = self.request.GET.get('q')
@@ -37,8 +36,6 @@ class Analisis_Ot_Item_Listar(ListView):
             q = q.replace(" ","+")
             context['query'] = q
         return context    
-    
-    
     
 class Ot_Item_Muestras(DetailView): #Muestras de un ot_item
     template_name = 'presupuestos/ot_item_muestras.html'    
@@ -83,15 +80,18 @@ class Muestra_AnalisisModificar(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         
+	analisis_form = Analisis_MuestraFormSet(instance = Muestra())
         analisis_form = Analisis_MuestraFormSet(request.POST,request.FILES,instance= self.object )
-        
-        if (form.is_valid() and analisis_form.is_valid()):
+	
+	"""item_form = Orden_trabajo_Ot_ItemFormSet(instance = Orden_trabajo())
+        item_form = Orden_trabajo_Ot_ItemFormSet(request.POST,request.FILES,instance= self.object )
+        """
 
-            
+        if (form.is_valid() and analisis_form.is_valid()):
             self.object = form.save(commit=False)
             
             self.object.save()
-            muestra_form.save()
+            analisis_form.save()
             #Eliminar lo indicado del subnivel
             return HttpResponseRedirect(self.get_success_url())
         else:
