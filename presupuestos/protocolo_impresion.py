@@ -83,16 +83,15 @@ def protocoloimpresion(idot):
 					plantilla += '<td>Verificacion </td>'
 					plantilla += '<td>Observacion </td>'
 					plantilla += '</tr>'
-					for analisis in Analisis.objects.filter(muestra=muestra):
-						plantilla += '<tr>'
-						plantilla += '<td>{0}</td>'.format(analisis.parametro)
-						plantilla += '<td>{0}</td>'.format(analisis.tecnica)
-						plantilla += '<td>{0}</td>'.format(analisis.unidades)
-						plantilla += '<td>{0}</td>'.format(analisis.lct)
-						plantilla += '<td>{0}</td>'.format(analisis.valor)
-						plantilla += '<td>Verificado</td>'
-						plantilla += '<td>{0}</td>'.format(analisis.observacion.encode('utf-8'))
-						plantilla += '</tr>'
+					plantilla += '<tr>'
+					plantilla += '<td>{0}</td>'.format(analisis.parametro)
+					plantilla += '<td>{0}</td>'.format(analisis.tecnica)
+					plantilla += '<td>{0}</td>'.format(analisis.unidades)
+					plantilla += '<td>{0}</td>'.format(analisis.lct)
+					plantilla += '<td>{0}</td>'.format(analisis.valor)
+					plantilla += '<td>Verificado</td>'
+					plantilla += '<td>{0}</td>'.format(analisis.observacion.encode('utf-8'))
+					plantilla += '</tr>'
 					plantilla += '</table>' 
 				else:
 					plantilla += ''
