@@ -3,10 +3,11 @@ from django.forms.models import inlineformset_factory
 
 from .models import Analisis, Muestra
 
-
+analisis_fields = ['valor', 'verificacion','observacion']
 class Analisis_Muestra(ModelForm):
 	class Meta:
-		model = Analisis
+		#model = Analisis
+		model = Muestra
 		fields= '__all__'
 
 	def save(self, commit=True):
@@ -15,4 +16,4 @@ class Analisis_Muestra(ModelForm):
 			instance.save()
 		return instance 
 
-Analisis_MuestraFormSet = inlineformset_factory(Muestra, Analisis, fields='__all__')
+Analisis_MuestraFormSet = inlineformset_factory(Muestra, Analisis, fields=analisis_fields)

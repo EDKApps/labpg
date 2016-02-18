@@ -22,7 +22,7 @@
   </tr>
 </thead>
 <tbody>
-  {% for muestra in ot_item.muestra_set.all %}
+  {% for muestra in ot_item.muestra_set.all|dictsort:"referencia" %}
   <tr>
     <td><a href="{% url "presupuestos:muestra_analisis_modificar" muestra.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Análisis" alt= "Análisis"></a></td>		   
     <td>{{muestra.referencia_completa}}</td>

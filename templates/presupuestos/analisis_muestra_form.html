@@ -22,8 +22,8 @@
     <script src="{% static 'js/djformset/jquery.formset.js' %}"></script>
     <script type="text/javascript">
         $(function() {
-            $(".inline.{{ muestra_form.prefix }}").formset({
-                prefix: "{{ muestra_form.prefix }}",
+            $(".inline.{{ analisis_form.prefix }}").formset({
+                prefix: "{{ analisis_form.prefix }}",
             })
         })
     </script>
@@ -47,12 +47,11 @@
             </div>
             <fieldset>
                 <legend>Análisis</legend>
-                {{ muestra_form.management_form }}
-                {{ muestra_form.non_form_errors }}
+                {{ analisis_form.management_form }}
+                {{ analisis_form.non_form_errors }}
                 <table class="table table-hover">
                 <thead>
                   <tr>      
-                  <th>Id</th>
                   <th>Parámetro</th>
                   <th>Técnica</th>
                   <th>Unidades</th>
@@ -63,22 +62,37 @@
                   </tr>
                 </thead>
                 <tbody>                
-                {% for analisis in muestra_form %}
-                        <tr class="inline {{ muestra_form.prefix }}">
+                {% for un_analisis in analisis_form %}
+                        <tr class="inline {{ analisis_form.prefix }}">
                         <td>
-                        {{ analisis.id }}
-			{% if analisis.instance.pk %}{{ analisis.DELETE }}{% endif %}
-                        {{ analisis.valor.errors }}
-                        {{ analisis.valor }} 
+                        {{ un_analisis.id }}
+                        {{ un_analisis.instance.parametro }}
                         </td>
                         <td>
-                        {{ analisis.instance.verificacion }}
-                        {{ analisis.instance.valor }}
-                        </td> 
+                        {{ un_analisis.instance.tecnica }}
+                        </td>
+                        <td>
+                        {{ un_analisis.instance.unidades }}
+                        </td>
+                        <td>
+                        {{ un_analisis.instance.lct }}
+                        </td>
+                        <td>
+                        {{ un_analisis.valor.errors }}
+                        {{ un_analisis.valor }} 
+                        </td>
+                        <td>
+                        {{ un_analisis.verificacion.errors }}
+                        {{ un_analisis.verificacion }}
+                        </td>
+                        <td>
+                        {{ un_analisis.observacion.errors }}
+                        {{ un_analisis.observacion }}
+                        </td>
+                        </tr> 
                 {% endfor %}
                 </tbody>
-                </table>
-            	<h4><a href="{% url "presupuestos:otitem_listar"  %}">OT Ítems</a></h4>  
+                </table> 
             </fieldset>
             <input type="submit" value="Confirmar" class="submit" />
         </form>

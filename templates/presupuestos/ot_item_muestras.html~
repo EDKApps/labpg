@@ -24,7 +24,7 @@
 <tbody>
   {% for muestra in ot_item.muestra_set.all %}
   <tr>
-    <td><a href="{% url "presupuestos:muestra_analisis_modificar" muestra.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Parámetros y perfiles" alt= "Parámetros y perfiles"></a></td>		   
+    <td><a href="{% url "presupuestos:muestra_analisis_modificar" muestra.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Análisis" alt= "Análisis"></a></td>		   
     <td>{{muestra.referencia_completa}}</td>
     <td>{{muestra.fecha_muestreo}}</td>
     <td>{{muestra.rotulo}}</td>
