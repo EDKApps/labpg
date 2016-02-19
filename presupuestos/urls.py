@@ -27,7 +27,7 @@ from viewprotocolo import Protocolo_ot_Listar
 from .viewprotocoloimpresion import protocolo_imprimir
 from .viewmuestra import Muestra_Ot_Item_Listar, Muestra_Ot_ItemModificar, Muestra_Listar
 from .viewlogin import user_login, user_logout
-from .viewanalisis import Analisis_Ot_Item_Listar, Ot_Item_Muestras, Muestra_AnalisisModificar
+from .viewanalisis import Analisis_Ot_Item_Seleccion, Analisis_Ot_Item_Listar, Ot_Item_Muestras, Muestra_AnalisisModificar
 from django.contrib.auth.decorators import login_required
 
 
@@ -80,10 +80,11 @@ urlpatterns = patterns('',
     url(r'^muestralist/$', login_required(Muestra_Listar.as_view()), name='muestra_listar'), 
    				
     #Análisis
-    url(r'^analisis/$', login_required(Analisis_Ot_Item_Listar.as_view()), name='ot_item_analisis_listar'), 
+    url(r'^analisis/$', login_required(Analisis_Ot_Item_Listar.as_view()), name='ot_item_analisis_seleccion'), 
     url(r'^muestraanalisis/(?P<pk>\d+)/modificar/$', login_required(Muestra_AnalisisModificar.as_view()), name='muestra_analisis_modificar'), 
     url(r'^oitemmuestras/(?P<pk>\d+)/$', login_required(Ot_Item_Muestras.as_view()), name='otitemmuestras'),
-    
+    url(r'^analisis_otitem/(?P<pk>\d+)/$', login_required(Analisis_Ot_Item_Listar.as_view()), name='analisis_otitem_listar'), 
+   
 	#Matriz
     url(r'^matriz/$', login_required(MatrizListar.as_view()), name='matriz_listar'),
     url(r'^matriz/crear/$', login_required(MatrizCrear.as_view()), name='matriz_crear'),

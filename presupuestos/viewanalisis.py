@@ -13,8 +13,8 @@ from .models import Analisis, Muestra, Ot_Item
 
 muestra_fields = ('referencia_clave', 'referencia', 'fecha_muestreo', 'rotulo', 'estado', 'muestreador')
 
-class Analisis_Ot_Item_Listar(ListView):
-    template_name = 'presupuestos/analisis_ot_Item_list.html'
+class Analisis_Ot_Item_Seleccion(ListView):
+    template_name = 'presupuestos/analisis_ot_item_seleccion.html'
     paginate_by = 10
     
     #búsqueda
@@ -30,7 +30,7 @@ class Analisis_Ot_Item_Listar(ListView):
                                   
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
-        context = super(Analisis_Ot_Item_Listar, self).get_context_data(**kwargs)
+        context = super(Analisis_Ot_Item_Seleccion, self).get_context_data(**kwargs)
         q = self.request.GET.get('q')
         if q: #si existe el valor, lo agrego/actualizo en el contexto
             q = q.replace(" ","+")
@@ -54,7 +54,7 @@ class Muestra_AnalisisModificar(UpdateView):
     template_name = 'presupuestos/analisis_muestra_form.html'
     model = Muestra
     form_class = Muestra_AnalisisFormModificar
-    success_url = reverse_lazy('presupuestos:ot_item_analisis_listar')
+    success_url = reverse_lazy('presupuestos:ot_item_analisis_seleccion')
 
     def get(self, request, *args, **kwargs):
         """
@@ -104,3 +104,26 @@ class Muestra_AnalisisModificar(UpdateView):
                 self.get_context_data(form=form,
                                       analisis_form = analisis_form))
 
+class Analisis_Ot_Item_Listar(ListView):
+    template_name = 'presupuestos/analisis_ot_item_list.html'
+    paginate_by = 100
+    
+    #búsqueda
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query is None:
+            return Ot_Item.objects.order_by('-orden_trabajo','numero')
+        else:
+            return Ot_Item.objects.filter( Q(numero__icontains=query)| 
+                                           Q(orden_trabajo__referencia__icontains=query) | 
+                                           Q(item__matriz__nombre_matriz__icontains=query) | 
+                                           Q(estado__estado_actual__icontains=query)).order_by('-orden_trabajo','numero')
+                                  
+    #almacenar contexto de la búsqueda
+    def get_context_data(self, **kwargs):
+        context = super(Analisis_Ot_Item_Listar, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q')
+        if q: #si existe el valor, lo agrego/actualizo en el contexto
+            q = q.replace(" ","+")
+            context['query'] = q
+        return context
