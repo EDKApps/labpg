@@ -80,7 +80,7 @@ urlpatterns = patterns('',
     url(r'^muestralist/$', login_required(Muestra_Listar.as_view()), name='muestra_listar'), 
    				
     #Análisis
-    url(r'^analisis/$', login_required(Analisis_Ot_Item_Listar.as_view()), name='ot_item_analisis_seleccion'), 
+    url(r'^analisis/$', login_required(Analisis_Ot_Item_Seleccion.as_view()), name='ot_item_analisis_seleccion'), 
     url(r'^muestraanalisis/(?P<pk>\d+)/modificar/$', login_required(Muestra_AnalisisModificar.as_view()), name='muestra_analisis_modificar'), 
     url(r'^oitemmuestras/(?P<pk>\d+)/$', login_required(Ot_Item_Muestras.as_view()), name='otitemmuestras'),
     url(r'^analisis_otitem/(?P<pk>\d+)/$', login_required(Analisis_Ot_Item_Listar.as_view()), name='analisis_otitem_listar'), 

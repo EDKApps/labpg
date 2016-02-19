@@ -104,10 +104,16 @@ class Muestra_AnalisisModificar(UpdateView):
                 self.get_context_data(form=form,
                                       analisis_form = analisis_form))
 
-class Analisis_Ot_Item_Listar(ListView):
+#Para mostrar los analisis de un otitem
+#todo debe ser un lisView para poder filtrar por parametro y muestra
+#falta ver como filtrar por Ot_Item, algo asi, Muestra.objects.filter(ot_item=idot)
+class Analisis_Ot_Item_Listar(DetailView): 
+    model = Ot_Item
+    fields = '__all__'
     template_name = 'presupuestos/analisis_ot_item_list.html'
     paginate_by = 100
-    
+
+    """
     #búsqueda
     def get_queryset(self):
         query = self.request.GET.get('q')
@@ -127,3 +133,4 @@ class Analisis_Ot_Item_Listar(ListView):
             q = q.replace(" ","+")
             context['query'] = q
         return context
+    """

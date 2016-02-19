@@ -26,7 +26,7 @@
     {% for otitem in ot_item_list %}
 	<tr>		
 		<td><a href="{% url "presupuestos:otitemmuestras" otitem.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Muestras" alt= "Muestras"></a></td>
-		<!-- <td><a href="{ % url "presupuestos:analisis_otitem_listar" otitem.id %}"><img src= "{% static "images/accion_ver.png"%}" data-toggle="tooltip" data-placement="top" title="Visualizar" alt= "Visualizar"></a></td> -->
+		<!-- <td><a href="{ % url "presupuestos:analisis_otitem_listar" otitem.id % }"><img src= "{% static "images/accion_ver.png"%}" data-toggle="tooltip" data-placement="top" title="Visualizar" alt= "Visualizar"></a></td> -->
 		<td>{{ otitem.orden_trabajo.referencia_completa }}</td>
 		<td>{{ otitem.numero }}</td>
 		<td>{{ otitem.item.presupuesto.referencia_completa}}-{{otitem.item.numero }}</td>

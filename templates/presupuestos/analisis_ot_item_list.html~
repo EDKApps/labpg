@@ -2,32 +2,37 @@
 {% load staticfiles %}
 {% block content %}
 <div class="container">
-	<h2>Ingreso de Análisis por OT Item</h2>
-		<form method="get" action="/presupuestos/analisis/">
+	<h2>Análisis por OT Item</h2>
+		<form method="get" action="/presupuestos/analisis_otitem/">
 		<p><label for="id_q">Filtro (OT número, Item, Matriz, Estado):</label>
 		<input type="text" name="q" id="id_q" value="{{ query }}" />
 		<input type="submit" value="Buscar" /></p>
 		</form>	
+<p>Orden de trabajo: {{ ot_item.orden_trabajo.referencia_completa }}</p>
+<p>Item: {{ ot_item.numero }} </p>
+<p>Descripción: {{ ot_item.orden_trabajo.descripcion }} </p>
+<p>Matriz: {{ ot_item.item.matriz }} </p>
+<p>Cantidad de muestras: {{ ot_item.item.cantidadMuestra }} </p>
+<p>muestras: {{muestra.referencia_completa}} </p>
+<h2>Listado Muestras y Análisis</h2>
   <table class="table table-hover">
     <thead>
       <tr>
-		<th></th>
-		<th></th>
-		<th>OT</th>
-        	<th>Item</th>
-        	<th>Presupuesto</th>
-		<th>Descripcion</th>
-		<th>Matriz</th>
-		<th>Cantidad</th>
-		<th>Estado</th>
+		<th>Muestra</th>
+        	<th>Estado</th>
+        	<th>Parámetro</th>
+		<th>Técnica</th>
+		<th>Unidades</th>
+		<th>Lct</th>
+		<th>Resultado</th>
+		<th>Verificación</th>
+		<th>Observación</th>
       </tr>
     </thead>
     <tbody>	 	
-    {% for otitem in ot_item_list %}
+    {% for muestra in ot_item.muestra_list %}
 	<tr>		
-		<td><a href="{% url "presupuestos:otitemmuestras" otitem.id %}"><img src= "{% static "images/accion_item.png"%}" data-toggle="tooltip" data-placement="top" title="Muestras" alt= "Muestras"></a></td>
-		<td><a href="{% url "presupuestos:analisis_otitem_list" otitem.id %}"><img src= "{% static "images/accion_ver.png"%}" data-toggle="tooltip" data-placement="top" title="Visualizar" alt= "Visualizar"></a></td>
-		<td>{{ otitem.orden_trabajo.referencia_completa }}</td>
+		<td>{{muestra.referencia_completa}}</td>
 		<td>{{ otitem.numero }}</td>
 		<td>{{ otitem.item.presupuesto.referencia_completa}}-{{otitem.item.numero }}</td>
 		<td>{{ otitem.orden_trabajo.descripcion }}</td>
