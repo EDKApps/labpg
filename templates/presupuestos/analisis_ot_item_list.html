@@ -25,8 +25,8 @@
       </tr>
     </thead>
     <tbody>	 	
-    {% for muestra in ot_item.muestra_set.all %}
-        {% for analisis in muestra.analisis_set.all %}
+    {% for muestra in ot_item.muestra_set.all|dictsort:"referencia"%}
+        {% for analisis in muestra.analisis_set.all|dictsort:"parametro.nombre_par" %}
 	    <tr>		
 		<td>{{ muestra.referencia_completa}}</td>
 		<td>{{ muestra.estado }}</td>
