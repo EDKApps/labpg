@@ -73,7 +73,7 @@ def protocoloimpresion(idot):
 			plantilla += '<b>Analisis con verificación</b>'
 			cont = 1
 			plantilla += '<table>' 
-			for analisis in Analisis.objects.filter(muestra=muestra, verificacion=True):
+			for analisis in Analisis.objects.filter(muestra=muestra, verificacion=True).order_by('parametro'):
 				if (cont<=1):
 					plantilla += '<tr>'
 					plantilla += '<td>Parametro </td>'
