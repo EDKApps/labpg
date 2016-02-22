@@ -3,17 +3,12 @@
 {% block content %}
 <div class="container">
 	<h2>Análisis por OT Item</h2>
-		<form method="get" action="/presupuestos/analisis_otitem/">
-		<p><label for="id_q">Filtro (OT número, Item, Matriz, Estado):</label>
-		<input type="text" name="q" id="id_q" value="{{ query }}" />
-		<input type="submit" value="Buscar" /></p>
-		</form>	
 <p>Orden de trabajo: {{ ot_item.orden_trabajo.referencia_completa }}</p>
 <p>Item: {{ ot_item.numero }} </p>
 <p>Descripción: {{ ot_item.orden_trabajo.descripcion }} </p>
 <p>Matriz: {{ ot_item.item.matriz }} </p>
 <p>Cantidad de muestras: {{ ot_item.item.cantidadMuestra }} </p>
-<p>muestras: {{muestra.referencia_completa}} </p>
+
 <h2>Listado Muestras y Análisis</h2>
   <table class="table table-hover">
     <thead>
@@ -30,33 +25,22 @@
       </tr>
     </thead>
     <tbody>	 	
-    {% for muestra in ot_item.muestra_list %}
-	<tr>		
-		<td>{{muestra.referencia_completa}}</td>
-		<td>{{ otitem.numero }}</td>
-		<td>{{ otitem.item.presupuesto.referencia_completa}}-{{otitem.item.numero }}</td>
-		<td>{{ otitem.orden_trabajo.descripcion }}</td>
-		<td>{{ otitem.item.matriz }}</td>
-		<td>{{ otitem.item.cantidadMuestra }}</td>
-		<td>{{ otitem.estado }}</td>
-	</tr>
+    {% for muestra in ot_item.muestra_set.all %}
+        {% for analisis in muestra.analisis_set.all %}
+	    <tr>		
+		<td>{{ muestra.referencia_completa}}</td>
+		<td>{{ muestra.estado }}</td>
+		<td>{{ analisis.parametro }}</td>
+    		<td>{{ analisis.tecnica }}</td>
+		<td>{{ analisis.Unidades }}</td>
+		<td>{{ analisis.lct }}</td>
+		<td>{{ analisis.valor }}</td>
+		<td>{{ analisis.verificacion }}</td>
+		<td>{{ analisis.observacion }}</td>
+	    </tr>
+        {% endfor %}
     {% endfor %}
     </tbody>
   </table>
-  {% if is_paginated %}
-      <div class="pagination">
-          <span class="page-links">
-              {% if page_obj.has_previous %}
-                  <a href="/presupuestos/analisis?q={{query}}&page={{ page_obj.previous_page_number }}">anterior</a>
-              {% endif %}
-              <span class="page-current">
-                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-              </span>
-              {% if page_obj.has_next %}
-                  <a href="/presupuestos/analisis?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
-              {% endif %}
-          </span>
-      </div>
-  {% endif %}	
 </div>	
 {% endblock content %}

@@ -105,7 +105,7 @@ class Muestra_AnalisisModificar(UpdateView):
                                       analisis_form = analisis_form))
 
 #Para mostrar los analisis de un otitem
-#todo debe ser un lisView para poder filtrar por parametro y muestra
+#to do debe ser un lisView para poder filtrar por parametro y muestra
 #falta ver como filtrar por Ot_Item, algo asi, Muestra.objects.filter(ot_item=idot)
 class Analisis_Ot_Item_Listar(DetailView): 
     model = Ot_Item
