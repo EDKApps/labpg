@@ -275,7 +275,14 @@ class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio
 		self.precio = self.itemparametro.precio_parametro
 		# Call the "real" save() method.
 		super(Subitem_parametro, self).save(*args, **kwargs)
-
+		
+		self.item.save()
+		
+	def delete(self, *args, **kwargs):
+		item = self.item
+		super(Subitem_parametro, self).delete(*args, **kwargs)
+		item.save() #actualizo el item
+		
 @python_2_unicode_compatible
 class Subitem_perfil (models.Model): #relacion Item-PerfilPrecio
 	item = models.ForeignKey(Item, null=True, on_delete= models.PROTECT)
@@ -289,7 +296,13 @@ class Subitem_perfil (models.Model): #relacion Item-PerfilPrecio
 		self.precio = self.itemperfil.precio
 		# Call the "real" save() method.
 		super(Subitem_perfil, self).save(*args, **kwargs)
-
+		self.item.save()
+	
+	def delete(self, *args, **kwargs):
+		item = self.item
+		super(Subitem_perfil, self).delete(*args, **kwargs)
+		item.save() #actualizo el item
+		
 @python_2_unicode_compatible
 class Campania (models.Model):
 	presupuesto = models.ForeignKey(Presupuesto, on_delete= models.PROTECT, null=True)
