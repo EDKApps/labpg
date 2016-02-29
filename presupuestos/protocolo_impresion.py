@@ -60,7 +60,7 @@ def protocoloimpresion(idot):
 			plantilla += '<td>LCT </td>'
 			plantilla += '<td>Resultado </td>'
 			plantilla += '</tr>'
-			for analisis in Analisis.objects.filter(muestra=muestra).order_by('parametro'):
+			for analisis in Analisis.objects.filter(muestra=muestra).order_by('parametro__nombre_par'):
 				plantilla += '<tr>'
 				plantilla += '<td>{0}</td>'.format(analisis.parametro)
 				plantilla += '<td>{0}</td>'.format(analisis.tecnica)
@@ -73,7 +73,7 @@ def protocoloimpresion(idot):
 			plantilla += '<b>Analisis con verificación</b>'
 			cont = 1
 			plantilla += '<table>' 
-			for analisis in Analisis.objects.filter(muestra=muestra, verificacion=True).order_by('parametro'):
+			for analisis in Analisis.objects.filter(muestra=muestra, verificacion=True).order_by('parametro__nombre_par'):
 				if (cont<=1):
 					plantilla += '<tr>'
 					plantilla += '<td>Parametro </td>'
