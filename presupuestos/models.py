@@ -244,13 +244,20 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 		return costo_unitario
 
 	def save(self, *args, **kwargs):
+		#Todo - hacer no suma al eliminar un registro.
+		#Pruebas para actualizar el queryset
+		#objects.updates no funciono. Subitem_parametro.objects.update()
+		#subitem_parametro.refresh_from_db(), no anduvo
+		#Subitem_parametro.objects.refresh(), no anduvo
+		#lista_subitem_parametros.refresh(), no anduvo
+
 		#completa total
 		total = 0
 		#Recorre los parametros y suma el precio
 		lista_subitem_parametros = Subitem_parametro.objects.filter(item = self)	
 		for subitem_parametro in lista_subitem_parametros:
 			total = total + subitem_parametro.precio
-		
+
 		#Recorre los perfiles y suma el precio
 		lista_subitem_perfiles = Subitem_perfil.objects.filter(item = self)	
 		for subitem_perfil in lista_subitem_perfiles:
@@ -258,9 +265,9 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 		
 		self.total_sin_descuento = total * self.cantidadMuestra	
 		self.total_con_descuento = self.total_sin_descuento * (100-self.descuento)/100
-			
 		# Call the "real" save() method.
-		super(Item, self).save(*args, **kwargs)
+		super(Item, self).save(*args, **kwargs)			
+
 
 @python_2_unicode_compatible
 class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio

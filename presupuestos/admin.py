@@ -21,6 +21,8 @@ from .models import Ot_Item
 from .models import Muestra_Estado
 from .models import Muestra
 from .models import Analisis
+from .models import Subitem_parametro
+from .models import Subitem_perfil
 
 admin.site.register(Cliente)
 admin.site.register(Presupuesto)
@@ -45,4 +47,6 @@ admin.site.register(Ot_Item)
 admin.site.register(Muestra_Estado)
 admin.site.register(Muestra)
 admin.site.register(Analisis)
+admin.site.register(Subitem_parametro)
+admin.site.register(Subitem_perfil)
 

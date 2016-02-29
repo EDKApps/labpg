@@ -13,6 +13,22 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 @python_2_unicode_compatible
+class Numerador (models.Model):
+	nombre = models.CharField(max_length=30, blank='true',unique=True)
+	ultimo_valor = models.IntegerField(default=0)
+	def __str__(self):
+		return self.nombre
+
+
+
+#numerador, created = Numerador.objects.update_or_create(
+#        identifier=identifier, defaults={"name": name}
+#)
+
+from labutiles import sigNumero,completarConCeros #Como usa Numerador, lo importo después de que existe en model
+
+
+@python_2_unicode_compatible
 class Cliente (models.Model):
 	empresa = models.CharField(max_length=100)
 	contacto = models.CharField('Contacto (apellido, nombre)', max_length=200)
@@ -87,7 +103,7 @@ class Presupuesto (models.Model):
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
-			self.referencia = str(sigNumero('presupuesto_referencia'))
+			self.referencia = completarConCeros( sigNumero('presupuesto_referencia'), 7) #completo hasta 7 dígitos 
 		#si es insert (id= 0), asignar datos de plantilla impresion
 		if self.id is None:
 			plantillas = Plantillas_Impresion.objects.all()
@@ -97,31 +113,6 @@ class Presupuesto (models.Model):
 			self.impresion_condiciones_tecnicas = plantilla.presupuesto_condiciones_tecnicas
 			
 		super(Presupuesto, self).save(*args, **kwargs) # Call the "real" save() method.
-
-@python_2_unicode_compatible
-class Numerador (models.Model):
-	nombre = models.CharField(max_length=30, blank='true',unique=True)
-	ultimo_valor = models.IntegerField(default=0)
-	def __str__(self):
-		return self.nombre
-
-def sigNumero(nombreNumerador):
-	try:
-		n = Numerador.objects.get(nombre=nombreNumerador)
-	except Numerador.DoesNotExist:
-		#Si no existe en la BD, lo creo
-		n = Numerador(nombre=nombreNumerador, ultimo_valor = 1)
-		n.save()
-		return n.ultimo_valor
-	else:
-		#si existe, incremento el valor, lo guardo y lo retorno
-		n.ultimo_valor += 1
-		n.save()
-		return n.ultimo_valor
-
-#numerador, created = Numerador.objects.update_or_create(
-#        identifier=identifier, defaults={"name": name}
-#)
 
 @python_2_unicode_compatible
 class Matriz (models.Model):
@@ -253,13 +244,37 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 		return costo_unitario
 
 	def save(self, *args, **kwargs):
+		# Call the "real" save() method.
+		super(Item, self).save(*args, **kwargs)
+
+		#Pruebas para actualizar el queryset
+		#objects.updates no funciono. Subitem_parametro.objects.update()
+		#subitem_parametro.refresh_from_db(), no anduvo
+		#Subitem_parametro.objects.refresh(), no anduvo
+		#lista_subitem_parametros.refresh(), no anduvo
+
 		#completa total
 		total = 0
 		#Recorre los parametros y suma el precio
 		lista_subitem_parametros = Subitem_parametro.objects.filter(item = self)	
 		for subitem_parametro in lista_subitem_parametros:
+			x = Subitem_parametro.objects.get(id=subitem_parametro.id)
+			#x.update()
+			x.save()
+			print x.id
 			total = total + subitem_parametro.precio
-		
+
+		lista_subitem_parametros.update()
+		Subitem_parametro.objects.update()
+
+		lista_subitem_parametros2 = Subitem_parametro.objects.filter(item = self)	
+		total2 = 0
+		for subitem_parametro2 in lista_subitem_parametros2:
+			print subitem_parametro2.id
+			total2 = total2 + subitem_parametro2.precio
+		print "total2"
+		print total2
+
 		#Recorre los perfiles y suma el precio
 		lista_subitem_perfiles = Subitem_perfil.objects.filter(item = self)	
 		for subitem_perfil in lista_subitem_perfiles:
@@ -267,9 +282,9 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 		
 		self.total_sin_descuento = total * self.cantidadMuestra	
 		self.total_con_descuento = self.total_sin_descuento * (100-self.descuento)/100
-			
 		# Call the "real" save() method.
-		super(Item, self).save(*args, **kwargs)
+		super(Item, self).save(*args, **kwargs)			
+
 
 @python_2_unicode_compatible
 class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio
@@ -346,7 +361,7 @@ class Orden_trabajo (models.Model):
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
-			self.referencia = str(sigNumero('orden_trabajo_referencia'))
+			self.referencia = completarConCeros( sigNumero('orden_trabajo_referencia'), 7)
 			
 		super(Orden_trabajo, self).save(*args, **kwargs) # Call the "real" save() method.
 
@@ -363,6 +378,8 @@ class Ot_Item (models.Model):
 	numero = models.IntegerField(default= 0)
 	cantidad = models.IntegerField(default= 0)
 	estado = models.ForeignKey(Ot_Estado,on_delete= models.PROTECT)
+	muestreo_propio = models.BooleanField(default=False)
+	nota_muestreo = models.CharField(max_length=200, blank='true')
 	
 	def __str__(self):
 		return str(self.numero)
@@ -412,7 +429,8 @@ class Muestra (models.Model):
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
-			self.referencia = str(sigNumero('orden_trabajo_referencia'))
+			self.referencia = completarConCeros( sigNumero('muestra_referencia'), 7) #completo hasta 7 dígitos 
+			
 		#Si es nueva muestra, crea los registro de Analisis
 		if not(Muestra.objects.filter(id=self.id).exists()):
 			crear_analisis =  True
@@ -451,8 +469,8 @@ class Muestra (models.Model):
 
 @python_2_unicode_compatible
 class Analisis (models.Model):
-	#Si se elimina la muestra, se borran los analisis también, todo-hacer eliminar protect
-	muestra = models.ForeignKey(Muestra, on_delete= models.PROTECT)
+	#Si se elimina la muestra, se borran los analisis también
+	muestra = models.ForeignKey(Muestra)
 	parametro = models.ForeignKey(Parametro, on_delete= models.PROTECT)
 	tecnica = models.ForeignKey(Tecnica, on_delete= models.PROTECT)
 	#Se optó que sea Charfield, y no foreingkey para simplificar.

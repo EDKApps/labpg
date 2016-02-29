@@ -29,10 +29,9 @@ class CustomInlineFormSet(ModelForm):
 	#ordenar los combos
 	def get_form(self, form_class):
 		form = super(CustomInlineFormSet, self).get_form(form_class)
-		print form.fields
+		#print form.fields
 		form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
 		form.fields['tecnica'] = forms.ModelChoiceField(queryset = Tecnica.objects.order_by('nombre_tec'))
 		return form		
 	
-PerfilPrecio_ParametroFormSet = inlineformset_factory(PerfilPrecio, PerfilPrecio_Parametro, fields='__all__',
-													  formset = Perfil_Parametro_Form)
+PerfilPrecio_ParametroFormSet = inlineformset_factory(PerfilPrecio, PerfilPrecio_Parametro, fields='__all__', formset = Perfil_Parametro_Form)
