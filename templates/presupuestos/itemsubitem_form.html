@@ -29,7 +29,7 @@
                 prefix: "{{ subitem_perfil_form.prefix }}",
             })
         })
-    </script>
+    </script> 
 </head>
 
 <body>
@@ -79,12 +79,14 @@
 			{{ form.precio}}
                         </td>
                         <td>
-                        {{ form.id }}
+                        {{ form.id }} 
                         {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                         </td>
-                        <td>
-			{{ form.itemparametro.erros }}
-			{{ form.itemparametro }}
+                        <td> 
+                            <div class="ocultar">
+			                {{ form.itemparametro.erros }}
+			                {{ form.itemparametro }}
+                            </div>
                         </td>
                         </tr>
                     <!--</div>-->
@@ -111,10 +113,12 @@
                 {% for form in subitem_perfil_form %}
                         <tr class="inline {{ subitem_perfil_form.prefix }}">
                         <td>
+                        <div class="ocultar">
                         {{ form.id }}
                         {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                         {{ form.itemperfil.errors }}
                         {{ form.itemperfil }}
+                        </div>
                         </td>
                         <td>
                         {{ form.instance.itemperfil.nombre }}
@@ -140,6 +144,16 @@
 	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
     });
 </script>    
+    
+<script>
+    //Espero medio segundo para ocultar botón agregar y los combos
+    setTimeout(function(){
+        //oculto los botones add-row
+        $( ".add-row" ).hide();
+        //oculto los combos
+        $( ".ocultar" ).hide();        
+    }, 500)
+</script>      
 </body>
 </html>
 {% endblock content %}
