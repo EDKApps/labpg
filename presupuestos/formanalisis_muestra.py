@@ -16,4 +16,4 @@ class Analisis_Muestra(ModelForm):
 			instance.save()
 		return instance 
 
-Analisis_MuestraFormSet = inlineformset_factory(Muestra, Analisis, fields=analisis_fields)
+Analisis_MuestraFormSet = inlineformset_factory(Muestra, Analisis, fields=analisis_fields, extra= 0)

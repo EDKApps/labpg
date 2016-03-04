@@ -103,6 +103,15 @@
 	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
     });
 </script>    
+<script>
+    //Espero medio segundo para ocultar botón agregar y los combos
+    setTimeout(function(){
+        //oculto los botones add-row
+        $( ".add-row" ).hide();
+        //oculto los combos
+        $( ".delete-row" ).hide();        
+    }, 500)
+</script>  
 </body>
 </html>
 {% endblock content %}
