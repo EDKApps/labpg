@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 parametro_fields = ('nombre_par','familia')
 
-from .models import Parametro
+from .models import Parametro, Familia
 
 class ParametroListar(ListView):
     model = Parametro
@@ -60,6 +60,11 @@ class ParametroCrear(CreateView):
         return reverse('presupuestos:parametro_detalle', kwargs={
             'pk': self.object.pk,
         })
+    
+    def get_form(self, form_class):
+        form = super(ParametroCrear, self).get_form(form_class)
+        form.fields['familia'] = forms.ModelChoiceField(queryset = Familia.objects.order_by('nombre'))
+        return form
 
 class ParametroDetalle(DetailView):
     model = Parametro
@@ -73,6 +78,11 @@ class ParametroModificar(UpdateView):
         return reverse('presupuestos:parametro_detalle', kwargs={
             'pk': self.object.pk,
         })
+    
+    def get_form(self, form_class):
+        form = super(ParametroModificar, self).get_form(form_class)
+        form.fields['familia'] = forms.ModelChoiceField(queryset = Familia.objects.order_by('nombre'))
+        return form
 
 class ParametroBorrar(DeleteView):
     model = Parametro

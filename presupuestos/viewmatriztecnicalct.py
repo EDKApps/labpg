@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 matriztecnicalct_fields = ('matriz','parametro','tecnica','lct','unidad')
 
-from .models import MatrizTecnicaLct
+from .models import MatrizTecnicaLct, Matriz, Parametro, Tecnica, Unidades
 
 
 class MatrizTecnicaLctListar(ListView):
@@ -42,6 +42,13 @@ class MatrizTecnicaLctCrear(CreateView):
         return reverse('presupuestos:matriztecnicalct_confirma_alta', kwargs={
             'pk': self.object.pk,
         })
+    def get_form(self, form_class):
+        form = super(MatrizTecnicaLctCrear, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+        form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
+        form.fields['tecnica'] = forms.ModelChoiceField(queryset = Tecnica.objects.order_by('nombre_tec'))
+        form.fields['unidad'] = forms.ModelChoiceField(queryset = Unidades.objects.order_by('nombre_unidad'))
+        return form
 
 class MatrizTecnicaLctDetalle(DetailView):
     model = MatrizTecnicaLct
@@ -60,6 +67,13 @@ class MatrizTecnicaLctModificar(UpdateView):
         return reverse('presupuestos:matriztecnicalct_detalle', kwargs={
             'pk': self.object.pk,
         })
+    def get_form(self, form_class):
+        form = super(MatrizTecnicaLctModificar, self).get_form(form_class)
+        form.fields['matriz'] = forms.ModelChoiceField(queryset = Matriz.objects.order_by('nombre_matriz'))
+        form.fields['parametro'] = forms.ModelChoiceField(queryset = Parametro.objects.order_by('nombre_par'))
+        form.fields['tecnica'] = forms.ModelChoiceField(queryset = Tecnica.objects.order_by('nombre_tec'))
+        form.fields['unidad'] = forms.ModelChoiceField(queryset = Unidades.objects.order_by('nombre_unidad'))
+        return form
 
 class MatrizTecnicaLctBorrar(DeleteView):
     model = MatrizTecnicaLct

@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.extras.widgets import SelectDateWidget
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.db.models import Q #para OR en consultas
-from .models import Orden_trabajo
+from .models import Orden_trabajo, Presupuesto
 
 #En el form de alta excluyo la referencia (automática)
 ot_fields_full = ('presupuesto','referencia_clave', 'referencia', 'descripcion', 'prioridad', 'fecha_creacion')
@@ -56,6 +56,10 @@ class Orden_trabajoCrear(CreateView):
         return reverse('presupuestos:orden_trabajo_detalle', kwargs={
             'pk': self.object.pk,
         })
+    def get_form(self, form_class):
+        form = super(Orden_trabajoCrear, self).get_form(form_class)
+        form.fields['presupuesto'] = forms.ModelChoiceField(queryset = Presupuesto.objects.order_by('-referencia'))
+        return form
 	
 class Orden_trabajoDetalle(DetailView):
     model = Orden_trabajo

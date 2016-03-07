@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.extras.widgets import SelectDateWidget
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.db.models import Q #para OR en consultas
-from .models import Presupuesto, Item, Campania
+from .models import Presupuesto, Item, Campania, Cliente, Tipo, Estado
 
 #En el form de alta excluyo la referencia (automática)
 presupuesto_fields_full = ('cliente','referencia_clave', 'referencia', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion','item.numero')
@@ -58,6 +58,13 @@ class PresupuestoCrear(CreateView):
         return reverse('presupuestos:presupuesto_detalle', kwargs={
             'pk': self.object.pk,
         })
+    
+    def get_form(self, form_class):
+        form = super(PresupuestoCrear, self).get_form(form_class)
+        form.fields['cliente'] = forms.ModelChoiceField(queryset = Cliente.objects.order_by('contacto'))
+        form.fields['tipo'] = forms.ModelChoiceField(queryset = Tipo.objects.order_by('nombre_tipo'))
+        form.fields['estado'] = forms.ModelChoiceField(queryset = Estado.objects.order_by('estado_actual'))
+        return form
 
 class PresupuestoDetalle(DetailView):
     model = Presupuesto
@@ -72,6 +79,12 @@ class PresupuestoModificar(UpdateView):
         return reverse('presupuestos:presupuesto_detalle', kwargs={
             'pk': self.object.pk,
         })
+    def get_form(self, form_class):
+        form = super(PresupuestoModificar, self).get_form(form_class)
+        form.fields['cliente'] = forms.ModelChoiceField(queryset = Cliente.objects.order_by('contacto'))
+        form.fields['tipo'] = forms.ModelChoiceField(queryset = Tipo.objects.order_by('nombre_tipo'))
+        form.fields['estado'] = forms.ModelChoiceField(queryset = Estado.objects.order_by('estado_actual'))
+        return form
 
 class PresupuestoBorrar(DeleteView):
     model = Presupuesto

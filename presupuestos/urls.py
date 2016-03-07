@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 from .viewcliente import labinicio, ClienteCrear, ClienteBorrar, ClienteDetalle, ClienteListar, ClienteModificar
 from .viewclienteprompt import ClientePrompt
 from .viewpresupuesto import PresupuestoCrear, PresupuestoBorrar, PresupuestoDetalle, PresupuestoListar, PresupuestoModificar, PresupuestoDetalleFull
+from .viewpresupuestoprompt import PresupuestoPrompt
 from .viewordendetrabajo import OrdenDeTrabajoListar
 from .viewmatriz import MatrizCrear, MatrizBorrar, MatrizDetalle, MatrizListar, MatrizModificar
 from .viewfamilia import FamiliaCrear, FamiliaBorrar, FamiliaDetalle, FamiliaConfirmaAlta, FamiliaListar, FamiliaModificar
@@ -64,6 +65,8 @@ urlpatterns = patterns('',
     url(r'^ordenestrabajo/(?P<pk>\d+)/modificar/$', login_required(Orden_trabajoModificar.as_view()), name='orden_trabajo_modificar'),
     url(r'^ordenestrabajo/(?P<pk>\d+)/borrar/$', login_required(Orden_trabajoBorrar.as_view()), name='orden_trabajo_borrar'),
     url(r'^ordenestrabajofull/(?P<pk>\d+)/$', login_required(Orden_trabajoDetalleFull.as_view()), name='orden_trabajo_detalle_full'),
+	#prompt de presupuesto
+    url(r'^presupuestoprompt/$', login_required(PresupuestoPrompt.as_view()), name='presupuesto_prompt'),
 
     #relacion ot-item
     url(r'^otitem/(?P<pk>\d+)/modificar/$', login_required(Ot_ItemModificar.as_view()), name='ot_item_modificar'),

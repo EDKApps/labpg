@@ -1,6 +1,6 @@
 {% extends "menu.html" %}
 {% block content %}
-<h1>{{ tecnica}}</h1>
+<h1>Tecnica {{ tecnica}} creada correctamente</h1>
 
 <p>Tecnica: {{ tecnica.nombre_tec }}</p>
 <a href="{% url "presupuestos:tecnica_listar"  %}">Tecnicas</a>
