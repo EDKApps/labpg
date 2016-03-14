@@ -244,9 +244,7 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 		return costo_unitario
 
 	def save(self, *args, **kwargs):
-		# Call the "real" save() method.
-		super(Item, self).save(*args, **kwargs)
-
+		#Todo - hacer no suma al eliminar un registro.
 		#Pruebas para actualizar el queryset
 		#objects.updates no funciono. Subitem_parametro.objects.update()
 		#subitem_parametro.refresh_from_db(), no anduvo
@@ -258,22 +256,7 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 		#Recorre los parametros y suma el precio
 		lista_subitem_parametros = Subitem_parametro.objects.filter(item = self)	
 		for subitem_parametro in lista_subitem_parametros:
-			x = Subitem_parametro.objects.get(id=subitem_parametro.id)
-			#x.update()
-			x.save()
-			print x.id
 			total = total + subitem_parametro.precio
-
-		lista_subitem_parametros.update()
-		Subitem_parametro.objects.update()
-
-		lista_subitem_parametros2 = Subitem_parametro.objects.filter(item = self)	
-		total2 = 0
-		for subitem_parametro2 in lista_subitem_parametros2:
-			print subitem_parametro2.id
-			total2 = total2 + subitem_parametro2.precio
-		print "total2"
-		print total2
 
 		#Recorre los perfiles y suma el precio
 		lista_subitem_perfiles = Subitem_perfil.objects.filter(item = self)	
@@ -299,7 +282,14 @@ class Subitem_parametro (models.Model): #relacion Item-ParametroPrecio
 		self.precio = self.itemparametro.precio_parametro
 		# Call the "real" save() method.
 		super(Subitem_parametro, self).save(*args, **kwargs)
-
+		
+		self.item.save()
+		
+	def delete(self, *args, **kwargs):
+		item = self.item
+		super(Subitem_parametro, self).delete(*args, **kwargs)
+		item.save() #actualizo el item
+		
 @python_2_unicode_compatible
 class Subitem_perfil (models.Model): #relacion Item-PerfilPrecio
 	item = models.ForeignKey(Item, null=True, on_delete= models.PROTECT)
@@ -313,7 +303,13 @@ class Subitem_perfil (models.Model): #relacion Item-PerfilPrecio
 		self.precio = self.itemperfil.precio
 		# Call the "real" save() method.
 		super(Subitem_perfil, self).save(*args, **kwargs)
-
+		self.item.save()
+	
+	def delete(self, *args, **kwargs):
+		item = self.item
+		super(Subitem_perfil, self).delete(*args, **kwargs)
+		item.save() #actualizo el item
+		
 @python_2_unicode_compatible
 class Campania (models.Model):
 	presupuesto = models.ForeignKey(Presupuesto, on_delete= models.PROTECT, null=True)
@@ -389,8 +385,37 @@ class Ot_Item (models.Model):
 
 	def clean(self):
 		#Verifica que la cantidad< cantidad de los item del presupuesto	
-		if (self.cantidad>self.item.cantidadMuestra):
-			raise ValidationError({'cantidad':_('Error: cantidad debe ser menor que presupuesto.item.cantidad')})
+		#Verifica que la (sumaCantidadItemOt < cantidad) de los item del presupuesto
+		#crea una lista con las ot item de ese item-presupuesto
+		lista_Ot_Item = Ot_Item.objects.filter (item = self.item)
+		#suma cantidad de cada ot item
+		sumaCantidadItemOt = 0
+		for ot_Item in lista_Ot_Item:
+			#print 'ot'
+			#print self.orden_trabajo
+			#print 'numero'
+			#print self.numero
+			#print 'self'			
+			#print self.cantidad
+			#print 'otItem'			
+			#print  ot_Item.cantidad
+			if ((ot_Item.orden_trabajo == self.orden_trabajo) & (ot_Item.numero == self.numero)):
+				sumaCantidadItemOt += self.cantidad	
+				#print 'self'
+				#print self.cantidad
+			else:
+				sumaCantidadItemOt += ot_Item.cantidad
+				#print 'otItem'	
+				#print ot_Item.cantidad
+		#print 'suma'		
+		#print sumaCantidadItemOt
+		#print '----'
+		#si es un nuevo registro lo suma
+		if not(Ot_Item.objects.filter(id=self.id).exists()):
+			sumaCantidadItemOt += self.cantidad
+
+		if (sumaCantidadItemOt>self.item.cantidadMuestra):
+			raise ValidationError({'cantidad':_('Error: cantidad debe ser menor que presupuesto.item.cantidad. Verifique si existen otras OT con este presupuesto')})
 
 @python_2_unicode_compatible
 class Muestra_Estado (models.Model):

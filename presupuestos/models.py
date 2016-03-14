@@ -384,9 +384,21 @@ class Ot_Item (models.Model):
 		return self.orden_trabajo.referencia_completa()+', '+str(self.numero)
 
 	def clean(self):
-		#Verifica que la cantidad< cantidad de los item del presupuesto	
-		if (self.cantidad>self.item.cantidadMuestra):
-			raise ValidationError({'cantidad':_('Error: cantidad debe ser menor que presupuesto.item.cantidad')})
+		#Verifica que la (sumaCantidadItemOt < cantidad) de los item del presupuesto
+		#crea una lista con las ot item de ese item-presupuesto
+		lista_Ot_Item = Ot_Item.objects.filter (item = self.item)
+		#suma cantidad de cada ot item
+		sumaCantidadItemOt = 0
+		for ot_Item in lista_Ot_Item:
+			if ((ot_Item.orden_trabajo == self.orden_trabajo) & (ot_Item.numero == self.numero)):
+				sumaCantidadItemOt += self.cantidad	
+			else:
+				sumaCantidadItemOt += ot_Item.cantidad
+		if not(Ot_Item.objects.filter(id=self.id).exists()):
+			sumaCantidadItemOt += self.cantidad
+
+		if (sumaCantidadItemOt>self.item.cantidadMuestra):
+			raise ValidationError({'cantidad':_('Error: cantidad debe ser menor que presupuesto.item.cantidad. Verifique si existen otras OT con este presupuesto')})
 
 @python_2_unicode_compatible
 class Muestra_Estado (models.Model):
