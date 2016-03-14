@@ -22,9 +22,10 @@ class PresupuestoPrompt(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Presupuesto.objects.all()
+            return Presupuesto.objects.filter(Q(estado__estado_actual='aprobado')).order_by('-referencia')
         else:
-            return Presupuesto.objects.filter( Q(estado__estado_actual__icontains='aprobado') and (Q(cliente__contacto__icontains=query) |
+            return Presupuesto.objects.filter( Q(estado__estado_actual='aprobado') & (Q(cliente__empresa__icontains=query) | 
+										  Q(cliente__contacto__icontains=query) |
 										  Q(referencia__icontains=query) )).order_by('-referencia')
 
     #almacenar contexto de la búsqueda
