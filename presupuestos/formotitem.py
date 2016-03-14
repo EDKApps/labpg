@@ -19,4 +19,4 @@ class Orden_trabajo_Ot_Item_Form(ModelForm):
 			instance.save()
 		return instance 
 
-Orden_trabajo_Ot_ItemFormSet = inlineformset_factory(Orden_trabajo, Ot_Item, fields='__all__')
+Orden_trabajo_Ot_ItemFormSet = inlineformset_factory(Orden_trabajo, Ot_Item, fields='__all__', extra=0)
