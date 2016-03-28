@@ -4,7 +4,7 @@
 <div class="container">
 	<h2>Items</h2>
 		<form method="get" action="/presupuestos/item/">
-		<p><label for="id_q">Filtro:</label>
+		<p><label for="id_q">Filtro (matriz, presupuesto, descripcion):</label>
 		<input type="text" name="q" id="id_q" value="{{ query }}" />
 		<input type="submit" value="Buscar" /></p>
 		</form>	
@@ -21,7 +21,7 @@
     <tbody>	 	
     {% for item in item_list %}
 	<tr>
-		<td>{{ item.presupuesto.referencia}}</td>
+		<td>{{ item.presupuesto.referencia_completa}}</td>
 		<td>{{ item.numero }}</td>
 		<td>{{ item.descripcion }}</td>
 		<td>{{ item.matriz }}</td>
