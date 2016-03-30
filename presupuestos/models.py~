@@ -384,33 +384,16 @@ class Ot_Item (models.Model):
 		return self.orden_trabajo.referencia_completa()+', '+str(self.numero)
 
 	def clean(self):
-		#Verifica que la cantidad< cantidad de los item del presupuesto	
 		#Verifica que la (sumaCantidadItemOt < cantidad) de los item del presupuesto
 		#crea una lista con las ot item de ese item-presupuesto
 		lista_Ot_Item = Ot_Item.objects.filter (item = self.item)
 		#suma cantidad de cada ot item
 		sumaCantidadItemOt = 0
 		for ot_Item in lista_Ot_Item:
-			#print 'ot'
-			#print self.orden_trabajo
-			#print 'numero'
-			#print self.numero
-			#print 'self'			
-			#print self.cantidad
-			#print 'otItem'			
-			#print  ot_Item.cantidad
 			if ((ot_Item.orden_trabajo == self.orden_trabajo) & (ot_Item.numero == self.numero)):
 				sumaCantidadItemOt += self.cantidad	
-				#print 'self'
-				#print self.cantidad
 			else:
 				sumaCantidadItemOt += ot_Item.cantidad
-				#print 'otItem'	
-				#print ot_Item.cantidad
-		#print 'suma'		
-		#print sumaCantidadItemOt
-		#print '----'
-		#si es un nuevo registro lo suma
 		if not(Ot_Item.objects.filter(id=self.id).exists()):
 			sumaCantidadItemOt += self.cantidad
 
