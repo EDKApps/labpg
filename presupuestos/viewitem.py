@@ -19,10 +19,13 @@ class ItemListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Item.objects.all()
+            return Item.objects.all().order_by('-presupuesto')
         else:
-            return Item.objects.filter( Q(matriz__icontains=query) )
-                                  
+            return Item.objects.filter( Q(descripcion__icontains=query) | 
+                                       Q(matriz__nombre_matriz__icontains=query)| 
+                                       Q(presupuesto__referencia__icontains=query)).order_by('-presupuesto')
+            #return Item.objects.all().order_by('presupuesto')
+        
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
         context = super(ItemListar, self).get_context_data(**kwargs)
