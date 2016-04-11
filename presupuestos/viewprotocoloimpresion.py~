@@ -6,29 +6,21 @@ import tempfile
 import os
 from django.core.servers.basehttp import FileWrapper 
 from django.core.files import File
-from .models import Presupuesto
-from .models import Item
-import presupuesto_impresion_odt
+import protocolo_impresion
 
-def presupuesto_impresion_odt_full(request, idpresupuesto):
+def protocolo_imprimir(request, idot):
 	#ruta de la plantilla
-    plantilla_odt_path = os.path.join(labutiles.PLANTILLA_ODT_PATH,'presupuesto_impresion_odt_full.odt')
+    plantilla_odt_path = os.path.join(labutiles.PLANTILLA_ODT_PATH,'protocolo_impresion.odt')
 	#Necesito un nombre aleatorio en la carpeta de temporales
-    file_odt_resultado = tempfile.NamedTemporaryFile(delete=True,prefix='lab_', suffix='.odt') 
+    file_odt_resultado = tempfile.NamedTemporaryFile(delete=True,prefix='proto_', suffix='.odt') 
 
     odt_resultado_path = file_odt_resultado.name #path al archivo de resultado
     file_odt_resultado.close() #Se debería eliminar el archivo	
-
-    #print 'origen>>' + str(plantilla_odt_path)
-    #print 'destino>>'+ str(file_odt_resultado)	
 	
-    dummy = presupuesto_impresion_odt.impresion(idpresupuesto)
+    plantilla = protocolo_impresion.protocoloimpresion(idot)
 	
-    contexto = {"dummy":dummy}
+    contexto = {"plantilla":plantilla}
     renderer = Renderer(plantilla_odt_path, contexto, odt_resultado_path)
-
-    #estilos = renderer.getStyles() #Para consultar los estilos en la plantilla del documento
-    #print estilos
     renderer.run()    	
     archivo_resultado = File(open(odt_resultado_path))
     wrapper = FileWrapper(archivo_resultado) 

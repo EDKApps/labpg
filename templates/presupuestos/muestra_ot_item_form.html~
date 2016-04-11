@@ -69,7 +69,6 @@
                   <th>sistema de coordenada</th>
                   <th>observación</th>
                   <th>estado</th>
-                  <th>Nota Eliminar</th>
                   </tr>
                 </thead>
                 <tbody>                
@@ -151,6 +150,7 @@
                         <td>    
                         {{ muestra.referencia.error }}
                         {{ muestra.referencia }}
+			Se perderán los resultados de análisis
                         </td>
                         <tr>
                 {% endfor %}
