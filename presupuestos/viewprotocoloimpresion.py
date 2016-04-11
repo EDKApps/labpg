@@ -4,7 +4,8 @@ from appy.pod.renderer import Renderer
 import labutiles
 import tempfile
 import os
-from django.core.servers.basehttp import FileWrapper 
+from wsgiref.util import FileWrapper
+#from django.core.servers.basehttp import FileWrapper  #error de version, ImportError: cannot import name FileWrapper
 from django.core.files import File
 import protocolo_impresion
 
