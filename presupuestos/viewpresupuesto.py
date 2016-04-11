@@ -26,7 +26,8 @@ class PresupuestoListar( ListView):
         else:
             return Presupuesto.objects.filter( Q(referencia_clave__icontains=query) | 
                                            Q(referencia__icontains=query) |
-                                           Q(cliente__empresa__icontains=query) ).order_by('-referencia')
+                                           Q(cliente__empresa__icontains=query) |
+										  Q(estado__estado_actual__icontains=query)).order_by('-referencia')
 
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):
