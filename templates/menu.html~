@@ -43,7 +43,7 @@
 	<li><a href="{% url "presupuestos:otitem_listar"  %}">OT Items</a></li>
 	<li><a href="{% url "presupuestos:muestra_ot_item_listar"  %}">Muestras</a></li>
 	<li><a href="{% url "presupuestos:muestra_listar"  %}">Muestras Listado</a></li>
-    <li><a href="{% url "presupuestos:analisis_otitem_seleccion"  %}">Análisis</a></li>
+    <li><a href="{% url "presupuestos:ot_item_analisis_seleccion"  %}">Análisis</a></li>
 	<li><a href="{% url "presupuestos:protocolo_ot_listar" %}">Protocolo</a></li>
 
 	<li class="dropdown">
