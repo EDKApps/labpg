@@ -1,4 +1,4 @@
- # -- coding: utf-8 --
+# -- coding: utf-8 --
 # $ python manage.py makemigrations
 # $ python manage.py migrate
 # $ python manage.py createsuperuser
