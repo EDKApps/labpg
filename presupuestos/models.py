@@ -11,6 +11,7 @@ from django.utils.encoding import python_2_unicode_compatible
 #librerias para validar campo
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.forms import ValidationError
 
 @python_2_unicode_compatible
 class Numerador (models.Model):
@@ -125,6 +126,12 @@ class Familia (models.Model): # también llamada Grupo
 	nombre= models.CharField(max_length=100)
 	def __str__(self):
 		return self.nombre
+	
+	def delete(self, *args, **kwargs):
+		if Parametro.objects.filter(familia__pk= self.pk).exists():
+			raise ValidationError('La familia esta relacionada al menos a un parametro.')
+
+		super(Familia, self).delete(*args, **kwargs)
 	
 @python_2_unicode_compatible	
 class Parametro (models.Model):
