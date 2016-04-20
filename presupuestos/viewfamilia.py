@@ -73,10 +73,8 @@ class FamiliaBorrar(DeleteView):
         
         try:
             familia.delete()
-            estado = {'estado':'Familia eliminada correctamente'}
+            estado = 'Familia eliminada correctamente'
         except ValidationError as e:
-            mensaje_error = 'Objeto protegido.' + str(e) 
-            print mensaje_error
-            estado = {'estado':mensaje_error}
-            
-        return HttpResponse(json.dumps(estado), content_type="application/json")    
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado +'</br> <a href="'+reverse('presupuestos:familia_listar')+'">Volver a la lista de grupos</a>'    
+        return HttpResponse(respuesta   )    

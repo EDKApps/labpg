@@ -129,7 +129,7 @@ class Familia (models.Model): # también llamada Grupo
 	
 	def delete(self, *args, **kwargs):
 		if Parametro.objects.filter(familia__pk= self.pk).exists():
-			raise ValidationError('La familia esta relacionada al menos a un parametro.')
+			raise ValidationError('El grupo est&aacute; relacionado al menos a un parametro.')
 
 		super(Familia, self).delete(*args, **kwargs)
 	
