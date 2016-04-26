@@ -1,4 +1,4 @@
- # -- coding: utf-8 --
+# -- coding: utf-8 --
 # $ python manage.py makemigrations
 # $ python manage.py migrate
 # $ python manage.py createsuperuser
@@ -11,6 +11,7 @@ from django.utils.encoding import python_2_unicode_compatible
 #librerias para validar campo
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.forms import ValidationError
 
 @python_2_unicode_compatible
 class Numerador (models.Model):
@@ -58,7 +59,7 @@ class Estado (models.Model):
 @python_2_unicode_compatible
 class Presupuesto (models.Model):
 	cliente = models.ForeignKey(Cliente, on_delete= models.PROTECT)
-	referencia_clave = models.CharField(max_length=100, blank='true',default='S-P')
+	referencia_clave = models.CharField(max_length=100, blank='true',default='SP16-')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental
 	fecha_solicitud = models.DateField('fecha de solicitud', default=date.today)
 	fecha_vencimiento = models.DateField('fecha de vencimiento', blank='true', null='true')
@@ -125,6 +126,12 @@ class Familia (models.Model): # también llamada Grupo
 	nombre= models.CharField(max_length=100)
 	def __str__(self):
 		return self.nombre
+	
+	def delete(self, *args, **kwargs):
+		if Parametro.objects.filter(familia__pk= self.pk).exists():
+			raise ValidationError('El grupo est&aacute; relacionado al menos a un parametro.')
+
+		super(Familia, self).delete(*args, **kwargs)
 	
 @python_2_unicode_compatible	
 class Parametro (models.Model):
@@ -409,7 +416,7 @@ class Muestra_Estado (models.Model):
 @python_2_unicode_compatible
 class Muestra (models.Model):
 	ot_item = models.ForeignKey(Ot_Item, null=True, on_delete= models.PROTECT)
-	referencia_clave = models.CharField(max_length=100, blank='true',default='M-')
+	referencia_clave = models.CharField(max_length=100, blank='true',default='ID16-')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental, ajustado en save()
 	ingreso_muestra = models.CharField('responsable ingreso de muestra', max_length=100, blank='true')
 	fecha_ingreso = models.DateField('fecha de ingreso al sistema', default=date.today)

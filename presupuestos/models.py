@@ -104,7 +104,7 @@ class Presupuesto (models.Model):
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
-			self.referencia = completarConCeros( sigNumero('presupuesto_referencia'), 7) #completo hasta 7 dígitos 
+			self.referencia = completarConCeros( sigNumero('presupuesto_referencia'), 5) #completo hasta 5 dígitos 
 		#si es insert (id= 0), asignar datos de plantilla impresion
 		if self.id is None:
 			plantillas = Plantillas_Impresion.objects.all()
