@@ -5,7 +5,7 @@
 	<!--<h2><div class="font-effect-outline">Presupuestos</div></h2>-->
 	<h2>Presupuestos</h2>
 		<form method="get" action="/presupuestos/presupuestos/">
-		<p><label for="id_q">Filtro (referencia clave, referencia o cliente):</label>
+		<p><label for="id_q">Filtro (referencia clave, referencia, cliente o estado):</label>
 		<input type="text" name="q" id="id_q" value="{{ query }}" />
 		<input type="submit" value="Buscar" /></p>
 		</form>		
@@ -21,6 +21,7 @@
 		<th>Referencia clave</th>
 		<th>Cliente</th>
         	<th>Contacto</th>
+		  <th>Descripción</th>
         	<th>Estado</th>
 		<th>Solicitud</th>
 		<th>Vencimiento</th>
@@ -42,6 +43,7 @@
 		<td>{{presupuesto.referencia_clave}} {{presupuesto.referencia}}</td>
 		<td>{{presupuesto.cliente.empresa}}</td>		  
         <td>{{presupuesto.cliente.contacto}}</td>
+		<td>{{presupuesto.descripcion}}</td>
 		<td>{{presupuesto.estado}}</td>
 		<td>{{presupuesto.fecha_solicitud}}</td>
 		<td>{{presupuesto.fecha_vencimiento}}</td>

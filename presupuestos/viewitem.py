@@ -23,7 +23,7 @@ class ItemListar(ListView):
         else:
             return Item.objects.filter( Q(descripcion__icontains=query) | 
                                        Q(matriz__nombre_matriz__icontains=query)| 
-                                       Q(presupuesto__referencia__icontains=query)).order_by('-presupuesto')
+									  Q(presupuesto__referencia__icontains=query)).order_by('-presupuesto')
             #return Item.objects.all().order_by('presupuesto')
         
     #almacenar contexto de la búsqueda

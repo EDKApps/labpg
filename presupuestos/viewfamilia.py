@@ -2,8 +2,10 @@
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import Q #para OR en consultas
 from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
@@ -67,10 +69,12 @@ class FamiliaBorrar(DeleteView):
     fields = familia_fields
     
     def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        familia = self.get_object()
+        
         try:
-            self.object.delete()
-            data = {'success':'ok'}
-        except ProtectedError:
-            data = {'success':'violation_protected'}
-        #return HttpResponse(json.dumps(data),mimetype="application/json")    
+            familia.delete()
+            estado = 'Familia eliminada correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado +'</br> <a href="'+reverse('presupuestos:familia_listar')+'">Volver a la lista de grupos</a>'    
+        return HttpResponse(respuesta   )    

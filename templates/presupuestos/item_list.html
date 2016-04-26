@@ -40,7 +40,7 @@
                   Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
               </span>
               {% if page_obj.has_next %}
-                  <a href="/presupuestos/Item?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
+                  <a href="/presupuestos/item?q={{query}}&page={{ page_obj.next_page_number }}">siguiente</a>
               {% endif %}
           </span>
       </div>
