@@ -6,7 +6,8 @@
 <p>Descripción: {{orden_trabajo.descripcion}}</p>
 <p>Prioridad: {{orden_trabajo.prioridad}}</p>
 <p>Fecha de creación: {{orden_trabajo.fecha_creacion}}</p>
-	{% for otitem in orden_trabajo.ot_item_set.all %}
+	{% for otitem in orden_trabajo.ot_item_set.all|dictsort:"numero" %}
+	<br/>
 	<p><strong>Item</strong> {{otitem.numero}} </p>
 	<p><strong>Presupuesto-Item</strong> {{otitem.item.presupuesto.referencia_completa}}-{{otitem.item.numero}} </p>
 	<p><strong>Cantidad:</strong> {{otitem.cantidad}}</p>
@@ -72,9 +73,14 @@
 	</tbody>
  	</table>
 	<!-- FIN PERFILES -->
+	<!-- muestra datos de muestreo -->
+	{% if otitem.muestreo_propio %}
+	<p><strong>Muestreo propio. Nota Muestreo: </strong>  {{ otitem.nota_muestreo }}</p>
+	<br/>
+	{% endif %}
 	{% endfor %}
-  </tbody>
-  </table>
+</tbody>
+</table>
 
 <a href="{% url "presupuestos:orden_trabajo_listar"  %}">Ordenes de Trabajo</a>
 {% endblock content %}

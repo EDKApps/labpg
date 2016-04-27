@@ -59,7 +59,7 @@ class Estado (models.Model):
 @python_2_unicode_compatible
 class Presupuesto (models.Model):
 	cliente = models.ForeignKey(Cliente, on_delete= models.PROTECT)
-	referencia_clave = models.CharField(max_length=100, blank='true',default='S-P')
+	referencia_clave = models.CharField(max_length=100, blank='true',default='SP16-')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental
 	fecha_solicitud = models.DateField('fecha de solicitud', default=date.today)
 	fecha_vencimiento = models.DateField('fecha de vencimiento', blank='true', null='true')
@@ -104,7 +104,7 @@ class Presupuesto (models.Model):
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
-			self.referencia = completarConCeros( sigNumero('presupuesto_referencia'), 7) #completo hasta 7 dígitos 
+			self.referencia = completarConCeros( sigNumero('presupuesto_referencia'), 5) #completo hasta 5 dígitos 
 		#si es insert (id= 0), asignar datos de plantilla impresion
 		if self.id is None:
 			plantillas = Plantillas_Impresion.objects.all()
@@ -416,7 +416,7 @@ class Muestra_Estado (models.Model):
 @python_2_unicode_compatible
 class Muestra (models.Model):
 	ot_item = models.ForeignKey(Ot_Item, null=True, on_delete= models.PROTECT)
-	referencia_clave = models.CharField(max_length=100, blank='true',default='M-')
+	referencia_clave = models.CharField(max_length=100, blank='true',default='ID16-')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental, ajustado en save()
 	ingreso_muestra = models.CharField('responsable ingreso de muestra', max_length=100, blank='true')
 	fecha_ingreso = models.DateField('fecha de ingreso al sistema', default=date.today)

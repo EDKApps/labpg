@@ -150,7 +150,7 @@
                         <td>    
                         {{ muestra.referencia.error }}
                         {{ muestra.referencia }}
-			Se perderán los resultados de análisis
+			Se perderán los resultados de análisis.
                         </td>
                         <tr>
                 {% endfor %}
