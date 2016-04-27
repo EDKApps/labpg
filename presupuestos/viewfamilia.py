@@ -76,5 +76,7 @@ class FamiliaBorrar(DeleteView):
             estado = 'Familia eliminada correctamente'
         except ValidationError as e:
             estado = 'Objeto protegido.' + str(e) 
-        respuesta = estado +'</br> <a href="'+reverse('presupuestos:familia_listar')+'">Volver a la lista de grupos</a>'    
-        return HttpResponse(respuesta   )    
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })
+        #return HttpResponse(respuesta   )    
