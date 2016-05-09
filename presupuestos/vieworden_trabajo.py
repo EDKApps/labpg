@@ -1,9 +1,16 @@
  # -- coding: utf-8 --
 from django import forms
-from django.core.urlresolvers import reverse, reverse_lazy
-from django.forms.extras.widgets import SelectDateWidget
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import Q #para OR en consultas
+from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
+
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+import json
+
 from .models import Orden_trabajo, Presupuesto
 
 #En el form de alta excluyo la referencia (automática)
@@ -78,6 +85,18 @@ class Orden_trabajoBorrar(DeleteView):
     model = Orden_trabajo
     success_url = reverse_lazy('presupuestos:orden_trabajo_listar')
     fields = ot_fields_modif
+    
+    def delete(self, request, *args, **kwargs):
+        orden_trabajo = self.get_object()
+        
+        try:
+            orden_trabajo.delete()
+            estado = 'Orden de trabajo eliminada correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e)
+        respuesta = estado
+        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })
+
 	
 
 class Orden_trabajoDetalleFull(DetailView):
