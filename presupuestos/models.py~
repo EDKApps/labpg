@@ -104,7 +104,7 @@ class Presupuesto (models.Model):
 	def save(self, *args, **kwargs):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
-			self.referencia = completarConCeros( sigNumero('presupuesto_referencia'), 7) #completo hasta 7 dígitos 
+			self.referencia = completarConCeros( sigNumero('presupuesto_referencia'), 5) #completo hasta 5 dígitos 
 		#si es insert (id= 0), asignar datos de plantilla impresion
 		if self.id is None:
 			plantillas = Plantillas_Impresion.objects.all()
@@ -129,7 +129,7 @@ class Familia (models.Model): # también llamada Grupo
 	
 	def delete(self, *args, **kwargs):
 		if Parametro.objects.filter(familia__pk= self.pk).exists():
-			raise ValidationError('El grupo est&aacute; relacionado al menos a un parametro.')
+			raise ValidationError('El grupo esta relacionado al menos a un parametro.')
 
 		super(Familia, self).delete(*args, **kwargs)
 	
@@ -163,6 +163,9 @@ class MatrizTecnicaLct (models.Model):
 	lct = models.DecimalField(max_digits=10, decimal_places=6)
 	unidad = models.ForeignKey(Unidades, on_delete= models.PROTECT)
 	
+	class Meta:
+		unique_together = (matriz, parametro, tecnica)
+
 	def __str__(self):
 		return self.matriz.nombre_matriz+', '+self.parametro.nombre_par+', '+self.tecnica.nombre_tec
 
