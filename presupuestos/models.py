@@ -173,6 +173,9 @@ class MatrizTecnicaLct (models.Model):
 	lct = models.DecimalField(max_digits=10, decimal_places=6)
 	unidad = models.ForeignKey(Unidades, on_delete= models.PROTECT)
 	
+	class Meta:
+		unique_together = ('matriz', 'parametro', 'tecnica')
+
 	def __str__(self):
 		return self.matriz.nombre_matriz+', '+self.parametro.nombre_par+', '+self.tecnica.nombre_tec
 
