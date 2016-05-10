@@ -399,14 +399,13 @@ class Ot_Item (models.Model):
 		lista_Ot_Item = Ot_Item.objects.filter (item = self.item)
 		#suma cantidad de cada ot item
 		sumaCantidadItemOt = 0
+
 		for ot_Item in lista_Ot_Item:
-			if ((ot_Item.orden_trabajo == self.orden_trabajo) & (ot_Item.numero == self.numero)):
+			#Sí es el ot_item que se modifico, sumo cantidad
+			if ((ot_Item.orden_trabajo == self.orden_trabajo) & (ot_Item.item == self.item)):
 				sumaCantidadItemOt += self.cantidad	
 			else:
 				sumaCantidadItemOt += ot_Item.cantidad
-		if not(Ot_Item.objects.filter(id=self.id).exists()):
-			sumaCantidadItemOt += self.cantidad
-
 		if (sumaCantidadItemOt>self.item.cantidadMuestra):
 			raise ValidationError({'cantidad':_('Error: cantidad debe ser menor que presupuesto.item.cantidad. Verifique si existen otras OT con este presupuesto')})
 

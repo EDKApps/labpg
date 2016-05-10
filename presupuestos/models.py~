@@ -164,7 +164,7 @@ class MatrizTecnicaLct (models.Model):
 	unidad = models.ForeignKey(Unidades, on_delete= models.PROTECT)
 	
 	class Meta:
-		unique_together = (matriz, parametro, tecnica)
+		unique_together = ('matriz', 'parametro', 'tecnica')
 
 	def __str__(self):
 		return self.matriz.nombre_matriz+', '+self.parametro.nombre_par+', '+self.tecnica.nombre_tec
@@ -399,14 +399,35 @@ class Ot_Item (models.Model):
 		lista_Ot_Item = Ot_Item.objects.filter (item = self.item)
 		#suma cantidad de cada ot item
 		sumaCantidadItemOt = 0
-		for ot_Item in lista_Ot_Item:
+		i=1
+		''' for ot_Item in lista_Ot_Item:
+			print 'vueltaNum:'
+			print i
+			i += 1
 			if ((ot_Item.orden_trabajo == self.orden_trabajo) & (ot_Item.numero == self.numero)):
 				sumaCantidadItemOt += self.cantidad	
 			else:
 				sumaCantidadItemOt += ot_Item.cantidad
+		'''
+		for ot_Item in lista_Ot_Item:
+			print 'vueltaNum:'
+			print i
+			i += 1
+			#Sí es el ot_item que se modifico, sumo cantidad
+			if ((ot_Item.orden_trabajo == self.orden_trabajo) & (ot_Item.item == self.item)):
+				sumaCantidadItemOt += self.cantidad	
+			else:
+				sumaCantidadItemOt += ot_Item.cantidad
+			print 'suma1 for'
+			print sumaCantidadItemOt
+
+		'''
+		#Sí es ot_item nuevo, sumo cantidad		
 		if not(Ot_Item.objects.filter(id=self.id).exists()):
 			sumaCantidadItemOt += self.cantidad
-
+		print 'suma2 if not'
+		print sumaCantidadItemOt
+		'''		
 		if (sumaCantidadItemOt>self.item.cantidadMuestra):
 			raise ValidationError({'cantidad':_('Error: cantidad debe ser menor que presupuesto.item.cantidad. Verifique si existen otras OT con este presupuesto')})
 
