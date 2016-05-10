@@ -3,10 +3,15 @@ from django import forms
 from django.shortcuts import render
 from django.forms.extras.widgets import SelectDateWidget
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import Q #para OR en consultas
+from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+import json
+
 parametroprecio_fields = ('matriz','parametro','tecnica','precio_parametro','fecha_precio','fuente_precio')
 
 from .models import ParametroPrecio, Matriz, Parametro, Tecnica
@@ -94,3 +99,15 @@ class ParametroPrecioBorrar(DeleteView):
     model = ParametroPrecio
     success_url = reverse_lazy('presupuestos:parametroprecio_listar')
     fields = parametroprecio_fields
+    
+    def delete(self, request, *args, **kwargs):
+        parametroprecio = self.get_object()
+        
+        try:
+            parametroprecio.delete()
+            estado = 'Precio de Parametro eliminado correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })

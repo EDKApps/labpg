@@ -2,11 +2,15 @@
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import Q #para OR en consultas
+from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+import json
 #perfilprecio_fields = ('nombre','matriz','perfil','tecnica','fecha_precio','fuente_precio')
 
 from .formperfilprecio import PerfilPrecioForm, PerfilPrecio_ParametroFormSet
@@ -207,4 +211,15 @@ class PerfilPrecioModificar(UpdateView):
 class PerfilPrecioBorrar(DeleteView):
     model = PerfilPrecio
     success_url = reverse_lazy('presupuestos:perfilprecio_listar')
-    #fields = perfilprecio_fields
+    
+    def delete(self, request, *args, **kwargs):
+        perfilPrecio = self.get_object()
+        
+        try:
+            perfilPrecio.delete()
+            estado = 'Precio del Perfil eliminado correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })

@@ -2,10 +2,15 @@
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import Q #para OR en consultas
+from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+import json
+
 parametro_fields = ('nombre_par','familia')
 
 from .models import Parametro, Familia
@@ -88,3 +93,16 @@ class ParametroBorrar(DeleteView):
     model = Parametro
     success_url = reverse_lazy('presupuestos:parametro_listar')
     fields = parametro_fields
+    
+    def delete(self, request, *args, **kwargs):
+        parametro = self.get_object()
+        
+        try:
+            parametro.delete()
+            estado = 'Parametro eliminado correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })
+        #return HttpResponse(respuesta   )    

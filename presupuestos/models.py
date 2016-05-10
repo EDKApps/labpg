@@ -130,6 +130,11 @@ class Matriz (models.Model):
 	nombre_matriz = models.CharField(max_length=100)
 	def __str__(self):
 		return self.nombre_matriz
+	
+	def delete(self, *args, **kwargs):
+		if Item.objects.filter(matriz__pk= self.pk).exists():
+			raise ValidationError('La matriz esta relacionada al menos a un Item.')
+		super(Matriz, self).delete(*args, **kwargs)
 
 @python_2_unicode_compatible
 class Familia (models.Model): # también llamada Grupo
@@ -150,6 +155,12 @@ class Parametro (models.Model):
 	def __str__(self):
 		return self.nombre_par
 	
+	def delete(self, *args, **kwargs):
+		if Analisis.objects.filter(parametro__pk= self.pk).exists():
+			raise ValidationError('El parametro esta relacionado al menos a un Analisis.')
+		super(Parametro, self).delete(*args, **kwargs)
+	
+	
 @python_2_unicode_compatible	
 class Tecnica (models.Model):
 	nombre_tec = models.CharField('Tecnica', max_length=100)
@@ -164,6 +175,11 @@ class Unidades (models.Model):
 	nombre_unidad = models.CharField('Unidades', max_length=100)
 	def __str__(self):
 		return self.nombre_unidad
+	
+	def delete(self, *args, **kwargs):
+		if MatrizTecnicaLct.objects.filter(unidad__pk= self.pk).exists():
+			raise ValidationError('La unidad esta relacionada al menos a un Lq.')
+		super(Unidades, self).delete(*args, **kwargs)
 
 @python_2_unicode_compatible
 class MatrizTecnicaLct (models.Model):
@@ -207,6 +223,11 @@ class ParametroPrecio  (models.Model):
 			return mt.unidad.nombre_unidad
 	def __str__(self):
 		return self.parametro.nombre_par+', '+self.tecnica.nombre_tec
+	
+	def delete(self, *args, **kwargs):
+		if Parametro.objects.filter(parametroprecio__pk= self.pk).exists():
+			raise ValidationError('El precio esta relacionado a un parametro')
+		super(ParametroPrecio, self).delete(*args, **kwargs)
 
 @python_2_unicode_compatible
 class PerfilPrecio (models.Model): # ex GrupoParametroPrecio
@@ -218,6 +239,11 @@ class PerfilPrecio (models.Model): # ex GrupoParametroPrecio
 	seleccionado = models.BooleanField(default=False)
 	def __str__(self):
 		return self.nombre
+	
+	def delete(self, *args, **kwargs):
+		if PerfilPrecio_Parametro.objects.filter(perfilPrecio__pk= self.pk).exists():
+			raise ValidationError('El precio esta relacionado a un parametro del perfil')
+		super(PerfilPrecio, self).delete(*args, **kwargs)
 
 @python_2_unicode_compatible
 class PerfilPrecio_Parametro (models.Model): # ex GrupoParametroPrecio_Parametro

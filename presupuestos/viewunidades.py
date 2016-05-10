@@ -2,10 +2,15 @@
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import Q #para OR en consultas
+from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+import json
+
 unidades_fields = ('nombre_unidad',)
 
 from .models import Unidades
@@ -58,3 +63,15 @@ class UnidadesBorrar(DeleteView):
     model = Unidades
     success_url = reverse_lazy('presupuestos:unidades_listar')
     fields = unidades_fields
+    
+    def delete(self, request, *args, **kwargs):
+        unidad = self.get_object()
+        
+        try:
+            unidad.delete()
+            estado = 'Unidad eliminada correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })
