@@ -2,12 +2,14 @@
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import Q #para OR en consultas
-
-
+from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+import json
 cliente_fields = ('empresa','contacto', 'funcion', 'domicilio','localidad', 'telefono_fijo', 'telefono_movil','email','cuit','nota')
 
 from .models import Cliente
@@ -64,3 +66,15 @@ class ClienteBorrar(DeleteView):
     model = Cliente
     success_url = reverse_lazy('presupuestos:cliente_listar')
     fields = cliente_fields
+    
+    def delete(self, request, *args, **kwargs):
+        cliente = self.get_object()
+        
+        try:
+            cliente.delete()
+            estado = 'Cliente eliminada correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })

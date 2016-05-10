@@ -43,6 +43,11 @@ class Cliente (models.Model):
 	nota = models.CharField(max_length=200, blank='true')
 	def __str__(self):
 		return self.contacto+', '+self.empresa
+	
+	def delete(self, *args, **kwargs):
+		if Presupuesto.objects.filter(cliente__pk= self.pk).exists():
+			raise ValidationError('EL cliente esta relacionado al menos a un Presupuesto.')
+		super(Cliente, self).delete(*args, **kwargs)
 
 @python_2_unicode_compatible
 class Tipo (models.Model):
@@ -114,6 +119,11 @@ class Presupuesto (models.Model):
 			self.impresion_condiciones_tecnicas = plantilla.presupuesto_condiciones_tecnicas
 			
 		super(Presupuesto, self).save(*args, **kwargs) # Call the "real" save() method.
+	
+	def delete(self, *args, **kwargs):
+		if Item.objects.filter(presupuesto__pk= self.pk).exists():
+			raise ValidationError('EL presupuesto esta relacionado al menos a un Item.')
+		super(Presupuesto, self).delete(*args, **kwargs)
 
 @python_2_unicode_compatible
 class Matriz (models.Model):
@@ -369,6 +379,9 @@ class Orden_trabajo (models.Model):
 		if self.id is None:
 			self.referencia = completarConCeros( sigNumero('orden_trabajo_referencia'), 7)
 			
+	def delete(self, *args, **kwargs):
+		if Ot_Item.objects.filter(orden_trabajo__pk= self.pk).exists():
+			raise ValidationError('La orden de trabajo esta relacionada al menos a un Item.')
 		super(Orden_trabajo, self).save(*args, **kwargs) # Call the "real" save() method.
 
 @python_2_unicode_compatible

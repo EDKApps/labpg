@@ -1,10 +1,16 @@
  # -- coding: utf-8 --
 from django import forms
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.extras.widgets import SelectDateWidget
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.db.models import Q #para OR en consultas
 from .models import Presupuesto, Item, Campania, Cliente, Tipo, Estado
+import json
 
 #En el form de alta excluyo la referencia (automática)
 presupuesto_fields_full = ('cliente','referencia_clave', 'referencia', 'tipo', 'fecha_solicitud', 'fecha_vencimiento', 'fecha_envio', 'fecha_aprobacion', 'descripcion', 'estado', 'observacion','item.numero')
@@ -91,6 +97,18 @@ class PresupuestoBorrar(DeleteView):
     model = Presupuesto
     success_url = reverse_lazy('presupuestos:presupuesto_listar')
     fields = presupuesto_fields_modif
+    
+    def delete(self, request, *args, **kwargs):
+        presupuesto = self.get_object()
+        
+        try:
+            presupuesto.delete()
+            estado = 'Presupuesto eliminado correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })
 	
 class PresupuestoDetalleFull(DetailView):
     model = Presupuesto
