@@ -404,11 +404,13 @@ class Orden_trabajo (models.Model):
 		#si es insert (id= 0), asignar referencia autoincremental	
 		if self.id is None:
 			self.referencia = completarConCeros( sigNumero('orden_trabajo_referencia'), 7)
+		super(Orden_trabajo, self).save(*args, **kwargs) # Call the "real" save() method.
 			
 	def delete(self, *args, **kwargs):
 		if Ot_Item.objects.filter(orden_trabajo__pk= self.pk).exists():
 			raise ValidationError('La orden de trabajo esta relacionada al menos a un Item.')
-		super(Orden_trabajo, self).save(*args, **kwargs) # Call the "real" save() method.
+		super(Orden_trabajo, self).delete(*args, **kwargs)
+	
 
 @python_2_unicode_compatible
 class Ot_Estado (models.Model):
