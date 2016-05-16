@@ -49,7 +49,7 @@ class Orden_trabajoFormCrear(forms.ModelForm):
         fields = ot_fields_crear	
 
 class Orden_trabajoFormModificar(forms.ModelForm):
-    #referencia = forms.CharField(widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    referencia = forms.CharField(widget = forms.TextInput(attrs={'readonly':'readonly'}))
     class Meta:
         #Provee una asociación entre el ModelForm y un model
         model = Orden_trabajo
