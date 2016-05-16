@@ -156,8 +156,8 @@ class Parametro (models.Model):
 		return self.nombre_par
 	
 	def delete(self, *args, **kwargs):
-		if Analisis.objects.filter(parametro__pk= self.pk).exists():
-			raise ValidationError('El parametro esta relacionado al menos a un Analisis.')
+		if ParametroPrecio.objects.filter(parametro__pk= self.pk).exists():
+			raise ValidationError('El parametro esta relacionado al menos a un Parametro Precio.')
 		super(Parametro, self).delete(*args, **kwargs)
 	
 	
@@ -169,6 +169,11 @@ class Tecnica (models.Model):
 	observacion = models.TextField(blank='true')
 	def __str__(self):
 		return self.nombre_tec
+	
+	def delete(self, *args, **kwargs):
+		if ParametroPrecio.objects.filter(tecnica__pk= self.pk).exists():
+			raise ValidationError('La tecnica esta relacionado al menos a un Parametro Precio.')
+		super(Tecnica, self).delete(*args, **kwargs)
 
 @python_2_unicode_compatible
 class Unidades (models.Model):
@@ -225,8 +230,8 @@ class ParametroPrecio  (models.Model):
 		return self.parametro.nombre_par+', '+self.tecnica.nombre_tec
 	
 	def delete(self, *args, **kwargs):
-		if Parametro.objects.filter(parametroprecio__pk= self.pk).exists():
-			raise ValidationError('El precio esta relacionado a un parametro')
+		if Subitem_parametro.objects.filter(itemparametro__pk= self.pk).exists():
+			raise ValidationError('El precio esta relacionado a un Item')
 		super(ParametroPrecio, self).delete(*args, **kwargs)
 
 @python_2_unicode_compatible

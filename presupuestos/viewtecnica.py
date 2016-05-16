@@ -2,10 +2,15 @@
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import Q #para OR en consultas
+from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+import json
+
 tecnica_fields = ('nombre_tec','derivacion','link','observacion')
 
 from .models import Tecnica
@@ -82,3 +87,17 @@ class TecnicaBorrar(DeleteView):
     model = Tecnica
     success_url = reverse_lazy('presupuestos:tecnica_listar')
     fields = tecnica_fields
+    
+    def delete(self, request, *args, **kwargs):
+        tecnica = self.get_object()
+        
+        try:
+            tecnica.delete()
+            estado = 'Tecnica eliminada correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado_tecnica.html',{"respuesta":respuesta })
+        #return HttpResponse(respuesta   )    
+
