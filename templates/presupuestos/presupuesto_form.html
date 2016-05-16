@@ -66,17 +66,4 @@
     
     <input type="submit" value="Submit" />
 </form>
-<script>
-    $(document).ready(function(){
-       //$('.datepicker').datepicker({});
-	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
-    });
-</script>
-<script type="text/javascript">
-function showModal()
- {
-var dialogWin = window.open('{% url "presupuestos:cliente_prompt"  %}', "dialogwidth: 450px; dialogheight: 300px; resizable: yes"); // Showing the Modal Dialog
-
- }
-  </script>
 {% endblock content %}
