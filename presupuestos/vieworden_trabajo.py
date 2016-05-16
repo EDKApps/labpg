@@ -1,6 +1,6 @@
  # -- coding: utf-8 --
 from django import forms
-from django.shortcuts import render
+#from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.db.models import Q #para OR en consultas
@@ -8,15 +8,16 @@ from django.db.models.deletion import ProtectedError
 from django.forms import ValidationError
 
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.forms.extras.widgets import SelectDateWidget
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 import json
-
-from .models import Orden_trabajo, Presupuesto
 
 #En el form de alta excluyo la referencia (automática)
 ot_fields_full = ('presupuesto','referencia_clave', 'referencia', 'descripcion', 'prioridad', 'fecha_creacion')
 ot_fields_crear = ('presupuesto','referencia_clave', 'descripcion', 'prioridad', 'fecha_creacion')
 ot_fields_modif = ('referencia_clave', 'referencia', 'descripcion', 'prioridad', 'fecha_creacion')
+
+from .models import Orden_trabajo, Presupuesto
 
 class Orden_trabajoListar(ListView):
     paginate_by = 10
@@ -48,7 +49,7 @@ class Orden_trabajoFormCrear(forms.ModelForm):
         fields = ot_fields_crear	
 
 class Orden_trabajoFormModificar(forms.ModelForm):
-    referencia = forms.CharField(widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    #referencia = forms.CharField(widget = forms.TextInput(attrs={'readonly':'readonly'}))
     class Meta:
         #Provee una asociación entre el ModelForm y un model
         model = Orden_trabajo
@@ -75,6 +76,7 @@ class Orden_trabajoDetalle(DetailView):
 class Orden_trabajoModificar(UpdateView):
     model = Orden_trabajo
     form_class = Orden_trabajoFormModificar
+    template_name = 'presupuestos/orden_trabajo_form_mod.html'
 	
     def get_success_url(self):
         return reverse('presupuestos:orden_trabajo_detalle', kwargs={
