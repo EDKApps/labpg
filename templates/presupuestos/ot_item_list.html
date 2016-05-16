@@ -27,7 +27,8 @@
 		<th>Muestreo propio</th>
 		<th>Descripcion</th>
 		<th>Matriz</th>
-		<th>Cantidad</th>
+		<th>Muestras de OT</th>
+		<th>Muestras del presupuesto</th>
 		<th>Estado</th>
       </tr>
     </thead>
@@ -46,6 +47,7 @@
 		</td>
 		<td>{{ otitem.orden_trabajo.descripcion }}</td>
 		<td>{{ otitem.item.matriz }}</td>
+		<td>{{ otitem.cantidad }}</td>
 		<td>{{ otitem.item.cantidadMuestra }}</td>
 		<td>{{ otitem.estado }}</td>
 	</tr>
