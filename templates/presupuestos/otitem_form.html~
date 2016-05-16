@@ -46,9 +46,12 @@
                   <tr>
                     <th>Número</th>
                     <th>Descripción</th>
+                    <th>Muestreo propio</th>  
+                    <th>Nota de muestreo</th> 
                     <th>Matriz</th>
-                    <th>Cantidad muestra</th>
-                    <th>Cantidad OT</th>
+					<th>Presupuesto - Item</th>
+                    <th>Cantidad muestras</th>
+                    <th>Cantidad muestras por OT</th>
                     <th>Estado</th>
                     <th></th>
                   </tr>
@@ -66,12 +69,23 @@
                         {{ form.numero.errors }}
                         {{ form.numero }}
                         </td>
-                        <td>    
+                        <td>   
                         {{ form.instance.item.descripcion }}
                         </td>
+                        <td>    
+                        {{ form.muestreo_propio.errors }}
+                        {{ form.muestreo_propio }} 
+                        </td>                            
+                        <td>    
+                        {{ form.nota_muestreo.errors }}
+                        {{ form.nota_muestreo }} 
+                        </td>                            
                         <td>
                         {{ form.instance.item.matriz }}
                         </td>
+                        <td>
+                        {{ form.instance.item.presupuesto.referencia_completa }} - {{ form.instance.item.numero }}
+                       	</td>
                         <td>
                         {{ form.instance.item.cantidadMuestra }} 
                         </td>
@@ -84,8 +98,10 @@
                         {{ form.estado }} 
                         </td>
                         <td>
+						<div class="ocultar">
 			{{ form.item.erros }}
 			{{ form.item }}
+						</div>
                         </td>
                         <tr>
                     <!--</div>-->
@@ -103,7 +119,17 @@
        //$('.datepicker').datepicker({});
 	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
     });
-</script>    
+</script>
+
+<script>
+    //Espero medio segundo para ocultar botón agregar y los combos
+    setTimeout(function(){
+        //oculto los botones add-row
+        $( ".add-row" ).hide();
+        //oculto los combos
+        $( ".ocultar" ).hide();        
+    }, 500)
+</script> 
 </body>
 </html>
 {% endblock content %}
