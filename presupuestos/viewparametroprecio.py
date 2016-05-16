@@ -107,7 +107,7 @@ class ParametroPrecioBorrar(DeleteView):
             parametroprecio.delete()
             estado = 'Precio de Parametro eliminado correctamente'
         except ValidationError as e:
-            estado = 'Objeto protegido.' + str(e) 
+            estado = 'Objeto protegido.' + str(e)
         respuesta = estado
         
-        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })
+        return render(request, 'presupuestos/confirmar_borrado_precio_parametro.html',{"respuesta":respuesta })

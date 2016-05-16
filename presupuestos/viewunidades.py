@@ -74,4 +74,4 @@ class UnidadesBorrar(DeleteView):
             estado = 'Objeto protegido.' + str(e) 
         respuesta = estado
         
-        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })
+        return render(request, 'presupuestos/confirmar_borrado_unidades.html',{"respuesta":respuesta })

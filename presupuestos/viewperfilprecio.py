@@ -222,4 +222,4 @@ class PerfilPrecioBorrar(DeleteView):
             estado = 'Objeto protegido.' + str(e) 
         respuesta = estado
         
-        return render(request, 'presupuestos/confirmar_borrado.html',{"respuesta":respuesta })
+        return render(request, 'presupuestos/confirmar_borrado_perfil_precio.html',{"respuesta":respuesta })
