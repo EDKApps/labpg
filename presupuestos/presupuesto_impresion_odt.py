@@ -16,7 +16,7 @@ def impresion(idpresupuesto):
     cadena_html += '<p>Cliente: {0}</p>'.format(presupuesto.cliente.empresa)
     cadena_html += '<p>Cuit: {0}</p>'.format(presupuesto.cliente.cuit)
     cadena_html += '<p>Contacto: {0}</p>'.format(presupuesto.cliente.contacto.encode('utf-8'))
-    cadena_html += '<p>Domicilio: {0}</p>'.format(presupuesto.cliente.domicilio)
+    cadena_html += '<p>Domicilio: {0}</p>'.format(presupuesto.cliente.domicilio.encode('utf-8'))
     cadena_html += '<p>Telefono: {0}, {1}</p>'.format(presupuesto.cliente.telefono_fijo, presupuesto.cliente.telefono_movil)
     cadena_html += '<p>Email: {0}</p>'.format(presupuesto.cliente.email)
     
