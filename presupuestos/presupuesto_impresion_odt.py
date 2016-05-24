@@ -13,7 +13,7 @@ def impresion(idpresupuesto):
     cadena_html += '<p class="EDKAppsDerecho">Fecha: {0}</p>'.format(hora.strftime('%d/%m/%Y'))
     cadena_html += '<p >Presupuesto número: {0}</p>'.format(presupuesto.referencia_completa())
     cadena_html += '<b>Datos del Cliente</b>'
-    cadena_html += '<p>Cliente: {0}</p>'.format(presupuesto.cliente.empresa)
+    cadena_html += '<p>Cliente: {0}</p>'.format(presupuesto.cliente.empresa.encode('utf-8'))
     cadena_html += '<p>Cuit: {0}</p>'.format(presupuesto.cliente.cuit)
     cadena_html += '<p>Contacto: {0}</p>'.format(presupuesto.cliente.contacto.encode('utf-8'))
     cadena_html += '<p>Domicilio: {0}</p>'.format(presupuesto.cliente.domicilio.encode('utf-8'))
