@@ -11,7 +11,7 @@ def impresion(idpresupuesto):
     cadena_html = '<p class="EDKAppsTituloCentrado">Presupuesto</p>'
     hora = datetime.today()
     cadena_html += '<p class="EDKAppsDerecho">Fecha: {0}</p>'.format(hora.strftime('%d/%m/%Y'))
-    cadena_html += '<p >Presupuesto número: {0}</p>'.format(presupuesto.referencia_completa())
+    cadena_html += '<p>Presupuesto número: {0}</p>'.format(presupuesto.referencia_completa())
     cadena_html += '<b>Datos del Cliente</b>'
     cadena_html += '<p>Cliente: {0}</p>'.format(presupuesto.cliente.empresa.encode('utf-8'))
     cadena_html += '<p>Cuit: {0}</p>'.format(presupuesto.cliente.cuit)
@@ -64,7 +64,7 @@ def impresion(idpresupuesto):
             cadena_html += '</tr>'
         for subitem_perfil in Subitem_perfil.objects.filter(item=item):
             cadena_html += '<tr>'
-            cadena_html += '<td>{0}</td>'.format(subitem_perfil.itemperfil.nombre)
+            cadena_html += '<td>{0}</td>'.format(subitem_perfil.itemperfil.nombre.encode('utf-8'))
             cadena_html += '<td></td>'
             cadena_html += '<td></td>'
             cadena_html += '<td>{0}</td>'.format(subitem_perfil.precio)
@@ -97,7 +97,7 @@ def impresion(idpresupuesto):
         for campania in listaMuestreo:
             cadena_html += '<tr>'
             cadena_html += '<td>{0}</td>'.format(campania.numero)
-            cadena_html += '<td>{0}</td>'.format(campania.descripcion)
+            cadena_html += '<td>{0}</td>'.format(campania.descripcion.encode('utf-8'))
             cadena_html += '<td>{0}</td>'.format(campania.cantidad)
             cadena_html += '<td>{0}</td>'.format(campania.unidad_medida.encode('utf-8'))
             cadena_html += '<td>{0}</td>'.format(campania.valor_unitario)
