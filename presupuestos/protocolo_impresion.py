@@ -70,7 +70,7 @@ def protocoloimpresion(idot):
 					plantilla += '<tr>'
 					plantilla += '<td>{0}</td>'.format(analisis.parametro)
 					plantilla += '<td>{0}</td>'.format(analisis.tecnica)
-					plantilla += '<td>{0}</td>'.format(analisis.unidades)
+					plantilla += '<td>{0}</td>'.format(analisis.unidades.encode('utf-8'))
 					plantilla += '<td>{0}</td>'.format(analisis.lct)
 					plantilla += '<td>{0}</td>'.format(analisis.valor.encode('utf-8'))
 					plantilla += '</tr>'
@@ -94,7 +94,7 @@ def protocoloimpresion(idot):
 					plantilla += '<tr>'
 					plantilla += '<td>{0}</td>'.format(analisis.parametro)
 					plantilla += '<td>{0}</td>'.format(analisis.tecnica)
-					plantilla += '<td>{0}</td>'.format(analisis.unidades)
+					plantilla += '<td>{0}</td>'.format(analisis.unidades.encode('utf-8'))
 					plantilla += '<td>{0}</td>'.format(analisis.lct)
 					plantilla += '<td>{0}</td>'.format(analisis.valor.encode('utf-8'))
 					plantilla += '<td>Verificado</td>'

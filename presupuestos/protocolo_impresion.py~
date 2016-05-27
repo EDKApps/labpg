@@ -7,13 +7,14 @@ def protocoloimpresion(idot):
 	ot = Orden_trabajo.objects.get(id=idot)
 	plantilla = '<h2 class="EDKAppsTituloCentrado" >Protocolo</h2>'
 	plantilla += '<p>Orden de trabajo: {0}</p>'.format(ot.referencia_completa())
+	plantilla += '<p>Descripción: {0}</p>'.format(ot.descripcion.encode('utf-8'))
 	plantilla += '<p>Cliente: {0}</p>'.format(ot.presupuesto.cliente)
 	plantilla += '<p>Domicilio: {0}</p>'.format(ot.presupuesto.cliente.domicilio.encode('utf-8'))
 	plantilla += '<p>Localidad: {0}</p>'.format(ot.presupuesto.cliente.localidad.encode('utf-8'))
 	plantilla += '<p>Telefono fijo/movil: {0}, {1}</p>'.format(ot.presupuesto.cliente.telefono_fijo,ot.presupuesto.cliente.telefono_movil)
 	plantilla += '<p>Email: {0}</p>'.format(ot.presupuesto.cliente.email.encode('utf-8'))
 	plantilla += '<h2 class="EDKAppsTituloCentrado" >Presupuesto {0}</h2>'.format(ot.presupuesto)
-	plantilla += '<p>Descripción: {0}</p>'.format(ot.descripcion.encode('utf-8'))
+	plantilla += '<p>Descripción: {0}</p>'.format(ot.presupuesto.descripcion.encode('utf-8'))
 	plantilla += '<p>Fecha de creación: {0}</p>'.format(ot.fecha_creacion)
 	plantilla += '<br/>'
 	plantilla += '<b>Detalles de items </b>'
@@ -69,7 +70,7 @@ def protocoloimpresion(idot):
 					plantilla += '<tr>'
 					plantilla += '<td>{0}</td>'.format(analisis.parametro)
 					plantilla += '<td>{0}</td>'.format(analisis.tecnica)
-					plantilla += '<td>{0}</td>'.format(analisis.unidades)
+					plantilla += '<td>{0}</td>'.format(analisis.unidades.encode('utf-8'))
 					plantilla += '<td>{0}</td>'.format(analisis.lct)
 					plantilla += '<td>{0}</td>'.format(analisis.valor.encode('utf-8'))
 					plantilla += '</tr>'
