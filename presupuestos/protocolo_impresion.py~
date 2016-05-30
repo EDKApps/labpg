@@ -3,6 +3,18 @@
 #from django.db import models
 from .models import Orden_trabajo, Presupuesto, Ot_Item, Item, Muestra, Analisis
 
+html_escape_table = {
+	"&": "&amp;",
+	'"': "&quot;",
+	"'": "&apos;",
+	">": "&gt;",
+	"<": "&lt;",
+	}
+
+def html_escape(text):
+	"""Produce entities within text."""
+	return "".join(html_escape_table.get(c,c) for c in text)
+
 def protocoloimpresion(idot):
 	ot = Orden_trabajo.objects.get(id=idot)
 	plantilla = '<h2 class="EDKAppsTituloCentrado" >Protocolo</h2>'
@@ -72,7 +84,8 @@ def protocoloimpresion(idot):
 					plantilla += '<td>{0}</td>'.format(analisis.tecnica)
 					plantilla += '<td>{0}</td>'.format(analisis.unidades.encode('utf-8'))
 					plantilla += '<td>{0}</td>'.format(analisis.lct)
-					plantilla += '<td>{0}</td>'.format(analisis.valor.encode('utf-8'))
+					#reemplaza el < por &lt;, ejemplo '<1' por '&lt;1'
+					plantilla += '<td>{0}</td>'.format(html_escape(analisis.valor.encode('utf-8')))
 					plantilla += '</tr>'
 				plantilla += '</table>'
 				plantilla += '<br/>'
@@ -94,11 +107,13 @@ def protocoloimpresion(idot):
 					plantilla += '<tr>'
 					plantilla += '<td>{0}</td>'.format(analisis.parametro)
 					plantilla += '<td>{0}</td>'.format(analisis.tecnica)
-					plantilla += '<td>{0}</td>'.format(analisis.unidades)
+					plantilla += '<td>{0}</td>'.format(analisis.unidades.encode('utf-8'))
 					plantilla += '<td>{0}</td>'.format(analisis.lct)
-					plantilla += '<td>{0}</td>'.format(analisis.valor.encode('utf-8'))
+					#reemplaza el < por &lt;, ejemplo '<1' por '&lt;1' 
+					#plantilla += '<td>{0}</td>'.format(html_escape(analisis.valor.encode('utf-8')))
+					plantilla += '<td>{0}</td>'.format(analisis.valor)
 					plantilla += '<td>Verificado</td>'
-					plantilla += '<td>{0}</td>'.format(analisis.observacion.encode('utf-8'))
+					plantilla += '<td>{0}</td>'.format(html_escape(analisis.observacion.encode('utf-8')))
 					plantilla += '</tr>'
 				plantilla += '</table>' 
 				if (cont==1):
