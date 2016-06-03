@@ -20,7 +20,7 @@ def protocoloimpresion(idot):
 	plantilla = '<h2 class="EDKAppsTituloCentrado" >Protocolo</h2>'
 	plantilla += '<p>Orden de trabajo: {0}</p>'.format(ot.referencia_completa())
 	plantilla += '<p>Descripción: {0}</p>'.format(ot.descripcion.encode('utf-8'))
-	plantilla += '<p>Cliente: {0}</p>'.format(ot.presupuesto.cliente)
+	plantilla += '<p>Cliente: {0}</p>'.format(ot.presupuesto.cliente.encode('utf-8'))
 	plantilla += '<p>Domicilio: {0}</p>'.format(ot.presupuesto.cliente.domicilio.encode('utf-8'))
 	plantilla += '<p>Localidad: {0}</p>'.format(ot.presupuesto.cliente.localidad.encode('utf-8'))
 	plantilla += '<p>Telefono fijo/movil: {0}, {1}</p>'.format(ot.presupuesto.cliente.telefono_fijo,ot.presupuesto.cliente.telefono_movil)
@@ -47,7 +47,7 @@ def protocoloimpresion(idot):
 				plantilla += '<p>Ingreso de la muestra: {0}</p>'.format(muestra.ingreso_muestra.encode('utf-8'))
 				plantilla += '<p>Fecha de ingreso: {0}</p>'.format(muestra.fecha_ingreso)
 				plantilla += '<p>Cadena de custodia: {0}</p>'.format(muestra.cadena_custodia.encode('utf-8'))
-				plantilla += '<p>Rotulo: {0}</p>'.format(muestra.rotulo)
+				plantilla += '<p>Rotulo: {0}</p>'.format(muestra.rotulo.encode('utf-8'))
 				plantilla += '<p>Ubicación: {0}</p>'.format(muestra.ubicacion.encode('utf-8'))
 				plantilla += '<p>Sitio: {0}</p>'.format(muestra.sitio_muestreo.encode('utf-8'))
 				plantilla += '<p>Muestreador: {0}</p>'.format(muestra.muestreador.encode('utf-8'))
