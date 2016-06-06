@@ -47,7 +47,7 @@ def protocoloimpresion(idot):
 				plantilla += '<p>Ingreso de la muestra: {0}</p>'.format(muestra.ingreso_muestra.encode('utf-8'))
 				plantilla += '<p>Fecha de ingreso: {0}</p>'.format(muestra.fecha_ingreso)
 				plantilla += '<p>Cadena de custodia: {0}</p>'.format(muestra.cadena_custodia.encode('utf-8'))
-				plantilla += '<p>Rotulo: {0}</p>'.format(muestra.rotulo)
+				plantilla += '<p>Rotulo: {0}</p>'.format(muestra.rotulo.encode('utf-8'))
 				plantilla += '<p>Ubicación: {0}</p>'.format(muestra.ubicacion.encode('utf-8'))
 				plantilla += '<p>Sitio: {0}</p>'.format(muestra.sitio_muestreo.encode('utf-8'))
 				plantilla += '<p>Muestreador: {0}</p>'.format(muestra.muestreador.encode('utf-8'))
@@ -110,8 +110,7 @@ def protocoloimpresion(idot):
 					plantilla += '<td>{0}</td>'.format(analisis.unidades.encode('utf-8'))
 					plantilla += '<td>{0}</td>'.format(analisis.lct)
 					#reemplaza el < por &lt;, ejemplo '<1' por '&lt;1' 
-					#plantilla += '<td>{0}</td>'.format(html_escape(analisis.valor.encode('utf-8')))
-					plantilla += '<td>{0}</td>'.format(analisis.valor)
+					plantilla += '<td>{0}</td>'.format(html_escape(analisis.valor.encode('utf-8')))
 					plantilla += '<td>Verificado</td>'
 					plantilla += '<td>{0}</td>'.format(html_escape(analisis.observacion.encode('utf-8')))
 					plantilla += '</tr>'

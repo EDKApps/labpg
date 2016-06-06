@@ -17,13 +17,13 @@ def impresion(idpresupuesto):
     cadena_html += '<p>Cuit: {0}</p>'.format(presupuesto.cliente.cuit)
     cadena_html += '<p>Contacto: {0}</p>'.format(presupuesto.cliente.contacto.encode('utf-8'))
     cadena_html += '<p>Domicilio: {0}</p>'.format(presupuesto.cliente.domicilio.encode('utf-8'))
-    cadena_html += '<p>Telefono: {0}, {1}</p>'.format(presupuesto.cliente.telefono_fijo, presupuesto.cliente.telefono_movil)
+    cadena_html += '<p>Teléfono: {0}, {1}</p>'.format(presupuesto.cliente.telefono_fijo, presupuesto.cliente.telefono_movil)
     cadena_html += '<p>Email: {0}</p>'.format(presupuesto.cliente.email.encode('utf-8'))
     
     cadena_html += '<b>Datos del Presupuesto</b>'
     cadena_html += '<p>Introducción: {0}</p>'.format(presupuesto.impresion_introduccion.encode('utf-8'))
-    cadena_html += '<p>Descripcion: {0}</p>'.format(presupuesto.descripcion.encode('utf-8'))
-    cadena_html += '<p>Tipo: {0}</p>'.format(presupuesto.tipo.encode('utf-8'))
+    cadena_html += '<p>Descripción: {0}</p>'.format(presupuesto.descripcion.encode('utf-8'))
+    cadena_html += '<p>Tipo: {0}</p>'.format(presupuesto.tipo)
     cadena_html += '<p></p>'
     #cadena_html += '<p>Descuento (%): {0}</p>'.format(presupuesto.descuento)
     cadena_html += '<p class="EDKAppsLineaHorizontal" ></p>'
@@ -31,8 +31,8 @@ def impresion(idpresupuesto):
     cadena_html += '<b>Detalle de Item</b>'
     for item in Item.objects.filter(presupuesto=presupuesto).order_by("numero"):
         cadena_html += '<p><b>Item {0}</b></p>'.format(item.numero)
-        cadena_html += '<p>Matriz: {0}</p>'.format(item.matriz.encode('utf-8'))
-        cadena_html += '<p>Descripcion: {0}</p>'.format(item.descripcion.encode('utf-8'))
+        cadena_html += '<p>Matriz: {0}</p>'.format(item.matriz)
+        cadena_html += '<p>Descripción: {0}</p>'.format(item.descripcion.encode('utf-8'))
         cadena_html += '<p>Cantidad de muestras: {0}</p>'.format(item.cantidadMuestra)
         cadena_html += '<p>Costo Unitario: {0}</p>'.format(item.costo_unitario())
         cadena_html += '<p>Descuento: {0}</p>'.format(item.descuento)
@@ -43,22 +43,22 @@ def impresion(idpresupuesto):
         cadena_html += '<table>'
         cadena_html += '<tr>'
         cadena_html += '<td>Perfil</td>'
-        cadena_html += '<td>Parametro</td>'
-        cadena_html += '<td>Metodologia analitica</td>'
+        cadena_html += '<td>Parámetro</td>'
+        cadena_html += '<td>Metodología analítica</td>'
         cadena_html += '<td>Costo unitario, Por muestra</td>'
         cadena_html += '</tr>'
         lista = Subitem_parametro.objects.filter(item = item)
         for subitem_parametro in lista:
             cadena_html += '<tr>'
             cadena_html += '<td>--</td>'
-            cadena_html += '<td>{0}</td>'.format(subitem_parametro.itemparametro.parametro.encode('utf-8'))
+            cadena_html += '<td>{0}</td>'.format(subitem_parametro.itemparametro.parametro)
             cadena_html += '<td>{0}</td>'.format(subitem_parametro.itemparametro.tecnica)
             cadena_html += '<td>{0}</td>'.format(subitem_parametro.precio)
             cadena_html += '</tr>'
         if not lista:
             cadena_html += '<tr>'
             cadena_html += '<td></td>'
-            cadena_html += '<td>No hay parametros registrados</td>'
+            cadena_html += '<td>No hay parámetros registrados</td>'
             cadena_html += '<td></td>'
             cadena_html += '<td></td>'
             cadena_html += '</tr>'
@@ -69,11 +69,11 @@ def impresion(idpresupuesto):
             cadena_html += '<td></td>'
             cadena_html += '<td>{0}</td>'.format(subitem_perfil.precio)
             cadena_html += '</tr>'
-            for perfilPrecio_Par in PerfilPrecio_Parametro.objects.filter(perfilPrecio = subitem_perfil.itemperfil.encode('utf-8')):	
+            for perfilPrecio_Par in PerfilPrecio_Parametro.objects.filter(perfilPrecio = subitem_perfil.itemperfil):	
                 cadena_html += '<tr>'
                 cadena_html += '<td></td>'
-                cadena_html += '<td>{0}</td>'.format(perfilPrecio_Par.parametro.encode('utf-8'))
-                cadena_html += '<td>{0}</td>'.format(perfilPrecio_Par.tecnica.encode('utf-8'))
+                cadena_html += '<td>{0}</td>'.format(perfilPrecio_Par.parametro)
+                cadena_html += '<td>{0}</td>'.format(perfilPrecio_Par.tecnica)
                 cadena_html += '<td>--</td>'
                 cadena_html += '<td></td>'
                 cadena_html += '</tr>'
@@ -86,8 +86,8 @@ def impresion(idpresupuesto):
         cadena_html += '<h2>Muestreo: </h2>'
         cadena_html += '<table>'
         cadena_html += '<tr>'
-        cadena_html += '<td>Numero</td>'
-        cadena_html += '<td>Descripcion</td>'
+        cadena_html += '<td>Número</td>'
+        cadena_html += '<td>Descripción</td>'
         cadena_html += '<td>Cantidad</td>'
         cadena_html += '<td>Unidad de medida</td>'
         cadena_html += '<td>Valor unitario</td>'
@@ -111,7 +111,7 @@ def impresion(idpresupuesto):
 
     cadena_html += '<h2>Resumen del presupuesto</h2>'
     cadena_html += '<p><b>Total General</b></p>'
-    cadena_html += '<p>Presupuesto numero: {0}</p>'.format(presupuesto.referencia_completa().encode('utf-8'))
+    cadena_html += '<p>Presupuesto número: {0}</p>'.format(presupuesto.referencia_completa().encode('utf-8'))
     cadena_html += '<p>Total: {0}</p>'.format(presupuesto.total_sin_descuento())
     if (presupuesto.descuento!=0):
         cadena_html += '<p>Descuento: {0}%</p>'.format(presupuesto.descuento) 

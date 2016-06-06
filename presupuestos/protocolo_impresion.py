@@ -20,10 +20,10 @@ def protocoloimpresion(idot):
 	plantilla = '<h2 class="EDKAppsTituloCentrado" >Protocolo</h2>'
 	plantilla += '<p>Orden de trabajo: {0}</p>'.format(ot.referencia_completa())
 	plantilla += '<p>Descripción: {0}</p>'.format(ot.descripcion.encode('utf-8'))
-	plantilla += '<p>Cliente: {0}</p>'.format(ot.presupuesto.cliente.encode('utf-8'))
+	plantilla += '<p>Cliente: {0}</p>'.format(ot.presupuesto.cliente)
 	plantilla += '<p>Domicilio: {0}</p>'.format(ot.presupuesto.cliente.domicilio.encode('utf-8'))
 	plantilla += '<p>Localidad: {0}</p>'.format(ot.presupuesto.cliente.localidad.encode('utf-8'))
-	plantilla += '<p>Telefono fijo/movil: {0}, {1}</p>'.format(ot.presupuesto.cliente.telefono_fijo,ot.presupuesto.cliente.telefono_movil)
+	plantilla += '<p>Teléfono fijo/movil: {0}, {1}</p>'.format(ot.presupuesto.cliente.telefono_fijo,ot.presupuesto.cliente.telefono_movil)
 	plantilla += '<p>Email: {0}</p>'.format(ot.presupuesto.cliente.email.encode('utf-8'))
 	plantilla += '<h2 class="EDKAppsTituloCentrado" >Presupuesto {0}</h2>'.format(ot.presupuesto)
 	plantilla += '<p>Descripción: {0}</p>'.format(ot.presupuesto.descripcion.encode('utf-8'))
@@ -47,7 +47,7 @@ def protocoloimpresion(idot):
 				plantilla += '<p>Ingreso de la muestra: {0}</p>'.format(muestra.ingreso_muestra.encode('utf-8'))
 				plantilla += '<p>Fecha de ingreso: {0}</p>'.format(muestra.fecha_ingreso)
 				plantilla += '<p>Cadena de custodia: {0}</p>'.format(muestra.cadena_custodia.encode('utf-8'))
-				plantilla += '<p>Rotulo: {0}</p>'.format(muestra.rotulo.encode('utf-8'))
+				plantilla += '<p>Rótulo: {0}</p>'.format(muestra.rotulo.encode('utf-8'))
 				plantilla += '<p>Ubicación: {0}</p>'.format(muestra.ubicacion.encode('utf-8'))
 				plantilla += '<p>Sitio: {0}</p>'.format(muestra.sitio_muestreo.encode('utf-8'))
 				plantilla += '<p>Muestreador: {0}</p>'.format(muestra.muestreador.encode('utf-8'))
@@ -66,13 +66,13 @@ def protocoloimpresion(idot):
 				plantilla += '<p>Preservación: {0}</p>'.format(muestra.preservacion.encode('utf-8'))
 				plantilla += '<p>Fecha Muestreo: {0}</p>'.format(muestra.fecha_muestreo)
 				plantilla += '<p>Coordenadas: {0}</p>'.format(muestra.coordenada.encode('utf-8'))
-				plantilla += '<p>Sistema de las coordenadas: {0}</p>'.format(muestra.sistema_coordenada.encode('utf-8'))
+				plantilla += '<p>Sistema de coordenadas: {0}</p>'.format(muestra.sistema_coordenada.encode('utf-8'))
 				plantilla += '<p>Observación: {0}</p>'.format(muestra.observacion.encode('utf-8'))
 				plantilla += '<br/>'
-				plantilla += '<b>Analisis resumen</b>'
+				plantilla += '<b>Análisis resumen</b>'
 				plantilla += '<table>'
 				plantilla += '<tr>'
-				plantilla += '<td>Parametro </td>'
+				plantilla += '<td>Parámetro </td>'
 				plantilla += '<td> Técnica </td>'
 				plantilla += '<td>Unidad </td>'
 				plantilla += '<td>LCT </td>'
@@ -89,14 +89,14 @@ def protocoloimpresion(idot):
 					plantilla += '</tr>'
 				plantilla += '</table>'
 				plantilla += '<br/>'
-				plantilla += '<b>Analisis con verificación</b>'
+				plantilla += '<b>Análisis con verificación</b>'
 				cont = 1
 				plantilla += '<table>' 
 				for analisis in Analisis.objects.filter(muestra=muestra, verificacion=True).order_by('parametro__nombre_par'):
 					if (cont<=1):
 						plantilla += '<tr>'
-						plantilla += '<td>Parametro </td>'
-						plantilla += '<td> Técnica </td>'
+						plantilla += '<td>Parámetro </td>'
+						plantilla += '<td>Técnica </td>'
 						plantilla += '<td>Unidad </td>'
 						plantilla += '<td>LCT</td>'
 						plantilla += '<td>Resultado </td>'
@@ -116,7 +116,7 @@ def protocoloimpresion(idot):
 					plantilla += '</tr>'
 				plantilla += '</table>' 
 				if (cont==1):
-					plantilla += '<p>No existe ningun item vereficado en la muestra</p>'
+					plantilla += '<p>No existe ningun ítem vereficado en la muestra</p>'
 				else:
 					plantilla += '<p></p>'
 					

@@ -44,7 +44,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware', ToDo:descomentar y resolver csrf en prompt de parametros
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -79,13 +79,9 @@ WSGI_APPLICATION = 'Lab3.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'labdb',
-        'USER': 'labdb',
-<<<<<<< HEAD
-	'PASSWORD': 'edk19921124',
-=======
+        'NAME': 'labweb',
+        'USER': 'labweb',
         'PASSWORD': os.getenv('edkappslab_dbpass', 'clave secreta :)'),
->>>>>>> 0f6680ac84870077c162c25d354e0269a07a90a4
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -135,3 +131,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/opt/EDKAppsLab/static/' #para el repositorio
 #STATIC_ROOT = '/home/marcelo/EDKAppsLab/Lab/presupuestos/static'
 
+LOGIN_REDIRECT_URL = '/presupuestos/presupuestos/'
+LOGIN_URL = '/presupuestos/login/'
