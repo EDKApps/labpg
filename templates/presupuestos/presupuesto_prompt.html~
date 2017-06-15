@@ -17,7 +17,7 @@
 <div class="container">
 	<h2>Selección de Presupuesto</h2>
 		<form method="get" action="/presupuestos/presupuestoprompt/">
-		<p><label for="id_q">Filtro solo Aprobados (Referencia, Cliente o Estado):</label>
+		<p><label for="id_q">Filtro (Cliente o Estado):</label>
 		<input type="text" name="q" id="id_q" value="{{ query }}" />
 		<input type="submit" value="Buscar" /></p>
 		</form>	
