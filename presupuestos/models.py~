@@ -82,7 +82,7 @@ class Presupuesto (models.Model):
 	impresion_condiciones_tecnicas = models.TextField(blank='true')
 
 	def __str__(self):
-		return self.referencia
+		return self.referencia_clave + self.referencia
 
 	def referencia_completa(self):
 		return self.referencia_clave + self.referencia
