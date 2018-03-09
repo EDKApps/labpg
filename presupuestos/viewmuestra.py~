@@ -109,7 +109,7 @@ class Muestra_Listar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Muestra.objects.order_by('fecha_ingreso','-referencia')
+            return Muestra.objects.order_by('-fecha_ingreso','-referencia')
         else:
             return Muestra.objects.filter( Q(referencia__icontains=query)| 
                                            Q(ot_item__orden_trabajo__referencia__icontains=query) | 

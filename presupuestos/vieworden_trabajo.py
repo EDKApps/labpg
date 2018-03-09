@@ -26,12 +26,12 @@ class Orden_trabajoListar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Orden_trabajo.objects.all().order_by('-fecha_creacion')
+            return Orden_trabajo.objects.all().order_by('-referencia_clave', '-referencia')
         else:
             return Orden_trabajo.objects.filter( Q(referencia_clave__icontains=query) | 
                                            Q(referencia__icontains=query) |
                                            Q(descripcion__icontains=query) |
-                                           Q(prioridad__icontains=query)).order_by('-fecha_creacion')
+                                           Q(prioridad__icontains=query)).order_by('-referencia_clave', '-referencia')
 
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):

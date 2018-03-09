@@ -64,7 +64,7 @@ class Estado (models.Model):
 @python_2_unicode_compatible
 class Presupuesto (models.Model):
 	cliente = models.ForeignKey(Cliente, on_delete= models.PROTECT)
-	referencia_clave = models.CharField(max_length=100, blank='true',default='SP16-')
+	referencia_clave = models.CharField(max_length=100, blank='true',default='SP18-')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental
 	fecha_solicitud = models.DateField('fecha de solicitud', default=date.today)
 	fecha_vencimiento = models.DateField('fecha de vencimiento', blank='true', null='true')
@@ -393,7 +393,7 @@ class Plantillas_Impresion (models.Model):
 @python_2_unicode_compatible
 class Orden_trabajo (models.Model):
 	presupuesto = models.ForeignKey(Presupuesto, on_delete= models.PROTECT, null=True)
-	referencia_clave = models.CharField(max_length=100, blank='true',default='OT-')
+	referencia_clave = models.CharField(max_length=100, blank='true',default='OT-18')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental
 	descripcion = models.CharField(max_length=100, blank='true')
 	prioridad = models.CharField(max_length=100, blank='true')
@@ -464,7 +464,7 @@ class Muestra_Estado (models.Model):
 @python_2_unicode_compatible
 class Muestra (models.Model):
 	ot_item = models.ForeignKey(Ot_Item, null=True, on_delete= models.PROTECT)
-	referencia_clave = models.CharField(max_length=100, blank='true',default='ID16-')
+	referencia_clave = models.CharField(max_length=100, blank='true',default='ID18-')
 	referencia = models.CharField(max_length=20,blank='true') #autoincremental, ajustado en save()
 	ingreso_muestra = models.CharField('responsable ingreso de muestra', max_length=100, blank='true')
 	fecha_ingreso = models.DateField('fecha de ingreso al sistema', default=date.today)

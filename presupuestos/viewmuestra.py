@@ -109,12 +109,12 @@ class Muestra_Listar(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query is None:
-            return Muestra.objects.order_by('-fecha_ingreso','-referencia')
+            return Muestra.objects.order_by('-referencia_clave', '-referencia')
         else:
             return Muestra.objects.filter( Q(referencia__icontains=query)| 
                                            Q(ot_item__orden_trabajo__referencia__icontains=query) | 
                                            Q(ot_item__item__matriz__nombre_matriz__icontains=query) | 
-                                           Q(estado__estado_actual__icontains=query)).order_by('-fecha_ingreso','-referencia')
+                                           Q(estado__estado_actual__icontains=query)).order_by('-referencia_clave', '-referencia')
                                   
     #almacenar contexto de la búsqueda
     def get_context_data(self, **kwargs):

@@ -283,8 +283,8 @@ class Item (models.Model): #si se elimina el presupuesto. se elimina el Item, ju
 	matriz = models.ForeignKey(Matriz, on_delete= models.PROTECT)
 	cantidadMuestra = models.IntegerField(default= 0)
 	descuento = models.DecimalField('descuento (%)', max_digits=5, decimal_places=2, default=0)
-	total_sin_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-	total_con_descuento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+	total_sin_descuento = models.DecimalField(max_digits=9, decimal_places=2, default=0)
+	total_con_descuento = models.DecimalField(max_digits=9, decimal_places=2, default=0)
 	seleccionado = models.BooleanField(default=False)
 
 	def __str__(self):
