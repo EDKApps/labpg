@@ -17,8 +17,14 @@ from .viewitem import ItemCrear, ItemBorrar, ItemDetalle, ItemListar, ItemModifi
 from .viewpresupuestoitem import PresupuestoItemModificar, PresupuestoItemDetalle
 from .viewpresupuestocampania import PresupuestoCampaniaModificar
 from .viewitemsubitem import ItemSubitemModificar
+#clase para item parametro y perfil, para hacer la version liviana
+from .viewitemparametroprecio import ItemParametroPrecioBorrar, ItemPerfilPrecioBorrar
+from .viewitemsubitemligth import ItemSubitemModificarLigth
 from .viewpromptparametros import promptparametros
 from .viewpromptperfiles import promptperfiles
+from .viewpromptparametrosligth import promptparametrosLigth
+from .viewpromptperfilesligth import promptperfilesLigth
+
 from .viewpresupuesto_impresion import Presupuesto_ImpresionModificar
 from .vieworden_trabajo import Orden_trabajoCrear, Orden_trabajoBorrar, Orden_trabajoDetalle, Orden_trabajoListar, Orden_trabajoModificar, Orden_trabajoDetalleFull
 from .viewotitem import Ot_ItemModificar, Ot_ItemListar
@@ -51,6 +57,7 @@ urlpatterns = patterns('',
     url(r'^presupuestos/(?P<pk>\d+)/modificar/$', login_required(PresupuestoModificar.as_view()), name='presupuesto_modificar'),
     url(r'^presupuestos/(?P<pk>\d+)/borrar/$', login_required(PresupuestoBorrar.as_view()), name='presupuesto_borrar'),
     url(r'^presupuestosfull/(?P<pk>\d+)/$', login_required(PresupuestoDetalleFull.as_view()), name='presupuesto_detalle_full'),
+    
     #Presupuesto impresion form
     url(r'^presupuestos/(?P<pk>\d+)/modificar_impresion/$', login_required(Presupuesto_ImpresionModificar.as_view()), name='presupuesto_modificar_impresion'),
     #Presupuesto impresion odt (Open Document)                   
@@ -163,20 +170,27 @@ urlpatterns = patterns('',
     url(r'^presupuestoitem/(?P<pk>\d+)/$', login_required(PresupuestoItemDetalle.as_view()), name='presupuestoitem_detalle'),
     url(r'^presupuestoitem/(?P<pk>\d+)/modificar/$', login_required(PresupuestoItemModificar.as_view()), name='presupuestoitem_modificar'),
 
+    #Presupuestos, subitem, parametro y perfil
+    url(r'^itemparametroprecio/(?P<pk>\d+)/borrar/$', login_required(ItemParametroPrecioBorrar.as_view()), name='itemparametroprecio_borrar'),
+    url(r'^itemperfilprecio/(?P<pk>\d+)/borrar/$', login_required(ItemPerfilPrecioBorrar.as_view()), name='itemperfilprecio_borrar'),
+
     #relacion presupuesto-campania
     #url(r'^presupuestoitem/(?P<pk>\d+)/$', PresupuestoItemDetalle.as_view(), name='presupuestoitem_detalle'),
     url(r'^presupuestocampania/(?P<pk>\d+)/modificar/$', login_required(PresupuestoCampaniaModificar.as_view()), name='presupuestocampania_modificar'),
     
     #relacion item-subitem (parámetro y perfil)
     url(r'^itemsubitem/(?P<pk>\d+)/modificar/$', login_required(ItemSubitemModificar.as_view()), name='itemsubitem_modificar'),
+    url(r'^itemsubitem/(?P<pk>\d+)/modificarligth/$', login_required(ItemSubitemModificarLigth.as_view()), name='itemsubitem_modificarligth'),
                        
     #multiselección de parámetros
     #http://localhost:8000/presupuestos/promptparametros/1/
     url(r'^promptparametros/(?P<iditem>\d+)/$', login_required(promptparametros), name='promptparametros'),
+    url(r'^promptparametrosligth/(?P<iditem>\d+)/$', login_required(promptparametrosLigth), name='promptparametrosligth'),
                        
     #multiseleccion de perfiles
     url(r'^promptperfiles/(?P<iditem>\d+)/$', login_required(promptperfiles), name='promptperfiles'),
-    
+    url(r'^promptperfilesligth/(?P<iditem>\d+)/$', login_required(promptperfilesLigth), name='promptperfilesligth'),
+
     #Login y logout                      
     url(r'^login/$', user_login, name='login'),
     url(r'^logout/$', user_logout, name='logout'),

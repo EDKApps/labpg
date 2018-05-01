@@ -1,0 +1,5 @@
+{% extends "menu.html" %}
+{% block content %}
+<h2>{{ respuesta }}{{ pk }}</h2> <br/>
+<a href="{% url "presupuestos:itemsubitem/{{ pk }}/modificarligth/" %}">Volver al Item</a>
+{% endblock content %}

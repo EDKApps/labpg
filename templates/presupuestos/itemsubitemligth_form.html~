@@ -1,0 +1,128 @@
+{% extends "menu.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <title>Items del presupuesto</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">		
+	<!-- elimine los link bootstrap -->
+        <link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
+		<link rel="stylesheet" href="{% static "css/presupuestos.css" %}">
+    
+    
+    <!--<script src="{% static 'js/djformset/jquery-1.3.2.min.js' %}"></script>-->
+    <script src="{% static 'js/djformset/jquery.formset.js' %}"></script>
+
+</head>
+
+<body>
+    <div>
+        <h1>Item del presupuesto</h1>
+	<h3>Versión liviana</h3>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div>
+               <h2> {{ form.instance.descripcion }} </h2>
+            </div>
+            <fieldset>
+                <legend>Parámetros</legend>
+                {{ subitem_parametro_form.management_form }}
+                {{ subitem_parametro_form.non_form_errors }}
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Grupo</th>
+                    <th>Parámetro</th>
+                    <th>Técnica</th>
+                    <th>LC</th>
+                    <th>Unidades</th>
+                    <th>Precio</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>	     
+                    
+                {% for formPar in subitem_parametro_form %}
+
+                        <tr class="inline {{ subitem_parametro_form.prefix }}">     
+		        <td><a href="{% url "presupuestos:itemparametroprecio_borrar" formPar.instance.id %}"><img src= "{% static "images/accion_borrar.png"%}" data-toggle="tooltip" data-placement="top" title="Eliminar" alt="Eliminar"></a></td>                       
+                        <td>
+                        {{ formPar.id }} 
+                        </td>                        
+			<td>
+                        {{ formPar.instance.itemparametro.parametro.familia}}
+                        </td>
+                        <td>
+                        {{ formPar.instance.itemparametro.parametro}}
+                        </td>
+                        <td>
+                        {{ formPar.instance.itemparametro.tecnica }}
+                        </td>
+                        <td>
+                        {{ formPar.instance.itemparametro.lcm }}
+                        </td>
+                        <td>
+                        {{ formPar.instance.itemparametro.uni }}
+                        </td>
+                        <td>
+			{{ formPar.instance.precio}}
+                        </td>
+
+                        <td> 
+			<!-- esta linea lo hace lento 
+	                 formPar.itemparametro.erros }}
+		         formPar.itemparametro }}
+			-->
+                        </td>
+ 
+                        </tr>
+                    <!--</div>-->
+                {% endfor %}
+                </tbody>
+                </table>
+            <h4><a href="{% url "presupuestos:promptparametroligth" item.id %}">Agregar parámetros</a></h4>
+            </fieldset>
+
+            <fieldset>
+                <legend>Perfiles</legend>
+                {{ subitem_perfil_form.management_form }}
+                {{ subitem_perfil_form.non_form_errors }}
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Perfil</th>
+                    <th>Precio</th>
+                  </tr>
+                </thead>
+                <tbody>	     
+                    
+                {% for formPer in subitem_perfil_form %}
+                        <tr class="inline {{ subitem_perfil_form.prefix }}">
+		        <td><a href="{% url "presupuestos:itemperfilprecio_borrar" formPer.instance.id %}"><img src= "{% static "images/accion_borrar.png"%}" data-toggle="tooltip" data-placement="top" title="Eliminar" alt="Eliminar"></a></td>                       
+                        <td>
+                        {{ formPer.id }}
+                        </td>
+                        <td>
+                        {{ formPer.instance.itemperfil.nombre }}
+                        </td> 
+			<td>
+		   	{{ formPer.instance.precio }}
+                        </td>                      
+			</tr>
+                    <!--</div>-->
+                {% endfor %}
+                </tbody>
+                </table>
+            <h4><a href="{% url "presupuestos:promptperfilesligth" item.id %}">Agregar perfiles</a></h4>    
+            </fieldset>
+
+            <h4><a href="{% url "presupuestos:presupuestoitem_detalle" item.presupuesto.id %}">Regresar</a></h4>
+        </form>
+    </div>   
+</body>
+</html>
+{% endblock content %}

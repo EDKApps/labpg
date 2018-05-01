@@ -29,7 +29,7 @@
                 prefix: "{{ subitem_perfil_form.prefix }}",
             })
         })
-    </script>
+    </script> 
 </head>
 
 <body>
@@ -47,26 +47,19 @@
                 <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th></th>
                     <th>Grupo</th>
                     <th>Parámetro</th>
                     <th>Técnica</th>
                     <th>LC</th>
                     <th>Unidades</th>
                     <th>Precio</th>
-                    <th>Fecha de Precio</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>	     
                     
                 {% for form in subitem_parametro_form %}
                         <tr class="inline {{ subitem_parametro_form.prefix }}">                            
-                        <td>
-                        {{ form.id }}
-                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                        {{ form.itemparametro.errors }}
-                        {{ form.itemparametro }}
-                        </td>
                         <td>
                         {{ form.instance.itemparametro.parametro.familia}}
                         </td>
@@ -83,17 +76,24 @@
                         {{ form.instance.itemparametro.uni }}
                         </td>
                         <td>
-                        {{ form.instance.itemparametro.precio_del_parametro }}
+			{{ form.precio}}
                         </td>
                         <td>
-                        {{ form.instance.itemparametro.fecha_de_precio }}
+                        {{ form.id }} 
+                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                        </td>
+                        <td> 
+                            <div class="ocultar">
+			                {{ form.itemparametro.erros }}
+			                {{ form.itemparametro }}
+                            </div>
                         </td>
                         </tr>
                     <!--</div>-->
                 {% endfor %}
                 </tbody>
                 </table>
-            <a href="{% url "presupuestos:promptparametros" item.id %}">Agregar parámetros</a>
+            <h4><a href="{% url "presupuestos:promptparametros" item.id %}">Agregar parámetros</a></h4>
             </fieldset>
 
             <fieldset>
@@ -106,7 +106,6 @@
                     <th></th>
                     <th>Perfil</th>
                     <th>Precio</th>
-                    <th>Fecha de Precio</th>
                   </tr>
                 </thead>
                 <tbody>	     
@@ -114,25 +113,25 @@
                 {% for form in subitem_perfil_form %}
                         <tr class="inline {{ subitem_perfil_form.prefix }}">
                         <td>
+                        <div class="ocultar">
                         {{ form.id }}
                         {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                         {{ form.itemperfil.errors }}
                         {{ form.itemperfil }}
+                        </div>
                         </td>
                         <td>
                         {{ form.instance.itemperfil.nombre }}
                         </td>
                         <td>
-                        {{ form.instance.itemperfil.precio }}
-                        </td>
-                        <td>
-                        {{ form.instance.itemperfil.fecha_precio }}
+                        {{ form.precio }}
                         </td>
                         </tr>
                     <!--</div>-->
                 {% endfor %}
                 </tbody>
-                </table>    
+                </table>
+            <h4><a href="{% url "presupuestos:promptperfiles" item.id %}">Agregar perfiles</a></h4>    
             </fieldset>
 
             
@@ -145,6 +144,16 @@
 	   $("[id^='id_fecha']").datepicker({ languaje: 'es', format: 'dd/mm/yyyy', startDate: '-1y'})
     });
 </script>    
+    
+<script>
+    //Espero medio segundo para ocultar botón agregar y los combos
+    setTimeout(function(){
+        //oculto los botones add-row
+        $( ".add-row" ).hide();
+        //oculto los combos
+        $( ".ocultar" ).hide();        
+    }, 500)
+</script>      
 </body>
 </html>
 {% endblock content %}

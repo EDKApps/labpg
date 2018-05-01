@@ -1,0 +1,77 @@
+ # -- coding: utf-8 --
+from django import forms
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.db.models.deletion import ProtectedError
+from django.forms import ValidationError
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.forms.extras.widgets import SelectDateWidget
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.db.models import Q #para OR en consultas
+from .models import Subitem_parametro, Subitem_perfil
+import json
+
+subitem_parametro_fields = ('precio', 'item', 'itemparametro')
+
+subitem_perfil_fields = ('precio', 'item', 'itemperfil')
+'''
+class ItemParametroPrecioModificar(UpdateView):
+    model = Subitem_parametro
+    fields = subitem_parametro_fields
+    #form_class = itemparametroprecio
+    template_name = 'presupuestos/itemparametroprecio_form.html'
+	
+    def get_success_url(self):
+        return reverse('presupuestos:itemsubitem_modificarligth', kwargs={
+            'pk': self.object.item.id,
+        })
+
+    def post(self, request, *args, **kwargs):        
+        """
+        Maneja POST request instanciando un form con sus formsets,
+        con las variables POST pasadas y chequea validez
+        """
+        self.object = self.get_object()
+        #form_class = self.get_form_class()
+        #form = self.get_form(form_class)
+        
+        #self.object = form.save(commit=False)
+            
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+'''
+
+class ItemParametroPrecioBorrar(DeleteView):
+    model = Subitem_parametro
+    success_url = reverse_lazy('presupuestos:item_listar')
+    fields = subitem_parametro_fields
+    def delete(self, request, *args, **kwargs):
+        itemparametro = self.get_object()
+        
+        try:
+            itemparametroId = itemparametro.item.id
+	    itemparametro.delete()
+            estado = 'Parametro eliminado correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado_subitem_parametro.html',{"respuesta":respuesta , "pk": itemparametroId})
+
+class ItemPerfilPrecioBorrar(DeleteView):
+    model = Subitem_perfil
+    success_url = reverse_lazy('presupuestos:item_listar')
+    fields = subitem_itemperfil_fields
+    def delete(self, request, *args, **kwargs):
+        itemperfil = self.get_object()
+        
+        try:
+            itemperfilId = itemperfil.item.id
+	    itemperfil.delete()
+            estado = 'Parametro eliminado correctamente'
+        except ValidationError as e:
+            estado = 'Objeto protegido.' + str(e) 
+        respuesta = estado
+        
+        return render(request, 'presupuestos/confirmar_borrado_subitem_parametro.html',{"respuesta":respuesta , "pk": itemperfilId})
